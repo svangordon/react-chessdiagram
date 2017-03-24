@@ -205,7 +205,7 @@ Board.propTypes = {
 	files: React.PropTypes.number.isRequired,
 	flip: React.PropTypes.bool.isRequired,
 	lightSquareColor: React.PropTypes.string.isRequired,
-	ranks: React.PropTypes.number.isRequired.isRequired,
+	ranks: React.PropTypes.number.isRequired,
 	selectedSquare: React.PropTypes.string,
 	squareSize: React.PropTypes.number.isRequired,
 };
