@@ -45,10 +45,20 @@ Square.propTypes = {
 
 class SquareHighlight extends Component {
 	render() {
-		let highlightColor = 'yellow';
-		return <rect x={this.props.x} y={this.props.y} width={this.props.squareSize} height={this.props.squareSize} stroke={highlightColor} fill="none" strokeWidth="3" />;
+		return <rect x={this.props.x} y={this.props.y} width={this.props.squareSize} height={this.props.squareSize} stroke={this.props.highlightColor} fill="none" strokeWidth="3" />;
 	}
 }
+
+SquareHighlight.propTypes = {
+	highlightColor: React.PropTypes.string.isRequired,
+	squareSize: React.PropTypes.number.isRequired,
+	x: React.PropTypes.number.isRequired,
+	y: React.PropTypes.number.isRequired,
+};
+
+SquareHighlight.defaultProps = {
+	highlightColor: 'yellow'
+};
 
 class RankLabels extends Component {
 
