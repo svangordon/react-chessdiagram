@@ -34,6 +34,15 @@ class Square extends Component {
 	}
 }
 
+Square.propTypes = {
+	darkSquareColor: React.PropTypes.string.isRequired,
+	light: React.PropTypes.bool.isRequired,
+	lightSquareColor: React.PropTypes.string.isRequired,
+	squareSize: React.PropTypes.number.isRequired,
+	x: React.PropTypes.number.isRequired,
+	y: React.PropTypes.number.isRequired,
+};
+
 class SquareHighlight extends Component {
 	render() {
 		let highlightColor = 'yellow';
@@ -169,7 +178,7 @@ class Board extends Component {
 			</svg>
 		);
 	}
-}	
+}
 
 Board.propTypes = {
 	darkSquareColor: React.PropTypes.string,
