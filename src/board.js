@@ -114,6 +114,16 @@ class FileLabels extends Component {
 	}
 }
 
+const LabelPropTypes = {
+	files: React.PropTypes.number,
+	flip: React.PropTypes.bool.isRequired,
+	ranks: React.PropTypes.number,
+	squareSize: React.PropTypes.number.isRequired,
+};
+
+RankLabels.propTypes = LabelPropTypes;
+FileLabels.propTypes = LabelPropTypes;
+
 /** Board : draws a chess board with given square size, square colors, and number of files and ranks */
 class Board extends Component {
 
