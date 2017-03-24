@@ -187,7 +187,7 @@ class Board extends Component {
 			<svg>
 				{squares.map((square,i) =>
 					<Square
-						x={square.x} y={square.y} key={i} light={square.light} squareSize={this.props.squareSize}
+						x={square.x} y={square.y} key={i} light={!!square.light} squareSize={this.props.squareSize}
 						lightSquareColor={this.props.lightSquareColor} darkSquareColor={this.props.darkSquareColor}
 					/>
 				)}
