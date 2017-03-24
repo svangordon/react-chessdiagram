@@ -27,7 +27,6 @@ SOFTWARE.
 // chessdiagram.js : defines Chess Diagram Component
 
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import Board from './board.js';
 import Piece from './piece.js';
 import standardPieceDefinitions from './pieceDefinitions.js';
