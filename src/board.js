@@ -201,12 +201,13 @@ class Board extends Component {
 }
 
 Board.propTypes = {
-	darkSquareColor: React.PropTypes.string,
-	files: React.PropTypes.number,
-	flip: React.PropTypes.bool,
-	lightSquareColor: React.PropTypes.string,
-	ranks: React.PropTypes.number,
-	squareSize: React.PropTypes.number,
+	darkSquareColor: React.PropTypes.string.isRequired,
+	files: React.PropTypes.number.isRequired,
+	flip: React.PropTypes.bool.isRequired,
+	lightSquareColor: React.PropTypes.string.isRequired,
+	ranks: React.PropTypes.number.isRequired.isRequired,
+	selectedSquare: React.PropTypes.string,
+	squareSize: React.PropTypes.number.isRequired,
 };
 
 Board.defaultProps = {
