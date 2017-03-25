@@ -25,20 +25,6 @@ class App extends Component {
 			ranks: 8,
 			files: 8
 		};
-		// this.draughtsPieceDefinitions = {
-		// 	'G': (transformString) => (
-		// 		<svg>
-		// 			<image transform={transformString} href="https://upload.wikimedia.org/wikipedia/commons/9/90/Draughts_mlt45.svg" />
-		// 		</svg>
-		// 	),
-		// 	'g': (transformString) => (
-		// 		<svg>
-		// 			<image transform={transformString} href="https://upload.wikimedia.org/wikipedia/commons/0/0c/Draughts_mdt45.svg" />
-		// 		</svg>
-		// 	)
-		// };
-		// this.draughtsFen = "g1g1g1g1/1g1g1g1g/g1g1g1g1/8/8/1G1G1G1G/G1G1G1G1/1G1G1G1G w KQkq - 0 1";
-		// this.standardFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 		this.gamePresets = {
 			chess: {
 				currentPosition: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
