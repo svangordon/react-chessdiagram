@@ -39,6 +39,38 @@ class App extends Component {
 		};
 		this.draughtsFen = "g1g1g1g1/1g1g1g1g/g1g1g1g1/8/8/1G1G1G1G/G1G1G1G1/1G1G1G1G w KQkq - 0 1";
 		this.standardFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+		this.gamePresets = {
+			chess: {
+				position: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+				ranks: 8,
+				files: 8,
+				pieceDefinitions: {}
+			},
+			draughts: {
+				position: "1g1g1g1g1g/g1g1g1g1g1/1g1g1g1g1g/g1g1g1g1g1/91/91/1G1G1G1G1G/G1G1G1G1G1/1G1G1G1G1G/G1G1G1G1G1 w - - 0 1",
+				ranks: 10,
+				files: 10,
+				pieceDefinitions: {
+					'G': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/9/90/Draughts_mlt45.svg"),
+					'g': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/0/0c/Draughts_mdt45.svg")
+				}
+			},
+			courier: {
+				position: "",
+				ranks: 10,
+				files: 12,
+
+			}
+		}
+	}
+
+	// Convenience function for concisely creating piece definition callbacks
+	_createPieceDefinition(url) {
+		return (transformString) => (
+			<svg>
+				<image transform={transformString} href={url} />
+			</svg>
+		)
 	}
 
 // event handlers:
@@ -61,7 +93,9 @@ class App extends Component {
 
 	_onDraughtsChanged(evt) {
 		const position = evt.target.checked ? this.draughtsFen : this.standardFen;
-		this.setState({currentPosition: position,   draughts: evt.target.checked})
+		this.setState({
+			currentPosition: position,
+			draughts: evt.target.checked, })
 	}
 
 	_onMovePiece(piece, fromSquare, toSquare) { // user moved a piece
@@ -99,6 +133,7 @@ class App extends Component {
 					<p>Draughts ?<input type="checkbox" value={this.state.draughts} onChange={this._onDraughtsChanged.bind(this)} /></p>
 					<p>Light Square Color:<input type="color" value={this.state.lightSquareColor} onChange={this._onLightSquareColorChanged.bind(this)} /></p>
 					<p>Dark Square Color:<input type="color" value={this.state.darkSquareColor} onChange={this._onDarkSquareColorChanged.bind(this)} /></p>
+					<p>Ranks:<input type="range" value={this.state.ranks} min={2} max={16} onChange={this._onRanksChanged.bind(this)} /> {this.state.ranks}</p>
 					<p>Ranks:<input type="text" value={this.state.ranks} onChange={this._onRanksChanged.bind(this)} /></p>
 					<p>Files:<input type="text" value={this.state.files} onChange={this._onFilesChanged.bind(this)} /></p>
 					<p/>
