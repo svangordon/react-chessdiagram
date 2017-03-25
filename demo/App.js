@@ -41,13 +41,13 @@ class App extends Component {
 		// this.standardFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 		this.gamePresets = {
 			chess: {
-				position: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+				currentPosition: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
 				ranks: 8,
 				files: 8,
 				pieceDefinitions: {}
 			},
 			draughts: {
-				position: "1g1g1g1g1g/g1g1g1g1g1/1g1g1g1g1g/g1g1g1g1g1/91/91/1G1G1G1G1G/G1G1G1G1G1/1G1G1G1G1G/G1G1G1G1G1 w - - 0 1",
+				currentPosition: "1g1g1g1g1g/g1g1g1g1g1/1g1g1g1g1g/g1g1g1g1g1/91/91/1G1G1G1G1G/G1G1G1G1G1/1G1G1G1G1G/G1G1G1G1G1 w - - 0 1",
 				ranks: 10,
 				files: 10,
 				pieceDefinitions: {
@@ -56,7 +56,7 @@ class App extends Component {
 				}
 			},
 			courier: {
-				position: "rnbcmk1scbnr/1ppppp1pppp1/6q5/p5p4p/P5P4/6Q5/1PPPPP1PPPP1/RNBCMK1SCBNR",
+				currentPosition: "rnbcmk1scbnr/1ppppp1pppp1/6q5/p5p4p/P5P4P/6Q5/1PPPPP1PPPP1/RNBCMK1SCBNR",
 				ranks: 10,
 				files: 12,
 				pieceDefinitions: {
@@ -123,10 +123,15 @@ class App extends Component {
 		this.setState({ranks: Number(evt.target.value)});
 	}
 
+	_onGameTypeChange(evt) {
+		this.setState(this.gamePresets[evt.target.value]);
+	}
+
 // the render() function:
   render() {
     return (
 			<div className="demo">
+				{this.gamePresets.draughts.pieceDefinitions.g("")}
 				<h1>Chess Diagram</h1>
 				<div>
 					<p> Enter a position (using a FEN string) here:</p>
@@ -140,6 +145,11 @@ class App extends Component {
 					<p>Draughts ?<input type="checkbox" value={this.state.draughts} onChange={this._onDraughtsChanged.bind(this)} /></p>
 					<p>Light Square Color:<input type="color" value={this.state.lightSquareColor} onChange={this._onLightSquareColorChanged.bind(this)} /></p>
 					<p>Dark Square Color:<input type="color" value={this.state.darkSquareColor} onChange={this._onDarkSquareColorChanged.bind(this)} /></p>
+					<select name="gameType" value={this.state.gameType} onChange={this._onGameTypeChange.bind(this)}>
+						{Object.keys(this.gamePresets).map(gameType => (
+							<option key={gameType} value={gameType}>{gameType}</option>
+						))}
+					</select>
 					<p>Ranks:<input type="range" value={this.state.ranks} min={2} max={16} onChange={this._onRanksChanged.bind(this)} /> {this.state.ranks}</p>
 					<p>Ranks:<input type="text" value={this.state.ranks} onChange={this._onRanksChanged.bind(this)} /></p>
 					<p>Files:<input type="text" value={this.state.files} onChange={this._onFilesChanged.bind(this)} /></p>
@@ -148,7 +158,7 @@ class App extends Component {
 					<Chessdiagram flip={this.state.flip} fen={this.state.currentPosition} squareSize={this.state.squareSize}
 						lightSquareColor={this.state.lightSquareColor} darkSquareColor={this.state.darkSquareColor} onMovePiece={this._onMovePiece.bind(this)}
 						ranks={this.state.ranks} files={this.state.files}
-						pieceDefinitions={this.state.draughts ? this.draughtsPieceDefinitions : {}}
+						pieceDefinitions={this.gamePresets[this.state.gameType].pieceDefinitions}
 					/>
 				<p><strong>{this.state.lastMessage}</strong></p>
 			</div>
