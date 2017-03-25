@@ -56,15 +56,15 @@ class App extends Component {
 				}
 			},
 			courier: {
-				currentPosition: "rnbcmk1scbnr/1ppppp1pppp1/6q5/p5p4p/P5P4P/6Q5/1PPPPP1PPPP1/RNBCMK1SCBNR",
-				ranks: 10,
+				currentPosition: "rnbcmk1scbnr/1ppppp1pppp1/6q5/p5p4p/P5P4p/6Q5/1PPPPP1PPPP1/RNBCMK1SCBNR",
+				ranks: 8,
 				files: 12,
 				pieceDefinitions: {
 					'C': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/7/7c/Chess_Blt45.svg"),
 					'c': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/5/5a/Chess_Bdt45.svg"),
 					'M': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/1/17/Chess_flt45.svg"),
 					'm': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/2/2c/Chess_fdt45.svg"),
-					'S': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/0/0d/Chess_Flt26.svg"),
+					'S': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/c/ce/Chess_tlt45.svg"),
 					's': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/e/e2/Chess_tdt45.svg")
 				}
 			}
@@ -124,14 +124,13 @@ class App extends Component {
 	}
 
 	_onGameTypeChange(evt) {
-		this.setState(this.gamePresets[evt.target.value]);
+		this.setState(Object.assign(this.gamePresets[evt.target.value], {gameType: evt.target.value}));
 	}
 
 // the render() function:
   render() {
     return (
 			<div className="demo">
-				{this.gamePresets.draughts.pieceDefinitions.g("")}
 				<h1>Chess Diagram</h1>
 				<div>
 					<p> Enter a position (using a FEN string) here:</p>
