@@ -112,9 +112,11 @@ class App extends Component {
 			<div className="demo">
 				<h1>Chess Diagram</h1>
 				<div>
-					<p> Enter a position (using a FEN string) here:</p>
-					<input type="text" value={this.state.currentPosition} size="70" onChange={this._onPositionChanged.bind(this)}
-						autoCapitalize="off" autoCorrect="off" autoComplete="off" spellCheck="false"/>
+					<div>
+						<p> Enter a position (using a FEN string) here:</p>
+						<input type="text" value={this.state.currentPosition} size="70" onChange={this._onPositionChanged.bind(this)}
+							autoCapitalize="off" autoCorrect="off" autoComplete="off" spellCheck="false"/>
+					</div>
 					<div className="propGroup">
 						<p> Square Size: </p>
 						<input type="range" value={this.state.squareSize} min={10} max={100} step={1} onChange = {evt => {
