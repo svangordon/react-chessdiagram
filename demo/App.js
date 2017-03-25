@@ -115,22 +115,26 @@ class App extends Component {
 					<p> Enter a position (using a FEN string) here:</p>
 					<input type="text" value={this.state.currentPosition} size="70" onChange={this._onPositionChanged.bind(this)}
 						autoCapitalize="off" autoCorrect="off" autoComplete="off" spellCheck="false"/>
-					<p> Square Size: </p>
-					<input type="range" value={this.state.squareSize} min={10} max={100} step={1} onChange = {evt => {
-						this.setState({squareSize: Number(evt.target.value)});
-					}}/>
-					<p>Flip Board ?<input type="checkbox" value={this.state.flip} onChange={this._onFlipChanged.bind(this)} /></p>
-					<p>Light Square Color:<input type="color" value={this.state.lightSquareColor} onChange={this._onLightSquareColorChanged.bind(this)} /></p>
-					<p>Dark Square Color:<input type="color" value={this.state.darkSquareColor} onChange={this._onDarkSquareColorChanged.bind(this)} /></p>
-					<p>Game Type:{'\u00A0'}
-						<select name="gameType" value={this.state.gameType} onChange={this._onGameTypeChange.bind(this)}>
-							{Object.keys(this.gamePresets).map(gameType => (
-								<option key={gameType} value={gameType}>{gameType}</option>
-							))}
-						</select>
-					</p>
-					<p>Ranks:<input type="range" value={this.state.ranks} min={2} max={16} onChange={this._onRanksChanged.bind(this)} /> {this.state.ranks}</p>
-					<p>Files:<input type="range" value={this.state.files} min={2} max={16} onChange={this._onFilesChanged.bind(this)} /> {this.state.files}</p>
+					<div className="propGroup">
+						<p> Square Size: </p>
+						<input type="range" value={this.state.squareSize} min={10} max={100} step={1} onChange = {evt => {
+							this.setState({squareSize: Number(evt.target.value)});
+						}}/>
+						<p>Flip Board ?<input type="checkbox" value={this.state.flip} onChange={this._onFlipChanged.bind(this)} /></p>
+						<p>Light Square Color:<input type="color" value={this.state.lightSquareColor} onChange={this._onLightSquareColorChanged.bind(this)} /></p>
+						<p>Dark Square Color:<input type="color" value={this.state.darkSquareColor} onChange={this._onDarkSquareColorChanged.bind(this)} /></p>
+					</div>
+					<div className="propGroup">
+						<p>Game Type:{'\u00A0'}
+							<select name="gameType" value={this.state.gameType} onChange={this._onGameTypeChange.bind(this)}>
+								{Object.keys(this.gamePresets).map(gameType => (
+									<option key={gameType} value={gameType}>{gameType}</option>
+								))}
+							</select>
+						</p>
+						<p>Ranks:<input type="range" value={this.state.ranks} min={2} max={16} onChange={this._onRanksChanged.bind(this)} /> {this.state.ranks}</p>
+						<p>Files:<input type="range" value={this.state.files} min={2} max={16} onChange={this._onFilesChanged.bind(this)} /> {this.state.files}</p>
+					</div>
 					<p/>
 				</div>
 					<Chessdiagram flip={this.state.flip} fen={this.state.currentPosition} squareSize={this.state.squareSize}
