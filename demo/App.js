@@ -21,24 +21,24 @@ class App extends Component {
 			flip: false,
 			lastMessage: '',
 			squareSize: 45,
-			draughts: false,
+			gameType: 'chess',
 			ranks: 8,
 			files: 8
 		};
-		this.draughtsPieceDefinitions = {
-			'G': (transformString) => (
-				<svg>
-					<image transform={transformString} href="https://upload.wikimedia.org/wikipedia/commons/9/90/Draughts_mlt45.svg" />
-				</svg>
-			),
-			'g': (transformString) => (
-				<svg>
-					<image transform={transformString} href="https://upload.wikimedia.org/wikipedia/commons/0/0c/Draughts_mdt45.svg" />
-				</svg>
-			)
-		};
-		this.draughtsFen = "g1g1g1g1/1g1g1g1g/g1g1g1g1/8/8/1G1G1G1G/G1G1G1G1/1G1G1G1G w KQkq - 0 1";
-		this.standardFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+		// this.draughtsPieceDefinitions = {
+		// 	'G': (transformString) => (
+		// 		<svg>
+		// 			<image transform={transformString} href="https://upload.wikimedia.org/wikipedia/commons/9/90/Draughts_mlt45.svg" />
+		// 		</svg>
+		// 	),
+		// 	'g': (transformString) => (
+		// 		<svg>
+		// 			<image transform={transformString} href="https://upload.wikimedia.org/wikipedia/commons/0/0c/Draughts_mdt45.svg" />
+		// 		</svg>
+		// 	)
+		// };
+		// this.draughtsFen = "g1g1g1g1/1g1g1g1g/g1g1g1g1/8/8/1G1G1G1G/G1G1G1G1/1G1G1G1G w KQkq - 0 1";
+		// this.standardFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 		this.gamePresets = {
 			chess: {
 				position: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
@@ -56,10 +56,17 @@ class App extends Component {
 				}
 			},
 			courier: {
-				position: "",
+				position: "rnbcmk1scbnr/1ppppp1pppp1/6q5/p5p4p/P5P4/6Q5/1PPPPP1PPPP1/RNBCMK1SCBNR",
 				ranks: 10,
 				files: 12,
-
+				pieceDefinitions: {
+					'C': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/7/7c/Chess_Blt45.svg"),
+					'c': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/5/5a/Chess_Bdt45.svg"),
+					'M': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/1/17/Chess_flt45.svg"),
+					'm': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/2/2c/Chess_fdt45.svg"),
+					'S': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/0/0d/Chess_Flt26.svg"),
+					's': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/e/e2/Chess_tdt45.svg")
+				}
 			}
 		}
 	}
