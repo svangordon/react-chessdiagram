@@ -7,3 +7,8 @@
 	display: inline-block;
 	margin-right: 20px;
 }
+
+.lastMessage {
+	display: inline-block;
+	position: absolute;
+}

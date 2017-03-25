@@ -144,7 +144,7 @@ class App extends Component {
 						ranks={this.state.ranks} files={this.state.files}
 						pieceDefinitions={this.gamePresets[this.state.gameType].pieceDefinitions}
 					/>
-				<p style={{display: 'inline-block', position: 'absolute'}}><strong>{this.state.lastMessage}</strong></p>
+				<p className={"lastMessage"}><strong>{this.state.lastMessage}</strong></p>
 			</div>
     );
   }
