@@ -84,13 +84,6 @@ class App extends Component {
 		this.setState({darkSquareColor: evt.target.value});
 	}
 
-	_onDraughtsChanged(evt) {
-		const position = evt.target.checked ? this.draughtsFen : this.standardFen;
-		this.setState({
-			currentPosition: position,
-			draughts: evt.target.checked, })
-	}
-
 	_onMovePiece(piece, fromSquare, toSquare) { // user moved a piece
 		// echo move back to user:
 		let message = 'You moved ' + piece + fromSquare + " to " + toSquare + ' !';
@@ -127,17 +120,17 @@ class App extends Component {
 						this.setState({squareSize: Number(evt.target.value)});
 					}}/>
 					<p>Flip Board ?<input type="checkbox" value={this.state.flip} onChange={this._onFlipChanged.bind(this)} /></p>
-					<p>Draughts ?<input type="checkbox" value={this.state.draughts} onChange={this._onDraughtsChanged.bind(this)} /></p>
 					<p>Light Square Color:<input type="color" value={this.state.lightSquareColor} onChange={this._onLightSquareColorChanged.bind(this)} /></p>
 					<p>Dark Square Color:<input type="color" value={this.state.darkSquareColor} onChange={this._onDarkSquareColorChanged.bind(this)} /></p>
-					<select name="gameType" value={this.state.gameType} onChange={this._onGameTypeChange.bind(this)}>
-						{Object.keys(this.gamePresets).map(gameType => (
-							<option key={gameType} value={gameType}>{gameType}</option>
-						))}
-					</select>
+					<p>Game Type:{'\u00A0'}
+						<select name="gameType" value={this.state.gameType} onChange={this._onGameTypeChange.bind(this)}>
+							{Object.keys(this.gamePresets).map(gameType => (
+								<option key={gameType} value={gameType}>{gameType}</option>
+							))}
+						</select>
+					</p>
 					<p>Ranks:<input type="range" value={this.state.ranks} min={2} max={16} onChange={this._onRanksChanged.bind(this)} /> {this.state.ranks}</p>
-					<p>Ranks:<input type="text" value={this.state.ranks} onChange={this._onRanksChanged.bind(this)} /></p>
-					<p>Files:<input type="text" value={this.state.files} onChange={this._onFilesChanged.bind(this)} /></p>
+					<p>Files:<input type="range" value={this.state.files} min={2} max={16} onChange={this._onFilesChanged.bind(this)} /> {this.state.files}</p>
 					<p/>
 				</div>
 					<Chessdiagram flip={this.state.flip} fen={this.state.currentPosition} squareSize={this.state.squareSize}
