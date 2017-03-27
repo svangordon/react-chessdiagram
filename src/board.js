@@ -177,7 +177,6 @@ class Board extends Component {
 				squares.push({x: x, y: y, light: (file ^ rank) & 1});
 			}
 		}
-
 		let selectedSquareX, selectedSquareY;
 		if(this.props.selectedSquare) {
 			[selectedSquareX, selectedSquareY] = this._squareToCoords(this.props.selectedSquare);

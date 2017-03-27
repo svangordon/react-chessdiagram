@@ -6,6 +6,18 @@ import Board from '../src/board';
 import sinon from 'sinon';
 
 const startPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+const startAllowedMoves = {
+  "a2": ["a3", "a4"],
+  "b2": ["b3", "b4"],
+  "c2": ["c3", "c4"],
+  "d2": ["d3", "d4"],
+  "e2": ["e3", "e4"],
+  "f2": ["f3", "f4"],
+  "g2": ["g3", "g4"],
+  "h2": ["h3", "h4"],
+  "b1": ["a3", "c3"],
+  "g1": ["f3", "h3"]
+};
 
 describe('testing interpretation of FEN string', () => {
 	it('should put pieces on the correct squares', () => {
@@ -179,4 +191,27 @@ describe('testing non-standard board widths', () => {
 		// Not totally sure why expect is returning an object w/o all of the standard Jest matchers
 		expect(wrapper.find('Square').length).toBe(144);
 	})
+});
+
+describe('test allowed moves highlighting', () => {
+	it('should show proper moves from start', () => {
+		const wrapper = mount(
+			<Chessdiagram ref="cd" allowedMoves={startAllowedMoves} fen={startPosition} />
+		);
+		// const result = wrapper.findWhere(n => {
+		// 	console.log('n ==', n)
+		// 	return true
+		// });
+		// const squareSize = wrapper.props().squareSize;
+		Object.keys(startAllowedMoves).forEach(key => {
+			const squareCoords = {
+				clientX: ('.abcdefgh'.indexOf(key[0]) + .5) * wrapper.props().squareSize,
+				clientY: (wrapper.props().ranks - parseInt(key[1]) + .5) * wrapper.props().squareSize
+			};
+			wrapper.simulate('mousedown', squareCoords);
+			wrapper.simulate('mouseup', squareCoords);
+			console.log(wrapper.find('SquareHighlight').length)
+			expect(wrapper.find('SquareHighlight').length).toBe(3);
+		});
+	});
 });
