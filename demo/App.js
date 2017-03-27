@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Chessdiagram from '../src/chessdiagram.js';
+import Chess from 'chess.js';
 
 import './App.css';
 
@@ -66,7 +67,8 @@ class App extends Component {
 					's': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/e/e2/Chess_tdt45.svg")
 				}
 			}
-		}
+		};
+		this.move = null;
 	}
 
 	// Convenience function for concisely creating piece definition callbacks
@@ -97,14 +99,15 @@ class App extends Component {
 	}
 
 	_onMovePiece(piece, fromSquare, toSquare) { // user moved a piece
-		clearTimeout(this.timeout)
-		// echo move back to user:
-		let message = 'You moved ' + piece + fromSquare + " to " + toSquare + ' !';
-		this.setState({lastMessage: message}, (()=> {
-			this.timeout = setTimeout(()=> {
-					this.setState({lastMessage: ''});
-			}, 2000); // clear message after 2s
-		}));
+		// clearTimeout(this.timeout);
+		const chess = new Chess(this.state.currentPosition);
+		this.move = chess.move({from: fromSquare, to: toSquare});
+		console.log(this.move, chess.fen());
+		if (this.move) {
+			// echo move back to user:
+			let message = 'You moved ' + piece + fromSquare + " to " + toSquare + ' !';
+			this.setState({lastMessage: message, currentPosition: chess.fen()});
+		}
 	}
 
 	_onFilesChanged(evt) {
