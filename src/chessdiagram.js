@@ -185,14 +185,15 @@ class Chessdiagram extends Component {
 		}
 		let selectedSquare = this._coordsToSquare(x,y);
 		let selectedPiece = this._getPieceAtSquare(selectedSquare);
-
-		this.setState({
-			selectedSquare: selectedSquare,
-			selectedPieceType: selectedPiece ? selectedPiece.pieceType : null,
-			dragX: selectedPiece ? selectedPiece.x + this.props.squareSize / 2: this.state.dragX,
-			dragY: selectedPiece ? selectedPiece.y + this.props.squareSize / 2: this.state.dragY,
-			isDragging: true
-		});
+		if (!this.state.selectedSquare || this.state.selectedSquare === selectedSquare) {
+			this.setState({
+				selectedSquare: selectedSquare,
+				selectedPieceType: selectedPiece ? selectedPiece.pieceType : null,
+				dragX: selectedPiece ? selectedPiece.x + this.props.squareSize / 2: this.state.dragX,
+				dragY: selectedPiece ? selectedPiece.y + this.props.squareSize / 2: this.state.dragY,
+				isDragging: true
+			});
+		}
 
 		if(this.props.onSelectSquare) {
 			this.props.onSelectSquare(selectedSquare);
