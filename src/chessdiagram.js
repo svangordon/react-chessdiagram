@@ -35,6 +35,9 @@ import standardPieceDefinitions from './pieceDefinitions.js';
 class Chessdiagram extends Component {
 	constructor(props) {
 		super(props);
+		this.defaultOptions = {
+			validateMoves: true
+		};
 		this.state = {
 			selectedSquare: null,
 			selectedPieceType: null,
@@ -356,6 +359,7 @@ Chessdiagram.propTypes = {
 	/** Dictionary of legal moves, to be supplied by server
 	*/
 	allowedMoves: React.PropTypes.object,
+	options: React.PropTypes.object,
 };
 
 Chessdiagram.defaultProps = {
