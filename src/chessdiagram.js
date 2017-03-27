@@ -269,8 +269,19 @@ class Chessdiagram extends Component {
 	// render function
 
 	render() {
+		// TODO: Allow user-defined highlight colors
 		let pieces = this.props.fen ? this._getPiecesFromFEN() : this._getPieces();
 		const pieceDefinitions = Object.assign(standardPieceDefinitions, this.props.pieceDefinitions);
+		const highlights = {};
+		if (this.state.selectedSquare) {
+			highlights[this.state.selectedSquare] = 'yellow'
+		}
+		// let highlights = this.state.selectedSquare ? {this.state.selectedSquare: 'yellow'} : {};
+		if (this.props.allowedMoves[this.state.selectedSquare]) {
+			this.props.allowedMoves[this.state.selectedSquare].forEach(square => {
+				highlights[square] = 'red';
+			})
+		}
 		return (
 				<svg
 					width={this.props.width === "auto" ? (1 + this.props.files) * this.props.squareSize : this.props.width}
@@ -285,8 +296,14 @@ class Chessdiagram extends Component {
 				>
 
 					<Board
-						squareSize={this.props.squareSize} ranks={this.props.ranks} files={this.props.files} selectedSquare={this.state.selectedSquare}
-						lightSquareColor={this.props.lightSquareColor} darkSquareColor={this.props.darkSquareColor} flip={!!this.props.flip}
+						darkSquareColor={this.props.darkSquareColor}
+						files={this.props.files}
+						flip={!!this.props.flip}
+						highlights={highlights}
+						lightSquareColor={this.props.lightSquareColor}
+						ranks={this.props.ranks}
+						selectedSquare={this.state.selectedSquare}
+						squareSize={this.props.squareSize}
 					/>
 
 					{pieces.map((piece, i) =>
@@ -336,18 +353,22 @@ Chessdiagram.propTypes = {
 	/** Optional associative array containing non-standard chess characters
 	*/
 	pieceDefinitions: React.PropTypes.object,
+	/** Dictionary of legal moves, to be supplied by server
+	*/
+	allowedMoves: React.PropTypes.object,
 };
 
 Chessdiagram.defaultProps = {
-	width: 'auto',
-	height: 'auto',
-	squareSize: 45,
-	ranks: 8,
-	files: 8,
-	lightSquareColor: "#2492FF",
+	allowedMoves: {},
 	darkSquareColor:  "#005EBB",
+	height: 'auto',
+	files: 8,
 	flip: false,
+	lightSquareColor: "#2492FF",
 	pieceDefinitions: {},
+	ranks: 8,
+	squareSize: 45,
+	width: 'auto',
 };
 
 export default Chessdiagram;
