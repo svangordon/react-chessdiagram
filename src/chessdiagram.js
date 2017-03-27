@@ -214,7 +214,6 @@ class Chessdiagram extends Component {
 				this.props.onMovePiece(this.state.selectedPieceType, this.state.selectedSquare, finalSquare);
 			}
 			this.setState({selectedSquare: null});
-			return;
 		}
 	}
 

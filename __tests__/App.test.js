@@ -195,10 +195,10 @@ describe('testing non-standard board widths', () => {
 
 describe('test allowed moves highlighting', () => {
 	it('should show proper moves from start', () => {
-		const wrapper = mount(
-			<Chessdiagram ref="cd" allowedMoves={startAllowedMoves} fen={startPosition} />
-		);
 		Object.keys(startAllowedMoves).forEach(key => {
+			const wrapper = mount(
+				<Chessdiagram ref="cd" allowedMoves={startAllowedMoves} fen={startPosition} />
+			);
 			const squareCoords = {
 				clientX: ('.abcdefgh'.indexOf(key[0]) + .5) * wrapper.props().squareSize,
 				clientY: (wrapper.props().ranks - parseInt(key[1]) + .5) * wrapper.props().squareSize
