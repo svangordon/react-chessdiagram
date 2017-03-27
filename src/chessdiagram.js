@@ -36,7 +36,8 @@ class Chessdiagram extends Component {
 	constructor(props) {
 		super(props);
 		this.defaultOptions = {
-			validateMoves: true
+			validateMoves: true,
+			showLegalMoves: true
 		};
 		this.options = Object.assign(this.defaultOptions, props.options);
 		this.state = {
@@ -281,11 +282,12 @@ class Chessdiagram extends Component {
 			highlights[this.state.selectedSquare] = 'yellow'
 		}
 		// let highlights = this.state.selectedSquare ? {this.state.selectedSquare: 'yellow'} : {};
-		if (this.props.allowedMoves[this.state.selectedSquare]) {
+		if (this.options.showLegalMoves && this.props.allowedMoves[this.state.selectedSquare]) {
 			this.props.allowedMoves[this.state.selectedSquare].forEach(square => {
 				highlights[square] = 'red';
 			})
 		}
+		console.log('highlights', highlights)
 		return (
 				<svg
 					width={this.props.width === "auto" ? (1 + this.props.files) * this.props.squareSize : this.props.width}

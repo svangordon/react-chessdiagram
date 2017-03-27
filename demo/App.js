@@ -152,10 +152,16 @@ class App extends Component {
 					</div>
 					<p/>
 				</div>
-					<Chessdiagram flip={this.state.flip} fen={this.state.currentPosition} squareSize={this.state.squareSize}
-						lightSquareColor={this.state.lightSquareColor} darkSquareColor={this.state.darkSquareColor} onMovePiece={this._onMovePiece.bind(this)}
-						ranks={this.state.ranks} files={this.state.files}
+					<Chessdiagram
+						allowedMoves={this.allowedMoves}
+						darkSquareColor={this.state.darkSquareColor}
+						fen={this.state.currentPosition}
+						flip={this.state.flip}
+						lightSquareColor={this.state.lightSquareColor}
+						onMovePiece={this._onMovePiece.bind(this)}
 						pieceDefinitions={this.gamePresets[this.state.gameType].pieceDefinitions}
+						ranks={this.state.ranks} files={this.state.files}
+						squareSize={this.state.squareSize}
 					/>
 				<p className={"lastMessage"}><strong>{this.state.lastMessage}</strong></p>
 			</div>
