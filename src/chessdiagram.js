@@ -279,13 +279,13 @@ class Chessdiagram extends Component {
 		const pieceDefinitions = Object.assign(standardPieceDefinitions, this.props.pieceDefinitions);
 		const highlights = {};
 		if (this.state.selectedSquare) {
-			highlights[this.state.selectedSquare] = 'yellow'
+			highlights[this.state.selectedSquare] = 'yellow';
 		}
 		// let highlights = this.state.selectedSquare ? {this.state.selectedSquare: 'yellow'} : {};
 		if (this.options.showLegalMoves && this.props.allowedMoves[this.state.selectedSquare]) {
 			this.props.allowedMoves[this.state.selectedSquare].forEach(square => {
 				highlights[square] = 'red';
-			})
+			});
 		}
 		return (
 				<svg
