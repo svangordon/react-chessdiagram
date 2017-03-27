@@ -193,7 +193,17 @@ class Board extends Component {
 
 				<RankLabels ranks={this.props.ranks} files={this.props.files} squareSize={this.props.squareSize} flip={this.props.flip}/>
 				<FileLabels ranks={this.props.ranks} files={this.props.files} squareSize={this.props.squareSize} flip={this.props.flip}/>
-				{(() => this.props.selectedSquare ? <SquareHighlight x={selectedSquareX} y={selectedSquareY} squareSize={this.props.squareSize}/> : <g/> )()}
+				{Object.keys(this.props.highlights).map(square => {
+					const [x, y] = this._squareToCoords(square);
+					return (
+						<SquareHighlight
+							key={square}
+							highlightColor={this.props.highlights[square]}
+							squareSize={this.props.squareSize}
+							x={x}
+							y={y}
+						/>);
+				})}
 			</svg>
 		);
 	}
@@ -203,6 +213,7 @@ Board.propTypes = {
 	darkSquareColor: React.PropTypes.string.isRequired,
 	files: React.PropTypes.number.isRequired,
 	flip: React.PropTypes.bool.isRequired,
+	highlights: React.PropTypes.object,
 	lightSquareColor: React.PropTypes.string.isRequired,
 	ranks: React.PropTypes.number.isRequired,
 	selectedSquare: React.PropTypes.string,
@@ -213,6 +224,7 @@ Board.defaultProps = {
 	darkSquareColor:  "#005EBB",
 	files: 8,
 	flip: false,
+	highlights: {},
 	lightSquareColor: "#2492FF",
 	ranks: 8,
 	squareSize: 45,

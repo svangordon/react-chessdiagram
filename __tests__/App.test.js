@@ -198,11 +198,6 @@ describe('test allowed moves highlighting', () => {
 		const wrapper = mount(
 			<Chessdiagram ref="cd" allowedMoves={startAllowedMoves} fen={startPosition} />
 		);
-		// const result = wrapper.findWhere(n => {
-		// 	console.log('n ==', n)
-		// 	return true
-		// });
-		// const squareSize = wrapper.props().squareSize;
 		Object.keys(startAllowedMoves).forEach(key => {
 			const squareCoords = {
 				clientX: ('.abcdefgh'.indexOf(key[0]) + .5) * wrapper.props().squareSize,
@@ -210,7 +205,6 @@ describe('test allowed moves highlighting', () => {
 			};
 			wrapper.simulate('mousedown', squareCoords);
 			wrapper.simulate('mouseup', squareCoords);
-			console.log(wrapper.find('SquareHighlight').length)
 			expect(wrapper.find('SquareHighlight').length).toBe(3);
 		});
 	});

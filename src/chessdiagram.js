@@ -287,7 +287,6 @@ class Chessdiagram extends Component {
 				highlights[square] = 'red';
 			})
 		}
-		console.log('highlights', highlights)
 		return (
 				<svg
 					width={this.props.width === "auto" ? (1 + this.props.files) * this.props.squareSize : this.props.width}
