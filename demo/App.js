@@ -69,6 +69,8 @@ class App extends Component {
 			}
 		};
 		this.move = null;
+		this.chess = new Chess();
+		this.chess.header('White', 'Plunky', 'Black', 'Plinkie');
 	}
 
 	// Convenience function for concisely creating piece definition callbacks
@@ -100,13 +102,14 @@ class App extends Component {
 
 	_onMovePiece(piece, fromSquare, toSquare) { // user moved a piece
 		// clearTimeout(this.timeout);
-		const chess = new Chess(this.state.currentPosition);
-		this.move = chess.move({from: fromSquare, to: toSquare});
-		console.log(this.move, chess.fen());
+		// const chess = new Chess(this.state.currentPosition);
+		this.move = this.chess.move({from: fromSquare, to: toSquare});
+		// console.log(this.move, chess.fen());
+		console.log(this.chess.pgn({ max_width: 10, newline_char: ',' }))
 		if (this.move) {
 			// echo move back to user:
 			let message = 'You moved ' + piece + fromSquare + " to " + toSquare + ' !';
-			this.setState({lastMessage: message, currentPosition: chess.fen()});
+			this.setState({lastMessage: message, currentPosition: this.chess.fen()});
 		}
 	}
 
@@ -158,12 +161,14 @@ class App extends Component {
 					<Chessdiagram
 						allowedMoves={this.allowedMoves}
 						darkSquareColor={this.state.darkSquareColor}
-						fen={this.state.currentPosition}
+						startPosition={this.state.currentPosition}
+						files={this.state.files}
 						flip={this.state.flip}
 						lightSquareColor={this.state.lightSquareColor}
 						onMovePiece={this._onMovePiece.bind(this)}
+						pgn={this.chess.pgn({max_width: 5, newline_char: "<br />"})}
 						pieceDefinitions={this.gamePresets[this.state.gameType].pieceDefinitions}
-						ranks={this.state.ranks} files={this.state.files}
+						ranks={this.state.ranks}
 						squareSize={this.state.squareSize}
 					/>
 				<p className={"lastMessage"}><strong>{this.state.lastMessage}</strong></p>
