@@ -166,7 +166,7 @@ class App extends Component {
 						flip={this.state.flip}
 						lightSquareColor={this.state.lightSquareColor}
 						onMovePiece={this._onMovePiece.bind(this)}
-						pgn={this.chess.pgn({max_width: 5, newline_char: "<br />"})}
+						pgn={this.chess.pgn({max_width: 5})}
 						pieceDefinitions={this.gamePresets[this.state.gameType].pieceDefinitions}
 						ranks={this.state.ranks}
 						squareSize={this.state.squareSize}

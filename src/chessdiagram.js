@@ -41,7 +41,7 @@ class Chessdiagram extends Component {
 		this.state = {
 			halfMove: 0
 		};
-		this.game = Chess(props.startPosition);
+		this.game = new Chess(props.startPosition);
 		this.cachedMoves = [];
 	}
 
@@ -56,9 +56,11 @@ class Chessdiagram extends Component {
 	componentWillReceiveProps (nextProps) {
 		if (this.props.pgn !== nextProps.pgn) {
 			const oldPosition = this.game.pgn();
-			const result = this.game.load_pgn(nextProps.pgn, {newline_char: ','}); // HACK: Don't hardcode options
+			const result = this.game.load_pgn(nextProps.pgn); // HACK: Don't hardcode options
+			console.log('nextPgn',nextProps.pgn)
 			if (!result) {
 				// Couldn't load fen string, reload previous position
+				console.error("Couldn't load new PGN")
 				this.game = this.game.load_pgn(oldPosition);
 			}
 		}
@@ -92,7 +94,7 @@ class Chessdiagram extends Component {
 				<BoardContainer
 					style={{display: 'inline-block'}}
 					{...this.props}
-					fen={(()=>{console.log(this.game.fen());return this.game.fen()})()}
+					fen={(()=>{console.log(this.game);console.log(this.game.fen());return this.game.fen()})()}
 				/>
 				<GameHistory
 					style={{display: 'inline-block'}}
