@@ -56,8 +56,7 @@ class Chessdiagram extends Component {
 	componentWillReceiveProps (nextProps) {
 		if (this.props.pgn !== nextProps.pgn) {
 			const oldPosition = this.game.pgn();
-			const result = this.game.load_pgn(nextProps.pgn); // HACK: Don't hardcode options
-			console.log('nextPgn',nextProps.pgn)
+			const result = this.game.load_pgn(nextProps.pgn);
 			if (!result) {
 				// Couldn't load fen string, reload previous position
 				console.error("Couldn't load new PGN")
@@ -73,17 +72,23 @@ class Chessdiagram extends Component {
 	}
 
 	_moveHead(evt) {
-		const direction = evt.target.value;
+		console.log(evt.target.value)
+		console.log('fen before', this.game.fen(), 'cachedMoves before',this.cachedMoves);
+		const direction = parseInt(evt.target.value);
 		if (direction === 1) {
+			console.log('advancing');
 			if (this.cachedMoves.length !== 0) {
 				this.game.move(this.cachedMoves.pop());
 			}
 		} else if (direction === -1) {
+			console.log('reversing');
 			const move = this.game.undo()
 			if (move) {
 				this.cachedMoves.push(move);
 			}
 		}
+		console.log('fen after', this.game.fen(), 'cachedMoves after',this.cachedMoves)
+		this.forceUpdate();
 	}
 
 	// render function
@@ -94,7 +99,7 @@ class Chessdiagram extends Component {
 				<BoardContainer
 					style={{display: 'inline-block'}}
 					{...this.props}
-					fen={(()=>{console.log(this.game);console.log(this.game.fen());return this.game.fen()})()}
+					fen={this.game.fen()}
 				/>
 				<GameHistory
 					style={{display: 'inline-block'}}

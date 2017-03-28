@@ -42,10 +42,11 @@ PgnControls.PropTypes = {
 class GameHistory extends Component {
 
   render () {
+    console.log(this.props.pgn)
     return (
       <div style={{display: 'inline-block', position: 'absolute'}}>
         <PgnViewer
-          pgn={this.props.pgn.split('<br />').filter(row => row[0] !== '[')}
+          pgn={this.props.pgn.split('\n').filter(row => row[0] !== '[')}
         />
         <PgnControls moveHead={this.props.moveHead}/>
       </div>
