@@ -68,7 +68,9 @@ class Chessdiagram extends Component {
 	// event handling ////
 
 	_onMovePiece(pieceType, from, to) {
-
+		if (this.props.allowMoves) {
+			this.props.onMovePiece(pieceType, from, to);
+		}
 	}
 
 	_moveHead(evt) {
@@ -100,6 +102,7 @@ class Chessdiagram extends Component {
 					style={{display: 'inline-block'}}
 					{...this.props}
 					fen={this.game.fen()}
+					onMovePiece={this._onMovePiece.bind(this)}
 				/>
 				<GameHistory
 					style={{display: 'inline-block'}}
@@ -112,8 +115,7 @@ class Chessdiagram extends Component {
 }
 
 Chessdiagram.propTypes = {
-	/** Dictionary of legal moves, to be supplied by server*/
-	allowedMoves: React.PropTypes.object,
+	allowMoves: React.PropTypes.bool,
 	darkSquareColor: React.PropTypes.string,
 	files: React.PropTypes.number,
 	/** if true, rotates the board so that Black pawns are moving up, and White pawns are moving down the board */
@@ -148,7 +150,7 @@ Chessdiagram.propTypes = {
 };
 
 Chessdiagram.defaultProps = {
-	allowedMoves: {},
+	allowMoves: true,
 	darkSquareColor:  "#005EBB",
 	height: 'auto',
 	files: 8,
