@@ -74,18 +74,32 @@ class Chessdiagram extends Component {
 	}
 
 	_moveHead(evt) {
-		console.log(evt.target.value)
-		console.log('fen before', this.game.fen(), 'cachedMoves before',this.cachedMoves);
-		const direction = parseInt(evt.target.value);
+		// console.log(evt.target.value)
+		// console.log('fen before', this.game.fen(), 'cachedMoves before',this.cachedMoves);
+		const direction = Number(evt.target.value);
+		console.log('direction ==', direction)
 		if (direction === 1) {
 			console.log('advancing');
 			if (this.cachedMoves.length !== 0) {
 				this.game.move(this.cachedMoves.pop());
 			}
+		} else if (direction === Infinity) {
+			while (this.cachedMoves.length !== 0) {
+				this.game.move(this.cachedMoves.pop());
+			}
 		} else if (direction === -1) {
 			console.log('reversing');
-			const move = this.game.undo()
+			const move = this.game.undo();
 			if (move) {
+				this.cachedMoves.push(move);
+			}
+		} else if (direction === -Infinity) {
+			console.log('to first move')
+			while (true) {
+				let move = this.game.undo();
+				if (!move) {
+					break;
+				}
 				this.cachedMoves.push(move);
 			}
 		}
