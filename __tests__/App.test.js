@@ -4,7 +4,7 @@ import Chessdiagram from '../src/chessdiagram';
 import Board from '../src/board';
 import GameHistory from '../src/GameHistory.js';
 import Piece from '../src/piece';
-import sinon from 'sinon';
+// import sinon from 'sinon';
 
 const startPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 const startAllowedMoves = {
@@ -20,7 +20,7 @@ const startAllowedMoves = {
   "g1": ["f3", "h3"]
 };
 
-describe('testing interpretation of FEN string', () => {
+describe.only('testing interpretation of FEN string', () => {
 	it('should put pieces on the correct squares', () => {
 
 		const pieces = {
