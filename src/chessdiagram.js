@@ -42,6 +42,9 @@ class Chessdiagram extends Component {
 			halfMove: 0
 		};
 		this.game = new Chess(props.startPosition);
+		if (props.pgn) {
+			this.game.load_pgn(props.pgn);
+		}
 		this.cachedMoves = [];
 	}
 
@@ -118,11 +121,13 @@ class Chessdiagram extends Component {
 					fen={this.game.fen()}
 					onMovePiece={this._onMovePiece.bind(this)}
 				/>
-				<GameHistory
-					style={{display: 'inline-block'}}
-					pgn={this.props.pgn}
-					moveHead={this._moveHead.bind(this)}
-				/>
+				{this.props.gameHistory ?
+					<GameHistory
+						style={{display: 'inline-block'}}
+						newlineChar={this.props.newlineChar}
+						moveHead={this._moveHead.bind(this)}
+						pgn={this.props.pgn}
+					/> : null}
 			</div>
 		);
 	}
@@ -134,12 +139,16 @@ Chessdiagram.propTypes = {
 	files: React.PropTypes.number,
 	/** if true, rotates the board so that Black pawns are moving up, and White pawns are moving down the board */
 	flip: React.PropTypes.bool,
+	/** whether to render a GameHistory component */
+	gameHistory: React.PropTypes.bool,
 	/** height of main svg container in pixels. If setting this manually, it should be at least 9 * squareSize to fit board AND labels*/
 	height: React.PropTypes.oneOfType([
 		React.PropTypes.string,
 		React.PropTypes.number,
 	]),
 	lightSquareColor: React.PropTypes.string,
+	/** Pgn line separator. Defaults to '\r?\n'*/
+	newlineChar: React.PropTypes.string,
 	/** callback function which is called when user moves a piece. Passes pieceType, initialSquare, finalSquare as parameters to callback */
 	onMovePiece: React.PropTypes.func,
 	/** callback function which is called when user clicks on a square. Passes name of square as parameter to callback */
@@ -169,7 +178,9 @@ Chessdiagram.defaultProps = {
 	height: 'auto',
 	files: 8,
 	flip: false,
+	gameHistory: false,
 	lightSquareColor: "#2492FF",
+	newlineChar: '\r?\n',
 	pieceDefinitions: {},
 	ranks: 8,
 	squareSize: 45,

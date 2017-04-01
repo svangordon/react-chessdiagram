@@ -1,8 +1,9 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import Chessdiagram from '../src/chessdiagram';
-import Piece from '../src/piece';
 import Board from '../src/board';
+import GameHistory from '../src/GameHistory.js';
+import Piece from '../src/piece';
 import sinon from 'sinon';
 
 const startPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -161,7 +162,13 @@ describe('testing for custom pieces being rendered correctly on 8x8 board', () =
 		const wrapper = mount(
 			<Chessdiagram ref="cd" ranks={8} files={8}
 			fen={"rnbqkbnr/pppppppp/a7/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}
-			pieceDefinitions={{'a': (transformString) => (<image transform={transformString} height={45} width={45} href={"https://upload.wikimedia.org/wikipedia/commons/d/d0/Guard_%28an_icon_of_the_chess_piece%29_Classical_Version.png"}></image>)}}
+			pieceDefinitions={{'a': (transformString) => (
+        <image
+          height={45}
+          href={"https://upload.wikimedia.org/wikipedia/commons/d/d0/Guard_%28an_icon_of_the_chess_piece%29_Classical_Version.png"}
+          transform={transformString}
+          width={45}
+        />)}}
 			/>
 		);
 		expect(wrapper.find(Board).length).toBe(1);
@@ -208,4 +215,24 @@ describe('test allowed moves highlighting', () => {
 			expect(wrapper.find('SquareHighlight').length).toBe(3);
 		});
 	});
+});
+
+/***************
+* Test GameHistory container
+***************/
+
+describe('Testing GameHistory', () => {
+  it('should not render by default', () => {
+    const wrapper = mount(
+      <Chessdiagram ref="cd" />
+    );
+    expect(wrapper.find('GameHistory').length).toBe(0);
+  });
+
+  it('should render if enabled', () => {
+    const wrapper = mount(
+      <Chessdiagram ref="cd" gameHistory />
+    );
+    expect(wrapper.find('GameHistory').length).toBe(1);
+  });
 });
