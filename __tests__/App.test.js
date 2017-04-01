@@ -4,7 +4,7 @@ import Chessdiagram from '../src/chessdiagram';
 import Board from '../src/board';
 import GameHistory from '../src/GameHistory.js';
 import Piece from '../src/piece';
-// import sinon from 'sinon';
+import sinon from 'sinon';
 
 const startPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 const startAllowedMoves = {
@@ -44,7 +44,7 @@ describe.only('testing interpretation of FEN string', () => {
 		);
 
 		let instance = wrapper.instance();
-
+    console.log(instance)
 		occupiedSquares.map((sq) => {
 			expect(instance._getPieceAtSquare(sq).pieceType).toBe(pieces[sq]);
 		});

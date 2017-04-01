@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Chessdiagram from '../src/chessdiagram.js';
-import Chess from 'chess.js';
+// import Chess from 'chess.js';
 
 import './App.css';
 
@@ -87,8 +87,8 @@ class App extends Component {
 			}
 		};
 		this.move = null;
-		this.chess = new Chess();
-		this.chess.header('White', 'Plunky', 'Black', 'Plinkie');
+		// this.chess = new Chess();
+		// this.chess.header('White', 'Plunky', 'Black', 'Plinkie');
 	}
 
 	// Convenience function for concisely creating piece definition callbacks

@@ -41,7 +41,15 @@ class Chessdiagram extends Component {
 		this.state = {
 			halfMove: 0
 		};
-		this.game = new Chess(props.startPosition);
+		// console.log('Chess', Chess, typeof Chess);
+		// Having a problem where Jest is importing chess as an object, not function
+		if (typeof Chess === 'object') {
+			// console.log(Chess, Chess.Chess)
+			this.Chess = Chess.Chess;
+		} else {
+			this.Chess = Chess;
+		}
+		this.game = new this.Chess(props.startPosition);
 		if (props.pgn) {
 			this.game.load_pgn(props.pgn);
 		}
