@@ -73,7 +73,6 @@ class GameHistory extends Component {
   }
 
   _parseMoveText(movetext) {
-    console.log(movetext)
     /* delete comments */
     let ms = movetext.replace(/(\{[^}]+\})+?/g, '');
 
@@ -137,8 +136,6 @@ class GameHistory extends Component {
   }
 
   render () {
-
-    console.log('rendering')
     return (
       <div style={{display: 'inline-block', position: 'absolute'}}>
         <MovetextViewer
