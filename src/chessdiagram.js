@@ -53,7 +53,6 @@ class Chessdiagram extends Component {
 		if (props.pgn) {
 			this.game.load_pgn(props.pgn);
 		}
-		this.cachedMoves = [];
 	}
 
 	// Lifecycle events ////
@@ -87,34 +86,39 @@ class Chessdiagram extends Component {
 	_moveHead(evt) {
 		// console.log(evt.target.value)
 		// console.log('fen before', this.game.fen(), 'cachedMoves before',this.cachedMoves);
-		const direction = Number(evt.target.value);
-		console.log('direction ==', direction)
-		if (direction === 1) {
-			console.log('advancing');
-			if (this.cachedMoves.length !== 0) {
-				this.game.move(this.cachedMoves.pop());
-			}
-		} else if (direction === Infinity) {
-			while (this.cachedMoves.length !== 0) {
-				this.game.move(this.cachedMoves.pop());
-			}
-		} else if (direction === -1) {
-			console.log('reversing');
-			const move = this.game.undo();
-			if (move) {
-				this.cachedMoves.push(move);
-			}
-		} else if (direction === -Infinity) {
-			console.log('to first move')
-			while (true) {
-				let move = this.game.undo();
-				if (!move) {
-					break;
-				}
-				this.cachedMoves.push(move);
-			}
+		const limit = Number(evt.target.value);
+		const direction = limit > 0 ? 1 : -1;
+		for (let i = 0; i !== limit; i += direction) {
+			const result = this.props.onMovePgnHead(direction);
+			if (!result) {break;}
 		}
-		console.log('fen after', this.game.fen(), 'cachedMoves after',this.cachedMoves)
+		// console.log('direction ==', direction)
+		// if (direction === 1) {
+		// 	console.log('advancing');
+		// 	if (this.cachedMoves.length !== 0) {
+		// 		this.game.move(this.cachedMoves.pop());
+		// 	}
+		// } else if (direction === Infinity) {
+		// 	while (this.cachedMoves.length !== 0) {
+		// 		this.game.move(this.cachedMoves.pop());
+		// 	}
+		// } else if (direction === -1) {
+		// 	console.log('reversing');
+		// 	const move = this.game.undo();
+		// 	if (move) {
+		// 		this.cachedMoves.push(move);
+		// 	}
+		// } else if (direction === -Infinity) {
+		// 	console.log('to first move')
+		// 	while (true) {
+		// 		let move = this.game.undo();
+		// 		if (!move) {
+		// 			break;
+		// 		}
+		// 		this.cachedMoves.push(move);
+		// 	}
+		// }
+		// console.log('fen after', this.game.fen(), 'cachedMoves after',this.cachedMoves)
 		this.forceUpdate();
 	}
 
@@ -159,6 +163,10 @@ Chessdiagram.propTypes = {
 	newlineChar: React.PropTypes.string,
 	/** callback function which is called when user moves a piece. Passes pieceType, initialSquare, finalSquare as parameters to callback */
 	onMovePiece: React.PropTypes.func,
+	/** callback for when user changes which move in a pgn they are viewing. called
+	* with the direction that we're moving
+	 */
+	onMovePgnHead: React.PropTypes.func
 	/** callback function which is called when user clicks on a square. Passes name of square as parameter to callback */
 	onSelectSquare: React.PropTypes.func,
 	options: React.PropTypes.object,

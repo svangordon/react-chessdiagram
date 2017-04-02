@@ -20,43 +20,44 @@ const startAllowedMoves = {
   "g1": ["f3", "h3"]
 };
 
-describe.only('testing interpretation of FEN string', () => {
-	it('should put pieces on the correct squares', () => {
-
-		const pieces = {
-			'a1': 'R', 'b1': 'N', 'c1': 'B', 'd1': 'Q', 'e1': 'K', 'f1': 'B', 'g1': 'N', 'h1': 'R',
-			'a2': 'P', 'b2': 'P', 'c2': 'P', 'd2': 'P', 'e2': 'P', 'f2': 'P', 'g2': 'P', 'h2': 'P',
-			'a7': 'p', 'b7': 'p', 'c7': 'p', 'd7': 'p', 'e7': 'p', 'f7': 'p', 'g7': 'p', 'h7': 'p',
-			'a8': 'r', 'b8': 'n', 'c8': 'b', 'd8': 'q', 'e8': 'k', 'f8': 'b', 'g8': 'n', 'h8': 'r'
-		};
-
-		const occupiedSquares = Object.keys(pieces);
-
-		const emptySquares = [
-			'a3', 'b3', 'c3', 'd3', 'e3', 'f3', 'g3', 'h3',
-			'a4', 'b4', 'c4', 'd4', 'e4', 'f4', 'g4', 'h4',
-			'a5', 'b5', 'c5', 'd5', 'e5', 'f5', 'g5', 'h5',
-			'a6', 'b6', 'c6', 'd6', 'e6', 'f6', 'g6', 'h6',
-		];
-
-		const wrapper = mount(
-			<Chessdiagram ref="cd" ranks={8} files={8} fen={startPosition} />
-		);
-
-		let instance = wrapper.instance();
-    console.log(instance)
-		occupiedSquares.map((sq) => {
-			expect(instance._getPieceAtSquare(sq).pieceType).toBe(pieces[sq]);
-		});
-
-		emptySquares.map((sq) => {
-			expect(instance._getPieceAtSquare(sq)).toBe(undefined);
-		});
-
-		wrapper.unmount();
-
-	});
-});
+// This functionality -- parsing of FEN strings -- has been delegated to chess.js
+// (sorta), so let's kill this test for now.
+// describe('testing interpretation of FEN string', () => {
+// 	it('should put pieces on the correct squares', () => {
+//
+// 		const pieces = {
+// 			'a1': 'R', 'b1': 'N', 'c1': 'B', 'd1': 'Q', 'e1': 'K', 'f1': 'B', 'g1': 'N', 'h1': 'R',
+// 			'a2': 'P', 'b2': 'P', 'c2': 'P', 'd2': 'P', 'e2': 'P', 'f2': 'P', 'g2': 'P', 'h2': 'P',
+// 			'a7': 'p', 'b7': 'p', 'c7': 'p', 'd7': 'p', 'e7': 'p', 'f7': 'p', 'g7': 'p', 'h7': 'p',
+// 			'a8': 'r', 'b8': 'n', 'c8': 'b', 'd8': 'q', 'e8': 'k', 'f8': 'b', 'g8': 'n', 'h8': 'r'
+// 		};
+//
+// 		const occupiedSquares = Object.keys(pieces);
+//
+// 		const emptySquares = [
+// 			'a3', 'b3', 'c3', 'd3', 'e3', 'f3', 'g3', 'h3',
+// 			'a4', 'b4', 'c4', 'd4', 'e4', 'f4', 'g4', 'h4',
+// 			'a5', 'b5', 'c5', 'd5', 'e5', 'f5', 'g5', 'h5',
+// 			'a6', 'b6', 'c6', 'd6', 'e6', 'f6', 'g6', 'h6',
+// 		];
+//
+// 		const wrapper = mount(
+// 			<Chessdiagram ref="cd" ranks={8} files={8} fen={startPosition} />
+// 		);
+//
+// 		let instance = wrapper.instance();
+// 		occupiedSquares.map((sq) => {
+// 			expect(instance._getPieceAtSquare(sq).pieceType).toBe(pieces[sq]);
+// 		});
+//
+// 		emptySquares.map((sq) => {
+// 			expect(instance._getPieceAtSquare(sq)).toBe(undefined);
+// 		});
+//
+// 		wrapper.unmount();
+//
+// 	});
+// });
 
 describe('testing for elements being rendered correctly on 8x8 board', () => {
 	it('should return 1 Board, 32 Pieces', () => {
