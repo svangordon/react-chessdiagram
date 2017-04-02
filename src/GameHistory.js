@@ -16,17 +16,14 @@ class MovetextViewer extends Component {
       return ({value, rowValues, row, index, viewIndex}) => {
         // console.log('value', value, 'rowValues', rowValues, 'row', row,
         //   'index', index, 'viewIndex', viewIndex);
-        const fullMove = Math.ceil(this.props.halfMove / 2);
-        console.log(row[0], fullMove);
-        if (fullMove === row[0]) {
-          // console.log(row)
+        const fullMove = Math.floor(this.props.halfMove / 2);
+        if (fullMove === row[0] && (this.props.halfMove) % 2 === color) {
+          console.log(row[0], this.props.halfMove, color, value, rowValues);
           // console.log(color, this.props.halfMove % 2, this.props.halfMove % 2 === color)
           // console.log(fullMove === row[0] && this.props.halfMove % 2 === color);
-          if (this.props.halfMove % 2 === color) {
-            var bground = 'yellow'
-          } else {
-            var bground = 'blue'
-          }
+          var bground = 'yellow'
+        } else {
+          var bground = '#ffffff'
         }
         // const backgroundColor = fullMove === row[0] && this.props.halfMove % 2 === color ? 'yellow' : 'none'
         return <span style={{backgroundColor: bground}}>{value}</span>;
@@ -51,12 +48,12 @@ class MovetextViewer extends Component {
       accessor: '1',
       id: 'white',
       width: 90,
-      render: renderCell(1)
+      render: renderCell(0)
     }, {
       accessor: '2',
       id: 'black',
       width: 90,
-      render: renderCell(0)
+      render: renderCell(1)
     }].map(column => Object.assign({}, columnDefaults, column));
     return (
       <div style={{height: 200, overflow: 'scroll'}}>
