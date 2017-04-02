@@ -105,13 +105,31 @@ class GameHistory extends Component {
 
     /* delete numeric annotation glyphs */
     ms = ms.replace(/\$\d+/g, '');
+    console.log('ms0', ms);
 
+    /* Delete result */
+    ms = ms.replace(/(?:1-0|0-1|1\/2-1\/2|\*)$/, '');
 
-
-    // /* regex for matching move rows */
+    /* regex for matching move rows */
     // ms = ms.exec(/\d+\.\S+\s\S+/g)
-    //
-    // console.log(ms)
+    // ms = /\d+\.\s\S+\s\S+/g.exec(ms)
+    // let row;
+    const rows = [];
+    const row_regex = /\d+\.\s\S+\s\S+/g;
+    while (true) {
+      const result = row_regex.exec(ms);
+      if (result) {
+        rows.push(result[0].split(' '))
+      } else {
+        break;
+      }
+      // console.log(result);
+    }
+    // while ((row = /\d+\.\s\S+\s\S+/g.exec(ms)) !== null) {
+      // rows.push(row[0])
+    // }
+    console.log('rows', rows);
+    console.log('ms',ms)
 
     return (
       <div style={{display: 'inline-block', position: 'absolute'}}>

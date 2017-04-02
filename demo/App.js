@@ -89,7 +89,7 @@ class App extends Component {
 		};
 		this.move = null;
 		this.game = new Chess();
-		this.game.load_pgn(this.state.pgn)
+		this.game.load_pgn(this.state.pgn);
 		this.cachedMoves = [];
 	}
 
