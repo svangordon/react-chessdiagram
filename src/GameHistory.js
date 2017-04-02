@@ -16,15 +16,20 @@ class MovetextViewer extends Component {
       return ({value, rowValues, row, index, viewIndex}) => {
         // console.log('value', value, 'rowValues', rowValues, 'row', row,
         //   'index', index, 'viewIndex', viewIndex);
-        const fullMove = parseInt(this.props.halfMove / 2);
-        console.log(fullMove, row);
-        // if (fullMove === row[0]) {
-        //   console.log(row)
-        //   console.log(color, this.props.halfMove, this.props.halfMove % 2)
-        //   console.log(fullMove === row[0] && this.props.halfMove % 2 === color);
-        // }
-        const backgroundColor = fullMove === row[0] && this.props.halfMove % 2 === color ? 'yellow' : 'none'
-        return <span style={{backgroundColor: backgroundColor}}>{value}</span>;
+        const fullMove = Math.ceil(this.props.halfMove / 2);
+        console.log(row[0], fullMove);
+        if (fullMove === row[0]) {
+          // console.log(row)
+          // console.log(color, this.props.halfMove % 2, this.props.halfMove % 2 === color)
+          // console.log(fullMove === row[0] && this.props.halfMove % 2 === color);
+          if (this.props.halfMove % 2 === color) {
+            var bground = 'yellow'
+          } else {
+            var bground = 'blue'
+          }
+        }
+        // const backgroundColor = fullMove === row[0] && this.props.halfMove % 2 === color ? 'yellow' : 'none'
+        return <span style={{backgroundColor: bground}}>{value}</span>;
       };
     }
     // const renderCell = ({value, rowValues, row, index, viewIndex}) => {
@@ -97,7 +102,7 @@ class GameHistory extends Component {
     const movetextRegex = new RegExp('(?:' + props.newlineChar + '){2}' +
                                      '(' + props.newlineChar + '|.)*$');
     const rows = this._parseMoveText(this.movetextRegex.exec(props.pgn)[0]);
-    const halfMove = rows.length * 2 + rows[rows.length - 1].length - 1;
+    const halfMove = rows.length * 2 + (rows[rows.length - 1].length - 1) - 1;
     // console.log('halfMove', halfMove, rows.length * 2, rows[rows.length - 1]);
     this.state = {
       header: this.headerRegex.exec(props.pgn),
@@ -110,7 +115,7 @@ class GameHistory extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.pgn !== this.props.pgn) {
       const rows = this._parseMoveText(this.movetextRegex.exec(nextProps.pgn)[0]);
-      const halfMove = rows.length * 2 + rows[rows.length - 1].length - 1;
+      const halfMove = rows.length * 2 + (rows[rows.length - 1].length - 1) - 1;
       this.setState({rows, halfMove})
     }
   }
@@ -127,7 +132,8 @@ class GameHistory extends Component {
         console.log(this.state.halfMove)
       }
 		}
-		this.forceUpdate();
+    // console.log(this.state.halfMove)
+		// this.forceUpdate();
   }
 
   _parseMoveText(movetext) {
