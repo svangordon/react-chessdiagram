@@ -127,6 +127,7 @@ class GameHistory extends Component {
       const result = row_regex.exec(ms);
       if (!result) {break;}
       const row = result[0].split(/\s|\.\s?/g);
+      row[0] = parseInt(row[0])
       rows.push(row)
       // rows.push({
       //   move: row[0],
