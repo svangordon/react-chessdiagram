@@ -66,6 +66,12 @@ class GameHistory extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.pgn !== this.props.pgn) {
+      this.setState({rows: this._parseMoveText(this.movetextRegex.exec(nextProps.pgn)[0])})
+    }
+  }
+
   _parseMoveText(movetext) {
     console.log(movetext)
     /* delete comments */
