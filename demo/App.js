@@ -45,18 +45,6 @@ class App extends Component {
        'Rg8 19.Rad1 Qxf3 20.Rxe7+ Nxe7 21.Qxd7+ Kxd7 22.Bf5+ Ke8',
        '23.Bd7+ Kf8 24.Bxe7# 1-0'].join('\n')
 		};
-		this.allowedMoves = {
-		  "a2": ["a3", "a4"],
-		  "b2": ["b3", "b4"],
-		  "c2": ["c3", "c4"],
-		  "d2": ["d3", "d4"],
-		  "e2": ["e3", "e4"],
-		  "f2": ["f3", "f4"],
-		  "g2": ["g3", "g4"],
-		  "h2": ["h3", "h4"],
-		  "b1": ["a3", "c3"],
-		  "g1": ["f3", "h3"]
-		};
 		this.gamePresets = {
 			chess: {
 				currentPosition: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
@@ -198,7 +186,6 @@ class App extends Component {
 					<p/>
 				</div>
 					<Chessdiagram
-						allowedMoves={this.allowedMoves}
 						darkSquareColor={this.state.darkSquareColor}
 						fen={this.game.fen()}
 						gameHistory
