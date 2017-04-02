@@ -136,11 +136,8 @@ class GameHistory extends Component {
 			if (!result) {break;} else {
         currentHalfMove += direction;
         this.setState({halfMove: currentHalfMove});
-        console.log(this.state.halfMove)
       }
 		}
-    // console.log(this.state.halfMove)
-		// this.forceUpdate();
   }
 
   _parseMoveText(movetext) {

@@ -121,11 +121,9 @@ class App extends Component {
 	}
 
 	_onMovePiece(piece, fromSquare, toSquare) { // user moved a piece
-		// clearTimeout(this.timeout);
+		// clearTimeout(this.timeou);
 		// const chess = new Chess(this.state.currentPosition);
-		this.move = this.game.move({from: fromSquare, to: toSquare});
 		// console.log(this.move, chess.fen());
-		console.log(this.game.pgn({ max_width: 10, newline_char: ',' }))
 		if (this.move) {
 			// echo move back to user:
 			let message = 'You moved ' + piece + fromSquare + " to " + toSquare + ' !';
