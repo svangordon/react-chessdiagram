@@ -17,7 +17,6 @@ class MovetextViewer extends Component {
       accessor: 'black',
       width: 90
     }].map(column => Object.assign({}, columnDefaults, column));
-    console.log(this.props.rows)
     return (
       <div style={{height: 200, overflow: 'scroll'}}>
         <ReactTable
@@ -62,8 +61,44 @@ class GameHistory extends Component {
                                      '(' + props.newlineChar + '|.)*$');
     this.state = {
       header: this.headerRegex.exec(props.pgn),
-      movetext: this.movetextRegex.exec(props.pgn)
+      movetext: this.movetextRegex.exec(props.pgn),
+      rows: this._parseMoveText(this.movetextRegex.exec(props.pgn)[0])
     };
+  }
+
+  _parseMoveText(movetext) {
+    console.log(movetext)
+    /* delete comments */
+    let ms = movetext.replace(/(\{[^}]+\})+?/g, '');
+
+    /* delete recursive annotation variations */
+    const rav_regex = /(\([^\(\)]+\))+?/g;
+    while (rav_regex.test(ms)) {
+      ms = ms.replace(rav_regex, '');
+    }
+
+    /* delete numeric annotation glyphs */
+    ms = ms.replace(/\$\d+/g, '');
+
+    /* Delete result */
+    ms = ms.replace(/(?:1-0|0-1|1\/2-1\/2|\*)$/, '');
+
+    const rows = [];
+    const row_regex = /\d+\.\s?\S+\s\S+/g;
+    while (true) {
+      const result = row_regex.exec(ms);
+      if (result) {
+        const row = result[0].split(/\s|\./);
+        rows.push({
+          move: row[0],
+          white: row[1],
+          black: row[2]
+        });
+      } else {
+        break;
+      }
+    }
+    return rows;
   }
 
   get header() {
@@ -96,51 +131,12 @@ class GameHistory extends Component {
   }
 
   render () {
-    // console.log(this.props.pgn);
-    // console.log(this.header);
-    // console.log(this.movetext)
-    // console.log(this.headerRegex.exec(this.props.pgn));
-    // console.log(this.movetextRegex.exec(this.props.pgn))
-    // console.log(this.result);
-    /* delete comments */
-    let ms = this.movetext.replace(/(\{[^}]+\})+?/g, '');
 
-    /* delete recursive annotation variations */
-    const rav_regex = /(\([^\(\)]+\))+?/g;
-    while (rav_regex.test(ms)) {
-      ms = ms.replace(rav_regex, '');
-    }
-
-    /* delete numeric annotation glyphs */
-    ms = ms.replace(/\$\d+/g, '');
-    console.log('ms0', ms);
-
-    /* Delete result */
-    ms = ms.replace(/(?:1-0|0-1|1\/2-1\/2|\*)$/, '');
-
-    const rows = [];
-    const row_regex = /\d+\.\s?\S+\s\S+/g;
-    while (true) {
-      const result = row_regex.exec(ms);
-      if (result) {
-        const row = result[0].split(/\s|\./);
-        console.log(row)
-        rows.push({
-          move: row[0],
-          white: row[1],
-          black: row[2]
-        });
-      } else {
-        break;
-      }
-    }
-    console.log('rows', rows);
-    console.log('ms',ms)
-
+    console.log('rendering')
     return (
       <div style={{display: 'inline-block', position: 'absolute'}}>
         <MovetextViewer
-          rows={rows}
+          rows={this.state.rows}
         />
         <PgnControls moveHead={this.props.moveHead}/>
       </div>
