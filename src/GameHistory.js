@@ -75,7 +75,7 @@ class GameHistory extends Component {
                                      '(' + props.newlineChar + '|.)*$');
     const rows = this._parseMoveText(this.movetextRegex.exec(props.pgn)[0]);
     const halfMove = rows.length * 2 + rows[rows.length - 1].length - 1;
-    console.log('halfMove', halfMove, rows.length * 2, rows[rows.length - 1]);
+    // console.log('halfMove', halfMove, rows.length * 2, rows[rows.length - 1]);
     this.state = {
       header: this.headerRegex.exec(props.pgn),
       movetext: this.movetextRegex.exec(props.pgn),
@@ -108,21 +108,21 @@ class GameHistory extends Component {
   _parseMoveText(movetext) {
     /* delete comments */
     let ms = movetext.replace(/(\{[^}]+\})+?/g, '');
-
+    console.log('del comments', ms);
     /* delete recursive annotation variations */
     const rav_regex = /(\([^\(\)]+\))+?/g;
     while (rav_regex.test(ms)) {
       ms = ms.replace(rav_regex, '');
     }
-
+    console.log('delete cars',ms);
     /* delete numeric annotation glyphs */
     ms = ms.replace(/\$\d+/g, '');
-
+    console.log('delete glyphs', ms);
     /* Delete result */
-    ms = ms.replace(/(?:1-0|0-1|1\/2-1\/2|\*)$/, '');
-
+    ms = ms.replace(/(?:1-0|0-1|1\/2-1\/2|\*)$/, '').trim();
+    console.log('delete result', ms);
     const rows = [];
-    const row_regex = /\d+\.\s?\S+\s\S+/g;
+    const row_regex = /\d+\.\s?\S+(?:\s\S+)?/g;
     while (true) {
       const result = row_regex.exec(ms);
       if (!result) {break;}
