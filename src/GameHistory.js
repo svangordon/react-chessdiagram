@@ -1,27 +1,44 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
+import 'react-table/react-table.css'
 
 class MovetextViewer extends Component {
   render () {
-    // return <ReactTable
+    const columns = [{
+      header: 'Move number',
+      accessor: 'move'
+    },{
+      header: 'White',
+      accessor: 'white'
+    }, {
+      header: 'Black',
+      accessor: 'black'
+    }];
+    console.log(this.props.rows)
     return (
-      <table style={{tableLayout: 'fixed'}}>
-        <tbody>
-          {this.props.pgn.map((row, i) => (
-            <tr key={i}>
-              {row.split(' ').map((cell, i) => (
-                <td key={i}>{cell}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <ReactTable
+        data={this.props.rows}
+        columns={columns}
+      />
     );
+    // return (
+    //   <table style={{tableLayout: 'fixed'}}>
+    //     <tbody>
+    //       {this.props.pgn.map((row, i) => (
+    //         <tr key={i}>
+    //           {row.split(' ').map((cell, i) => (
+    //             <td key={i}>{cell}</td>
+    //           ))}
+    //         </tr>
+    //       ))}
+    //     </tbody>
+    //   </table>
+    // );
   }
 }
 
 MovetextViewer.PropTypes = {
-  pgn: React.PropTypes.string
+  rows: React.PropTypes.array
 }
 
 class PgnControls extends Component {
@@ -110,31 +127,29 @@ class GameHistory extends Component {
     /* Delete result */
     ms = ms.replace(/(?:1-0|0-1|1\/2-1\/2|\*)$/, '');
 
-    /* regex for matching move rows */
-    // ms = ms.exec(/\d+\.\S+\s\S+/g)
-    // ms = /\d+\.\s\S+\s\S+/g.exec(ms)
-    // let row;
     const rows = [];
     const row_regex = /\d+\.\s\S+\s\S+/g;
     while (true) {
       const result = row_regex.exec(ms);
       if (result) {
-        rows.push(result[0].split(' '))
+        const row = result[0].split(' ');
+        console.log(row)
+        rows.push({
+          move: row[0],
+          white: row[1],
+          black: row[2]
+        });
       } else {
         break;
       }
-      // console.log(result);
     }
-    // while ((row = /\d+\.\s\S+\s\S+/g.exec(ms)) !== null) {
-      // rows.push(row[0])
-    // }
     console.log('rows', rows);
     console.log('ms',ms)
 
     return (
       <div style={{display: 'inline-block', position: 'absolute'}}>
         <MovetextViewer
-          pgn={this.props.pgn.split('\n').filter(row => row[0] !== '[')}
+          rows={rows}
         />
         <PgnControls moveHead={this.props.moveHead}/>
       </div>
