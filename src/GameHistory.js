@@ -9,17 +9,42 @@ class MovetextViewer extends Component {
     }
     return true;
   }
+
+  componentDidMount() {
+    this._scrollToActiveMove();
+  }
+
+  componentDidUpdate() {
+    this._scrollToActiveMove();
+  }
+
+  _scrollToActiveMove() {
+    if (this.activeMove)
+      this.pgnContainer.scrollTop = this.activeMove.offsetTop;
+    else
+      this.pgnContainer.scrollTop = 0;
+  }
+
   render () {
     // return a fn that renders a cell w/ appropriate highlighting, 0 for white 1 for black
     const renderCell = (color) => {
       return ({value, rowValues, row, index, viewIndex}) => {
         const fullMove = Math.floor(this.props.halfMove / 2);
-        if (fullMove === row[0] && (this.props.halfMove) % 2 === color) {
-          var bground = 'yellow'
-        } else {
-          var bground = '#ffffff'
-        }
-        return <span style={{backgroundColor: bground}}>{value}</span>;
+        const activeMove = fullMove === row[0] && (this.props.halfMove) % 2 === color;
+        // if (fullMove === row[0] && (this.props.halfMove) % 2 === color) {
+        //   var bground = 'yellow'
+        // } else {
+        //   var bground = '#ffffff'
+        // }
+        const backgroundColor = activeMove ? 'yellow' : '#FFF'
+        return (
+          <span
+            ref={(cell) => {if (activeMove){this.activeMove = cell;}}}
+            style={{backgroundColor}}
+          >
+            {value}
+          </span>
+        );
       };
     }
     const columnDefaults = {
@@ -41,7 +66,10 @@ class MovetextViewer extends Component {
       render: renderCell(1)
     }].map(column => Object.assign({}, columnDefaults, column));
     return (
-      <div style={{height: 200, overflow: 'scroll'}}>
+      <div
+        ref={(pgnContainer) => {this.pgnContainer = pgnContainer;}}
+        style={{height: 200, overflow: 'scroll'}}
+      >
         <ReactTable
           data={this.props.rows}
           columns={columns}
