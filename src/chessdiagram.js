@@ -38,9 +38,20 @@ import Chess from 'chess.js';
 class Chessdiagram extends Component {
 	constructor(props) {
 		super(props);
+		const lastRowRegex = /\d+\.\s?(?:(?:\d|\w)+\s?){1,2}(?:#|\+)?\s(?:1\-0|0\-1|1\/2\-1\/2|\*)$/;
+		if (props.pgn) {
+			var lastRow = props.pgn.match(lastRowRegex)[0];
+			console.log(lastRow)
+			var fullMove = parseInt(lastRow.split('.')[0]);
+			var halfMove = fullMove * 2;
+			halfMove += lastRow.split(/\s|\./).length - 2; // accounting for turn number and game terminator
+		}
+
 		this.state = {
-			halfMove: 0
+			halfMove: halfMove ? halfMove : 0
 		};
+
+		console.log(this.state)
 		// console.log('Chess', Chess, typeof Chess);
 		// New Plan: no chess logic at all in chessdiagram. Gets too messy.
 		// // Having a problem where Jest is importing chess as an object, not function
@@ -85,41 +96,12 @@ class Chessdiagram extends Component {
 	}
 
 	_moveHead(evt) {
-		// console.log(evt.target.value)
-		// console.log('fen before', this.game.fen(), 'cachedMoves before',this.cachedMoves);
 		const limit = Number(evt.target.value);
 		const direction = limit > 0 ? 1 : -1;
 		for (let i = 0; i !== limit; i += direction) {
 			const result = this.props.onMovePgnHead(direction);
-			if (!result) {break;}
+			if (!result) {break;} else {}
 		}
-		// console.log('direction ==', direction)
-		// if (direction === 1) {
-		// 	console.log('advancing');
-		// 	if (this.cachedMoves.length !== 0) {
-		// 		this.game.move(this.cachedMoves.pop());
-		// 	}
-		// } else if (direction === Infinity) {
-		// 	while (this.cachedMoves.length !== 0) {
-		// 		this.game.move(this.cachedMoves.pop());
-		// 	}
-		// } else if (direction === -1) {
-		// 	console.log('reversing');
-		// 	const move = this.game.undo();
-		// 	if (move) {
-		// 		this.cachedMoves.push(move);
-		// 	}
-		// } else if (direction === -Infinity) {
-		// 	console.log('to first move')
-		// 	while (true) {
-		// 		let move = this.game.undo();
-		// 		if (!move) {
-		// 			break;
-		// 		}
-		// 		this.cachedMoves.push(move);
-		// 	}
-		// }
-		// console.log('fen after', this.game.fen(), 'cachedMoves after',this.cachedMoves)
 		this.forceUpdate();
 	}
 
