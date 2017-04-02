@@ -4,7 +4,14 @@ import 'react-table/react-table.css'
 
 class MovetextViewer extends Component {
   render () {
-    const renderCell = ({value, rowValues, row, index, viewIndex}) => <span>{value}</span>
+    const renderCell = ({value, rowValues, row, index, viewIndex}) => {
+      // console.log('value', value, 'rowValues', rowValues, 'row', row,
+      //   'index', index, 'viewIndex', viewIndex);
+      const fullMove = parseInt(this.props.halfMove / 2);
+      console.log(fullMove, row[0], fullMove === row[0])
+      const backgroundColor = fullMove === row[0] ? 'yellow' : 'none'
+      return <span style={{backgroundColor: backgroundColor}}>{value}</span>;
+    };
     const columnDefaults = {
       sortable: false
     }
@@ -20,7 +27,8 @@ class MovetextViewer extends Component {
     }, {
       accessor: '2',
       id: 'black',
-      width: 90
+      width: 90,
+      render: renderCell
     }].map(column => Object.assign({}, columnDefaults, column));
     return (
       <div style={{height: 200, overflow: 'scroll'}}>
@@ -36,7 +44,8 @@ class MovetextViewer extends Component {
 }
 
 MovetextViewer.PropTypes = {
-  rows: React.PropTypes.array
+  rows: React.PropTypes.array,
+  halfMove: React.PropTypes.number
 }
 
 class PgnControls extends Component {
@@ -161,6 +170,7 @@ class GameHistory extends Component {
     return (
       <div style={{display: 'inline-block', position: 'absolute'}}>
         <MovetextViewer
+          halfMove={this.state.halfMove}
           rows={this.state.rows}
         />
         <PgnControls moveHead={this._onMovePgnHead.bind(this)}/>
