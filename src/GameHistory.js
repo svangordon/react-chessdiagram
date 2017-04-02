@@ -4,17 +4,22 @@ import 'react-table/react-table.css'
 
 class MovetextViewer extends Component {
   render () {
+    const renderCell = ({value, rowValues, row, index, viewIndex}) => <span>{value}</span>
     const columnDefaults = {
       sortable: false
     }
     const columns = [{
-      accessor: 'move',
+      accessor: '0',
+      id: 'move',
       width: 40
     },{
-      accessor: 'white',
-      width: 90
+      accessor: '1',
+      id: 'white',
+      width: 90,
+      render: renderCell
     }, {
-      accessor: 'black',
+      accessor: '2',
+      id: 'black',
       width: 90
     }].map(column => Object.assign({}, columnDefaults, column));
     return (
@@ -61,6 +66,7 @@ class GameHistory extends Component {
                                      '(' + props.newlineChar + '|.)*$');
     const rows = this._parseMoveText(this.movetextRegex.exec(props.pgn)[0]);
     const halfMove = rows.length * 2 + rows[rows.length - 1].length - 1;
+    console.log('halfMove', halfMove, rows.length * 2, rows[rows.length - 1]);
     this.state = {
       header: this.headerRegex.exec(props.pgn),
       movetext: this.movetextRegex.exec(props.pgn),
@@ -83,7 +89,8 @@ class GameHistory extends Component {
 			const result = this.props.moveHead(direction);
 			if (!result) {break;} else {
         currentHalfMove += direction;
-        this.setState({halfMove: currentHalfMove})
+        this.setState({halfMove: currentHalfMove});
+        console.log(this.state.halfMove)
       }
 		}
 		// this.forceUpdate();
@@ -111,11 +118,12 @@ class GameHistory extends Component {
       const result = row_regex.exec(ms);
       if (!result) {break;}
       const row = result[0].split(/\s|\.\s?/g);
-      rows.push({
-        move: row[0],
-        white: row[1],
-        black: row[2]
-      });
+      rows.push(row)
+      // rows.push({
+      //   move: row[0],
+      //   white: row[1],
+      //   black: row[2]
+      // });
     }
     return rows;
   }
