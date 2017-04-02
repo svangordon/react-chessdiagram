@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Chessdiagram from '../src/chessdiagram.js';
-// import Chess from 'chess.js';
+import Chess from 'chess.js';
 
 import './App.css';
 
@@ -18,7 +18,8 @@ class App extends Component {
 		this.state = {
 			lightSquareColor: "#2492FF", // light blue
 			darkSquareColor: "#005EBB", // dark blue
-			currentPosition: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", // starting position
+			// currentPosition: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", // starting position
+			fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
 			flip: false,
 			lastMessage: '',
 			squareSize: 45,
@@ -87,8 +88,20 @@ class App extends Component {
 			}
 		};
 		this.move = null;
-		// this.chess = new Chess();
-		// this.chess.header('White', 'Plunky', 'Black', 'Plinkie');
+		this.game = new Chess();
+		this.game.load_pgn(this.state.pgn)
+		this.cachedMoves = [];
+	}
+
+	_onMovePgnHead(direction) {
+		if (direction === 1) {
+			var result = this.game.move(this.cachedMoves.pop());
+		} else {
+			var result = this.game.undo();
+			if (result) {this.cachedMoves.push(result);}
+		}
+		this.setState({pgn: this.game.pgn()});
+		return result;
 	}
 
 	// Convenience function for concisely creating piece definition callbacks
@@ -121,13 +134,13 @@ class App extends Component {
 	_onMovePiece(piece, fromSquare, toSquare) { // user moved a piece
 		// clearTimeout(this.timeout);
 		// const chess = new Chess(this.state.currentPosition);
-		this.move = this.chess.move({from: fromSquare, to: toSquare});
+		this.move = this.game.move({from: fromSquare, to: toSquare});
 		// console.log(this.move, chess.fen());
-		console.log(this.chess.pgn({ max_width: 10, newline_char: ',' }))
+		console.log(this.game.pgn({ max_width: 10, newline_char: ',' }))
 		if (this.move) {
 			// echo move back to user:
 			let message = 'You moved ' + piece + fromSquare + " to " + toSquare + ' !';
-			this.setState({lastMessage: message, currentPosition: this.chess.fen()});
+			this.setState({lastMessage: message, currentPosition: this.game.fen()});
 		}
 	}
 
@@ -186,13 +199,15 @@ class App extends Component {
 					<Chessdiagram
 						allowedMoves={this.allowedMoves}
 						darkSquareColor={this.state.darkSquareColor}
+						fen={this.game.fen()}
 						gameHistory
 						startPosition={this.state.currentPosition}
 						files={this.state.files}
 						flip={this.state.flip}
 						lightSquareColor={this.state.lightSquareColor}
+						onMovePgnHead={this._onMovePgnHead.bind(this)}
 						onMovePiece={this._onMovePiece.bind(this)}
-						pgn={this.state.pgn}
+						pgn={this.game.pgn()}
 						pieceDefinitions={this.gamePresets[this.state.gameType].pieceDefinitions}
 						ranks={this.state.ranks}
 						squareSize={this.state.squareSize}

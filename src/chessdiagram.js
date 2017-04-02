@@ -42,17 +42,18 @@ class Chessdiagram extends Component {
 			halfMove: 0
 		};
 		// console.log('Chess', Chess, typeof Chess);
-		// Having a problem where Jest is importing chess as an object, not function
-		if (typeof Chess === 'object') {
-			// console.log(Chess, Chess.Chess)
-			this.Chess = Chess.Chess;
-		} else {
-			this.Chess = Chess;
-		}
-		this.game = new this.Chess(props.startPosition);
-		if (props.pgn) {
-			this.game.load_pgn(props.pgn);
-		}
+		// New Plan: no chess logic at all in chessdiagram. Gets too messy.
+		// // Having a problem where Jest is importing chess as an object, not function
+		// if (typeof Chess === 'object') {
+		// 	// console.log(Chess, Chess.Chess)
+		// 	this.Chess = Chess.Chess;
+		// } else {
+		// 	this.Chess = Chess;
+		// }
+		// this.game = new this.Chess(props.startPosition);
+		// if (props.pgn) {
+		// 	this.game.load_pgn(props.pgn);
+		// }
 	}
 
 	// Lifecycle events ////
@@ -63,17 +64,17 @@ class Chessdiagram extends Component {
 	componentWillUnmount() {
 	}
 
-	componentWillReceiveProps (nextProps) {
-		if (this.props.pgn !== nextProps.pgn) {
-			const oldPosition = this.game.pgn();
-			const result = this.game.load_pgn(nextProps.pgn);
-			if (!result) {
-				// Couldn't load fen string, reload previous position
-				console.error("Couldn't load new PGN")
-				this.game = this.game.load_pgn(oldPosition);
-			}
-		}
-	}
+	// componentWillReceiveProps (nextProps) {
+	// 	if (this.props.pgn !== nextProps.pgn) {
+	// 		const oldPosition = this.game.pgn();
+	// 		const result = this.game.load_pgn(nextProps.pgn);
+	// 		if (!result) {
+	// 			// Couldn't load fen string, reload previous position
+	// 			console.error("Couldn't load new PGN")
+	// 			this.game = this.game.load_pgn(oldPosition);
+	// 		}
+	// 	}
+	// }
 
 	// event handling ////
 
@@ -130,7 +131,7 @@ class Chessdiagram extends Component {
 				<BoardContainer
 					style={{display: 'inline-block'}}
 					{...this.props}
-					fen={this.game.fen()}
+					// fen={this.game.fen()}
 					onMovePiece={this._onMovePiece.bind(this)}
 				/>
 				{this.props.gameHistory ?
@@ -164,9 +165,8 @@ Chessdiagram.propTypes = {
 	/** callback function which is called when user moves a piece. Passes pieceType, initialSquare, finalSquare as parameters to callback */
 	onMovePiece: React.PropTypes.func,
 	/** callback for when user changes which move in a pgn they are viewing. called
-	* with the direction that we're moving
-	 */
-	onMovePgnHead: React.PropTypes.func
+	* with the direction that we're moving */
+	onMovePgnHead: React.PropTypes.func,
 	/** callback function which is called when user clicks on a square. Passes name of square as parameter to callback */
 	onSelectSquare: React.PropTypes.func,
 	options: React.PropTypes.object,

@@ -55,7 +55,7 @@ class GameHistory extends Component {
     };
     // this.header = this.headerRegex.exec(props.pgn);
     // this.movetext = this.movetextRegex.exec(props.pgn);
-    console.log('state', this.state)
+    // console.log('state', this.state)
   }
 
   get header() {
@@ -65,7 +65,7 @@ class GameHistory extends Component {
 
   get movetext() {
     const result =  this.movetextRegex.exec(this.props.pgn);
-    console.log('movetext result', result);
+    // console.log('movetext result', result);
     return result ? result[0] : '';
   }
 
@@ -93,7 +93,7 @@ class GameHistory extends Component {
     // console.log(this.movetext)
     // console.log(this.headerRegex.exec(this.props.pgn));
     // console.log(this.movetextRegex.exec(this.props.pgn))
-    console.log(this.result);
+    // console.log(this.result);
     /* delete comments */
     let ms = this.movetext.replace(/(\{[^}]+\})+?/g, '');
 
