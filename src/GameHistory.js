@@ -8,11 +8,14 @@ class MovetextViewer extends Component {
       sortable: false
     }
     const columns = [{
-      accessor: 'move'
+      accessor: 'move',
+      width: 40
     },{
-      accessor: 'white'
+      accessor: 'white',
+      width: 60
     }, {
-      accessor: 'black'
+      accessor: 'black',
+      width: 60
     }].map(column => Object.assign({}, columnDefaults, column));
     console.log(this.props.rows)
     return (
@@ -61,9 +64,6 @@ class GameHistory extends Component {
       header: this.headerRegex.exec(props.pgn),
       movetext: this.movetextRegex.exec(props.pgn)
     };
-    // this.header = this.headerRegex.exec(props.pgn);
-    // this.movetext = this.movetextRegex.exec(props.pgn);
-    // console.log('state', this.state)
   }
 
   get header() {
@@ -119,11 +119,11 @@ class GameHistory extends Component {
     ms = ms.replace(/(?:1-0|0-1|1\/2-1\/2|\*)$/, '');
 
     const rows = [];
-    const row_regex = /\d+\.\s\S+\s\S+/g;
+    const row_regex = /\d+\.\s?\S+\s\S+/g;
     while (true) {
       const result = row_regex.exec(ms);
       if (result) {
-        const row = result[0].split(' ');
+        const row = result[0].split(/\s|\./);
         console.log(row)
         rows.push({
           move: row[0],

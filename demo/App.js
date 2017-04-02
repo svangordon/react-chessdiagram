@@ -158,6 +158,7 @@ class App extends Component {
 
 	_onPgnChanged(evt) {
 		this.setState({pgn: evt.target.value});
+		this.game.load_pgn(evt.target.value);
 	}
 
 // the render() function:
@@ -207,7 +208,7 @@ class App extends Component {
 						lightSquareColor={this.state.lightSquareColor}
 						onMovePgnHead={this._onMovePgnHead.bind(this)}
 						onMovePiece={this._onMovePiece.bind(this)}
-						pgn={this.game.pgn()}
+						pgn={this.state.pgn}
 						pieceDefinitions={this.gamePresets[this.state.gameType].pieceDefinitions}
 						ranks={this.state.ranks}
 						squareSize={this.state.squareSize}
