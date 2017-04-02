@@ -38,33 +38,20 @@ import Chess from 'chess.js';
 class Chessdiagram extends Component {
 	constructor(props) {
 		super(props);
-		const lastRowRegex = /\d+\.\s?(?:(?:\d|\w)+\s?){1,2}(?:#|\+)?\s(?:1\-0|0\-1|1\/2\-1\/2|\*)$/;
-		if (props.pgn) {
-			var lastRow = props.pgn.match(lastRowRegex)[0];
-			console.log(lastRow)
-			var fullMove = parseInt(lastRow.split('.')[0]);
-			var halfMove = fullMove * 2;
-			halfMove += lastRow.split(/\s|\./).length - 2; // accounting for turn number and game terminator
-		}
-
-		this.state = {
-			halfMove: halfMove ? halfMove : 0
-		};
-
-		console.log(this.state)
-		// console.log('Chess', Chess, typeof Chess);
-		// New Plan: no chess logic at all in chessdiagram. Gets too messy.
-		// // Having a problem where Jest is importing chess as an object, not function
-		// if (typeof Chess === 'object') {
-		// 	// console.log(Chess, Chess.Chess)
-		// 	this.Chess = Chess.Chess;
-		// } else {
-		// 	this.Chess = Chess;
-		// }
-		// this.game = new this.Chess(props.startPosition);
+		// const lastRowRegex = /\d+\.\s?(?:(?:\d|\w)+\s?){1,2}(?:#|\+)?\s(?:1\-0|0\-1|1\/2\-1\/2|\*)$/;
 		// if (props.pgn) {
-		// 	this.game.load_pgn(props.pgn);
+		// 	var lastRow = props.pgn.match(lastRowRegex)[0];
+		// 	console.log(lastRow)
+		// 	var fullMove = parseInt(lastRow.split('.')[0]);
+		// 	var halfMove = fullMove * 2;
+		// 	halfMove += lastRow.split(/\s|\./).length - 2; // accounting for turn number and game terminator
 		// }
+		//
+		// this.state = {
+		// 	halfMove: halfMove ? halfMove : 0
+		// };
+		//
+		// console.log(this.state)
 	}
 
 	// Lifecycle events ////
@@ -95,15 +82,15 @@ class Chessdiagram extends Component {
 		}
 	}
 
-	_moveHead(evt) {
-		const limit = Number(evt.target.value);
-		const direction = limit > 0 ? 1 : -1;
-		for (let i = 0; i !== limit; i += direction) {
-			const result = this.props.onMovePgnHead(direction);
-			if (!result) {break;} else {}
-		}
-		this.forceUpdate();
-	}
+	// _moveHead(evt) {
+	// 	const limit = Number(evt.target.value);
+	// 	const direction = limit > 0 ? 1 : -1;
+	// 	for (let i = 0; i !== limit; i += direction) {
+	// 		const result = this.props.onMovePgnHead(direction);
+	// 		if (!result) {break;} else {}
+	// 	}
+	// 	this.forceUpdate();
+	// }
 
 	// render function
 
@@ -120,7 +107,7 @@ class Chessdiagram extends Component {
 					<GameHistory
 						style={{display: 'inline-block'}}
 						newlineChar={this.props.newlineChar}
-						moveHead={this._moveHead.bind(this)}
+						moveHead={this.props.onMovePgnHead}
 						pgn={this.props.pgn}
 					/> : null}
 			</div>

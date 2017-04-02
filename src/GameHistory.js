@@ -59,10 +59,13 @@ class GameHistory extends Component {
                                    '(?:'+ props.newlineChar +'){2}');
     const movetextRegex = new RegExp('(?:' + props.newlineChar + '){2}' +
                                      '(' + props.newlineChar + '|.)*$');
+    const rows = this._parseMoveText(this.movetextRegex.exec(props.pgn)[0]);
+    const halfMove = rows.length * 2 + rows[rows.length - 1].length - 1;
     this.state = {
       header: this.headerRegex.exec(props.pgn),
       movetext: this.movetextRegex.exec(props.pgn),
-      rows: this._parseMoveText(this.movetextRegex.exec(props.pgn)[0])
+      rows: rows,
+      halfMove: halfMove
     };
   }
 
@@ -70,6 +73,20 @@ class GameHistory extends Component {
     if (nextProps.pgn !== this.props.pgn) {
       this.setState({rows: this._parseMoveText(this.movetextRegex.exec(nextProps.pgn)[0])})
     }
+  }
+
+  _onMovePgnHead(evt) {
+    const limit = Number(evt.target.value);
+    let currentHalfMove = this.state.halfMove;
+		const direction = limit > 0 ? 1 : -1;
+		for (let i = 0; i !== limit; i += direction) {
+			const result = this.props.moveHead(direction);
+			if (!result) {break;} else {
+        currentHalfMove += direction;
+        this.setState({halfMove: currentHalfMove})
+      }
+		}
+		// this.forceUpdate();
   }
 
   _parseMoveText(movetext) {
@@ -141,7 +158,7 @@ class GameHistory extends Component {
         <MovetextViewer
           rows={this.state.rows}
         />
-        <PgnControls moveHead={this.props.moveHead}/>
+        <PgnControls moveHead={this._onMovePgnHead.bind(this)}/>
       </div>
     );
   }
