@@ -12,10 +12,10 @@ class MovetextViewer extends Component {
       width: 40
     },{
       accessor: 'white',
-      width: 60
+      width: 90
     }, {
       accessor: 'black',
-      width: 60
+      width: 90
     }].map(column => Object.assign({}, columnDefaults, column));
     console.log(this.props.rows)
     return (
@@ -24,7 +24,7 @@ class MovetextViewer extends Component {
           data={this.props.rows}
           columns={columns}
           showPagination={false}
-          defaultPageSize={this.props.rows.length}
+          pageSize={this.props.rows.length}
         />
       </div>
     );
