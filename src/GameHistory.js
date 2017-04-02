@@ -4,36 +4,27 @@ import 'react-table/react-table.css'
 
 class MovetextViewer extends Component {
   render () {
+    const columnDefaults = {
+      sortable: false
+    }
     const columns = [{
-      header: 'Move number',
       accessor: 'move'
     },{
-      header: 'White',
       accessor: 'white'
     }, {
-      header: 'Black',
       accessor: 'black'
-    }];
+    }].map(column => Object.assign({}, columnDefaults, column));
     console.log(this.props.rows)
     return (
-      <ReactTable
-        data={this.props.rows}
-        columns={columns}
-      />
+      <div style={{height: 200, overflow: 'scroll'}}>
+        <ReactTable
+          data={this.props.rows}
+          columns={columns}
+          showPagination={false}
+          defaultPageSize={this.props.rows.length}
+        />
+      </div>
     );
-    // return (
-    //   <table style={{tableLayout: 'fixed'}}>
-    //     <tbody>
-    //       {this.props.pgn.map((row, i) => (
-    //         <tr key={i}>
-    //           {row.split(' ').map((cell, i) => (
-    //             <td key={i}>{cell}</td>
-    //           ))}
-    //         </tr>
-    //       ))}
-    //     </tbody>
-    //   </table>
-    // );
   }
 }
 
