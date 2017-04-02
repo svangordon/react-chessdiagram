@@ -4,10 +4,12 @@ import 'react-table/react-table.css'
 
 class MovetextViewer extends Component {
   shouldComponentUpdate(nextProps) {
-    if (this.props.rows.length !== nextProps.rows.length) {
+    if (this.props.rows.length !== nextProps.rows.length ||
+        this.props.halfMove !== nextProps.halfMove
+      ) {
       return true;
     }
-    return true;
+    return false;
   }
 
   componentDidMount() {
@@ -31,11 +33,6 @@ class MovetextViewer extends Component {
       return ({value, rowValues, row, index, viewIndex}) => {
         const fullMove = Math.floor(this.props.halfMove / 2);
         const activeMove = fullMove === row[0] && (this.props.halfMove) % 2 === color;
-        // if (fullMove === row[0] && (this.props.halfMove) % 2 === color) {
-        //   var bground = 'yellow'
-        // } else {
-        //   var bground = '#ffffff'
-        // }
         const backgroundColor = activeMove ? 'yellow' : '#FFF'
         return (
           <span
@@ -68,7 +65,7 @@ class MovetextViewer extends Component {
     return (
       <div
         ref={(pgnContainer) => {this.pgnContainer = pgnContainer;}}
-        style={{height: 200, overflow: 'scroll'}}
+        style={{height: 200, overflowY: 'scroll'}}
       >
         <ReactTable
           data={this.props.rows}
@@ -201,7 +198,7 @@ class GameHistory extends Component {
 
   render () {
     return (
-      <div style={{display: 'inline-block', position: 'absolute'}}>
+      <div style={{display: 'inline-block', position: 'absolute', marginLeft: 5}}>
         <MovetextViewer
           halfMove={this.state.halfMove}
           rows={this.state.rows}
