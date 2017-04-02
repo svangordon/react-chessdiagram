@@ -109,16 +109,13 @@ class GameHistory extends Component {
     const row_regex = /\d+\.\s?\S+\s\S+/g;
     while (true) {
       const result = row_regex.exec(ms);
-      if (result) {
-        const row = result[0].split(/\s|\./);
-        rows.push({
-          move: row[0],
-          white: row[1],
-          black: row[2]
-        });
-      } else {
-        break;
-      }
+      if (!result) {break;}
+      const row = result[0].split(/\s|\.\s?/g);
+      rows.push({
+        move: row[0],
+        white: row[1],
+        black: row[2]
+      });
     }
     return rows;
   }
