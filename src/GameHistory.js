@@ -3,15 +3,38 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css'
 
 class MovetextViewer extends Component {
+  shouldComponentUpdate(nextProps) {
+    if (this.props.rows.length !== nextProps.rows.length) {
+      return true;
+    }
+    return true;
+  }
   render () {
-    const renderCell = ({value, rowValues, row, index, viewIndex}) => {
-      // console.log('value', value, 'rowValues', rowValues, 'row', row,
-      //   'index', index, 'viewIndex', viewIndex);
-      const fullMove = parseInt(this.props.halfMove / 2);
-      console.log(fullMove, row[0], fullMove === row[0])
-      const backgroundColor = fullMove === row[0] ? 'yellow' : 'none'
-      return <span style={{backgroundColor: backgroundColor}}>{value}</span>;
-    };
+    // return a fn that renders a cell w/ appropriate highlighting, 0 for white 1 for black
+    const renderCell = (color) => {
+      // color += 1;
+      return ({value, rowValues, row, index, viewIndex}) => {
+        // console.log('value', value, 'rowValues', rowValues, 'row', row,
+        //   'index', index, 'viewIndex', viewIndex);
+        const fullMove = parseInt(this.props.halfMove / 2);
+        console.log(fullMove, row);
+        // if (fullMove === row[0]) {
+        //   console.log(row)
+        //   console.log(color, this.props.halfMove, this.props.halfMove % 2)
+        //   console.log(fullMove === row[0] && this.props.halfMove % 2 === color);
+        // }
+        const backgroundColor = fullMove === row[0] && this.props.halfMove % 2 === color ? 'yellow' : 'none'
+        return <span style={{backgroundColor: backgroundColor}}>{value}</span>;
+      };
+    }
+    // const renderCell = ({value, rowValues, row, index, viewIndex}) => {
+    //   // console.log('value', value, 'rowValues', rowValues, 'row', row,
+    //   //   'index', index, 'viewIndex', viewIndex);
+    //   const fullMove = parseInt(this.props.halfMove / 2);
+    //   console.log(fullMove, row[0], fullMove === row[0])
+    //   const backgroundColor = fullMove === row[0] ? 'yellow' : 'none'
+    //   return <span style={{backgroundColor: backgroundColor}}>{value}</span>;
+    // };
     const columnDefaults = {
       sortable: false
     }
@@ -23,12 +46,12 @@ class MovetextViewer extends Component {
       accessor: '1',
       id: 'white',
       width: 90,
-      render: renderCell
+      render: renderCell(1)
     }, {
       accessor: '2',
       id: 'black',
       width: 90,
-      render: renderCell
+      render: renderCell(0)
     }].map(column => Object.assign({}, columnDefaults, column));
     return (
       <div style={{height: 200, overflow: 'scroll'}}>
@@ -86,7 +109,9 @@ class GameHistory extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.pgn !== this.props.pgn) {
-      this.setState({rows: this._parseMoveText(this.movetextRegex.exec(nextProps.pgn)[0])})
+      const rows = this._parseMoveText(this.movetextRegex.exec(nextProps.pgn)[0]);
+      const halfMove = rows.length * 2 + rows[rows.length - 1].length - 1;
+      this.setState({rows, halfMove})
     }
   }
 
@@ -102,25 +127,21 @@ class GameHistory extends Component {
         console.log(this.state.halfMove)
       }
 		}
-		// this.forceUpdate();
+		this.forceUpdate();
   }
 
   _parseMoveText(movetext) {
     /* delete comments */
     let ms = movetext.replace(/(\{[^}]+\})+?/g, '');
-    console.log('del comments', ms);
     /* delete recursive annotation variations */
     const rav_regex = /(\([^\(\)]+\))+?/g;
     while (rav_regex.test(ms)) {
       ms = ms.replace(rav_regex, '');
     }
-    console.log('delete cars',ms);
     /* delete numeric annotation glyphs */
     ms = ms.replace(/\$\d+/g, '');
-    console.log('delete glyphs', ms);
     /* Delete result */
     ms = ms.replace(/(?:1-0|0-1|1\/2-1\/2|\*)$/, '').trim();
-    console.log('delete result', ms);
     const rows = [];
     const row_regex = /\d+\.\s?\S+(?:\s\S+)?/g;
     while (true) {
