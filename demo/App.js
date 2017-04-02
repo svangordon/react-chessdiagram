@@ -79,6 +79,7 @@ class App extends Component {
 		this.game = new Chess();
 		this.game.load_pgn(this.state.pgn);
 		this.cachedMoves = [];
+		this.state.fen = this.game.fen();
 	}
 
 	_onMovePgnHead(direction) {
@@ -88,7 +89,7 @@ class App extends Component {
 			var result = this.game.undo();
 			if (result) {this.cachedMoves.push(result);}
 		}
-		this.setState({pgn: this.game.pgn()});
+		this.setState({fen: this.game.fen()});
 		return result;
 	}
 
@@ -151,6 +152,7 @@ class App extends Component {
 
 // the render() function:
   render() {
+		console.log(this.game.fen())
     return (
 			<div className="demo">
 				<h1>Chess Diagram</h1>
@@ -187,7 +189,7 @@ class App extends Component {
 				</div>
 					<Chessdiagram
 						darkSquareColor={this.state.darkSquareColor}
-						fen={this.game.fen()}
+						fen={this.state.fen}
 						gameHistory
 						startPosition={this.state.currentPosition}
 						files={this.state.files}
