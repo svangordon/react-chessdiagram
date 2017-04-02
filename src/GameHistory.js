@@ -12,31 +12,16 @@ class MovetextViewer extends Component {
   render () {
     // return a fn that renders a cell w/ appropriate highlighting, 0 for white 1 for black
     const renderCell = (color) => {
-      // color += 1;
       return ({value, rowValues, row, index, viewIndex}) => {
-        // console.log('value', value, 'rowValues', rowValues, 'row', row,
-        //   'index', index, 'viewIndex', viewIndex);
         const fullMove = Math.floor(this.props.halfMove / 2);
         if (fullMove === row[0] && (this.props.halfMove) % 2 === color) {
-          console.log(row[0], this.props.halfMove, color, value, rowValues);
-          // console.log(color, this.props.halfMove % 2, this.props.halfMove % 2 === color)
-          // console.log(fullMove === row[0] && this.props.halfMove % 2 === color);
           var bground = 'yellow'
         } else {
           var bground = '#ffffff'
         }
-        // const backgroundColor = fullMove === row[0] && this.props.halfMove % 2 === color ? 'yellow' : 'none'
         return <span style={{backgroundColor: bground}}>{value}</span>;
       };
     }
-    // const renderCell = ({value, rowValues, row, index, viewIndex}) => {
-    //   // console.log('value', value, 'rowValues', rowValues, 'row', row,
-    //   //   'index', index, 'viewIndex', viewIndex);
-    //   const fullMove = parseInt(this.props.halfMove / 2);
-    //   console.log(fullMove, row[0], fullMove === row[0])
-    //   const backgroundColor = fullMove === row[0] ? 'yellow' : 'none'
-    //   return <span style={{backgroundColor: backgroundColor}}>{value}</span>;
-    // };
     const columnDefaults = {
       sortable: false
     }
@@ -153,11 +138,6 @@ class GameHistory extends Component {
       const row = result[0].split(/\s|\.\s?/g);
       row[0] = parseInt(row[0])
       rows.push(row)
-      // rows.push({
-      //   move: row[0],
-      //   white: row[1],
-      //   black: row[2]
-      // });
     }
     return rows;
   }

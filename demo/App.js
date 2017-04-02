@@ -152,7 +152,6 @@ class App extends Component {
 
 // the render() function:
   render() {
-		console.log(this.game.fen())
     return (
 			<div className="demo">
 				<h1>Chess Diagram</h1>
