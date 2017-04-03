@@ -280,15 +280,19 @@ describe('Testing GameHistory', () => {
 
   it('should change currentPosition', () => {
     const wrapper = mount(<Chessdiagram ref="cd" gameHistory pgn={testPgn.join('\n')}/>);
+    const firstMove = wrapper.findWhere(n => n.text() === '|<');
     const reversePgn = wrapper.findWhere(n => n.text() === '<');
+    const advancePgn = wrapper.findWhere(n => n.text() === '>');
+    const lastMove = wrapper.findWhere(n => n.text() === '>|');
     console.log('wrapper state', wrapper.state());
+    reversePgn.simulate('click');
+    expect(wrapper.state().currentPosition).toBe("1r3kr1/pbpBnp1p/1b3P2/8/8/B1P2q2/P4PPP/3R2K1 w - - 4 24");
+    advancePgn.simulate('click');
+    expect(wrapper.state().currentPosition).toBe("1r3kr1/pbpBBp1p/1b3P2/8/8/2P2q2/P4PPP/3R2K1 b - - 0 24");
+    firstMove.simulate('click');
+    expect(wrapper.state().currentPosition).toBe(startPosition);
+    lastMove.simulate('click');
+    expect(wrapper.state().currentPosition).toBe("1r3kr1/pbpBBp1p/1b3P2/8/8/2P2q2/P4PPP/3R2K1 b - - 0 24");
   });
 
 });
-//
-// describe('Testing PGN controls', () => {
-//   it('should change currentPosition', () => {
-//     const wrapper = mount(<Chessdiagram ref="cd" gameHistory pgn={testPgn.join('\n')}/>);
-//     const reversePgn = wrapper.find('button').findWhere(n => {console.log(n)})
-//   });
-// })
