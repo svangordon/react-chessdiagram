@@ -37,7 +37,11 @@ class Piece extends Component {
 	render() {
 		let scale = this.props.squareSize / 45; // coordinates for drawings are based on square size of 45
 		let transformString = 'translate(' + this.props.x + ',' + this.props.y + ') scale(' + scale + ')';
-		return this.props.drawPiece(transformString);
+		return (
+			<g style={{pointerEvents: 'none'}}>
+				{this.props.drawPiece(transformString)}
+			</g>
+		);
 	}
 }
 

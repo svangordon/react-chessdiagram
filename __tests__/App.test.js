@@ -2,6 +2,7 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import Chessdiagram from '../src/chessdiagram';
 import Board from '../src/board';
+import BoardContainer from '../src/BoardContainer.js';
 import GameHistory from '../src/GameHistory.js';
 import Piece from '../src/piece';
 import sinon from 'sinon';
@@ -72,51 +73,75 @@ describe('testing for elements being rendered correctly on 8x8 board', () => {
 	});
 });
 
-describe('When selecting squares at each corner of 8x8 board', () => {
+describe.only('When selecting squares at each corner of 8x8 board', () => {
 	it('should return correct names of squares (a1,h1,h8,a8)', () => {
 		let spySelectSquare = sinon.spy();
 
 		const wrapper = mount(
-			<Chessdiagram onSelectSquare={spySelectSquare} ranks={8} files={8} />
+			<BoardContainer onSelectSquare={spySelectSquare} ranks={8} files={8} />
 		);
 
-		let squareSize = wrapper.props().squareSize;
-		let ranks = wrapper.props().ranks;
-		let files = wrapper.props().files;
-		let halfSquareSize = squareSize / 2; // offset to place coordinate in _middle_ of square
+    // // const a1 = wrapper.find('Square').nodes[0]//.simulate('click');
+    // const a1 = wrapper.findWhere(n => {
+    //   console.log(n)
+    // });
+    // const a1 = wrapper.find({square: "a1"})
+    // console.log(a1)
+    // console.log(wrapper.debug())
+    const squares = wrapper.find('Square');
+    // console.log(squares.debug())
+    // const h7 = squares.find({square: "h7"})
+    console.log('===', '===')
+    const h7 = squares.filter(n => {console.log(n.props()); return true})
+    // console.log(h7)
+    const h8 = squares.findWhere(n => {
+      // console.log('n =========== ',n.props().square);
+      if (n.props().square === 'h8') {
+        console.log('found ', n.props().square)
+      }
+      return n.props().square === 'h8';
+    })
+    console.log(h8.length)
+    h8.simulate('click')
+    expect(spySelectSquare.calledWith('h8')).toBe(true);
+    //
+		// let squareSize = wrapper.props().squareSize;
+		// let ranks = wrapper.props().ranks;
+		// let files = wrapper.props().files;
+		// let halfSquareSize = squareSize / 2; // offset to place coordinate in _middle_ of square
+    //
+		// let a1Coords = {
+		// 	clientX: squareSize + halfSquareSize, // NOTE: labels expected at column 0; board starts at column 1
+		// 	clientY: (ranks - 1) * squareSize + halfSquareSize
+		// };
+    //
+		// let h1Coords = {
+		// 	clientX: 8 * squareSize + halfSquareSize,
+		// 	clientY: (ranks - 1) * squareSize + halfSquareSize
+		// };
+    //
+		// let h8Coords = {
+		// 	clientX: 8 * squareSize + halfSquareSize,
+		// 	clientY: halfSquareSize
+		// };
+    //
+		// let a8Coords = {
+		// 	clientX: squareSize + halfSquareSize,
+		// 	clientY: halfSquareSize
+		// };
+    //
+		// // simulate a click on each corner square
+		// wrapper.simulate('mousedown', a1Coords);
+		// wrapper.simulate('mousedown', h1Coords);
+		// wrapper.simulate('mousedown', h8Coords);
+		// wrapper.simulate('mousedown', a8Coords);
 
-		let a1Coords = {
-			clientX: squareSize + halfSquareSize, // NOTE: labels expected at column 0; board starts at column 1
-			clientY: (ranks - 1) * squareSize + halfSquareSize
-		};
-
-		let h1Coords = {
-			clientX: 8 * squareSize + halfSquareSize,
-			clientY: (ranks - 1) * squareSize + halfSquareSize
-		};
-
-		let h8Coords = {
-			clientX: 8 * squareSize + halfSquareSize,
-			clientY: halfSquareSize
-		};
-
-		let a8Coords = {
-			clientX: squareSize + halfSquareSize,
-			clientY: halfSquareSize
-		};
-
-		// simulate a click on each corner square
-		wrapper.simulate('mousedown', a1Coords);
-		wrapper.simulate('mousedown', h1Coords);
-		wrapper.simulate('mousedown', h8Coords);
-		wrapper.simulate('mousedown', a8Coords);
-
-		expect(spySelectSquare.calledWith('a1')).toBe(true);
-		expect(spySelectSquare.calledWith('h1')).toBe(true);
-		expect(spySelectSquare.calledWith('h8')).toBe(true);
-		expect(spySelectSquare.calledWith('a8')).toBe(true);
-
-		wrapper.unmount();
+		// expect(spySelectSquare.calledWith('a1')).toBe(true);
+		// expect(spySelectSquare.calledWith('h1')).toBe(true);
+		// expect(spySelectSquare.calledWith('h8')).toBe(true);
+		// expect(spySelectSquare.calledWith('a8')).toBe(true);
+    //
+		// wrapper.unmount();
 
 	});
 });

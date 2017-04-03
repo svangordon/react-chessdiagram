@@ -30,7 +30,18 @@ import React, { Component } from 'react';
 class Square extends Component {
 	render() {
 		let fillColor = this.props.light ? this.props.lightSquareColor : this.props.darkSquareColor;
-		return <rect x={this.props.x} y={this.props.y} width={this.props.squareSize} height={this.props.squareSize} stroke="black" fill={fillColor} strokeWidth="1" />;
+		return (
+			<rect
+				fill={fillColor}
+				height={this.props.squareSize}
+				onClick={() => {console.log('clicked square')}}
+				stroke="black"
+				strokeWidth="1"
+				width={this.props.squareSize}
+				x={this.props.x}
+				y={this.props.y}
+			/>
+		);
 	}
 }
 
@@ -42,6 +53,7 @@ Square.propTypes = {
 	x: React.PropTypes.number.isRequired,
 	y: React.PropTypes.number.isRequired,
 };
+Square.displayName = 'Square';
 
 class SquareHighlight extends Component {
 	render() {
@@ -190,6 +202,7 @@ class Board extends Component {
 				{squares.map((square,i) =>
 					<Square
 						id={this._indexToSquare(i)}
+						square={this._indexToSquare(i)}
 						x={square.x} y={square.y} key={i} light={!!square.light} squareSize={this.props.squareSize}
 						lightSquareColor={this.props.lightSquareColor} darkSquareColor={this.props.darkSquareColor}
 					/>
