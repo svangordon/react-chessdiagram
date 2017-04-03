@@ -18,7 +18,7 @@ class App extends Component {
 		};
 		this.gamePresets = {
 			chess: {
-				currentPosition: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+				fen: "1r3kr1/pbpBBp1p/1b3P2/8/8/2P2q2/P4PPP/3R2K1 b - - 0 24",
 				files: 8,
 				gameHistory: true,
 				ranks: 8,
@@ -43,7 +43,7 @@ class App extends Component {
 	       '23.Bd7+ Kf8 24.Bxe7# 1-0'].join('\n')
 			},
 			draughts: {
-				currentPosition: "1g1g1g1g1g/g1g1g1g1g1/1g1g1g1g1g/g1g1g1g1g1/10/10/1G1G1G1G1G/G1G1G1G1G1/1G1G1G1G1G/G1G1G1G1G1 w - - 0 1",
+				fen: "1g1g1g1g1g/g1g1g1g1g1/1g1g1g1g1g/g1g1g1g1g1/10/10/1G1G1G1G1G/G1G1G1G1G1/1G1G1G1G1G/G1G1G1G1G1 w - - 0 1",
 				files: 10,
 				gameHistory: false,
 				ranks: 10,
@@ -54,7 +54,7 @@ class App extends Component {
 				pgn: ''
 			},
 			courier: {
-				currentPosition: "rnbcmk1scbnr/1ppppp1pppp1/6q5/p5p4p/P5P4p/6Q5/1PPPPP1PPPP1/RNBCMK1SCBNR",
+				fen: "rnbcmk1scbnr/1ppppp1pppp1/6q5/p5p4p/P5P4p/6Q5/1PPPPP1PPPP1/RNBCMK1SCBNR",
 				files: 12,
 				gameHistory: false,
 				ranks: 8,
