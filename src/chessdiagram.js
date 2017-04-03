@@ -38,41 +38,10 @@ import Chess from 'chess.js';
 class Chessdiagram extends Component {
 	constructor(props) {
 		super(props);
-		// const lastRowRegex = /\d+\.\s?(?:(?:\d|\w)+\s?){1,2}(?:#|\+)?\s(?:1\-0|0\-1|1\/2\-1\/2|\*)$/;
-		// if (props.pgn) {
-		// 	var lastRow = props.pgn.match(lastRowRegex)[0];
-		// 	console.log(lastRow)
-		// 	var fullMove = parseInt(lastRow.split('.')[0]);
-		// 	var halfMove = fullMove * 2;
-		// 	halfMove += lastRow.split(/\s|\./).length - 2; // accounting for turn number and game terminator
-		// }
-		//
-		// this.state = {
-		// 	halfMove: halfMove ? halfMove : 0
-		// };
-		//
-		// console.log(this.state)
 	}
 
 	// Lifecycle events ////
 
-	componentDidMount() {
-	}
-
-	componentWillUnmount() {
-	}
-
-	// componentWillReceiveProps (nextProps) {
-	// 	if (this.props.pgn !== nextProps.pgn) {
-	// 		const oldPosition = this.game.pgn();
-	// 		const result = this.game.load_pgn(nextProps.pgn);
-	// 		if (!result) {
-	// 			// Couldn't load fen string, reload previous position
-	// 			console.error("Couldn't load new PGN")
-	// 			this.game = this.game.load_pgn(oldPosition);
-	// 		}
-	// 	}
-	// }
 
 	// event handling ////
 
@@ -82,16 +51,6 @@ class Chessdiagram extends Component {
 		}
 	}
 
-	// _moveHead(evt) {
-	// 	const limit = Number(evt.target.value);
-	// 	const direction = limit > 0 ? 1 : -1;
-	// 	for (let i = 0; i !== limit; i += direction) {
-	// 		const result = this.props.onMovePgnHead(direction);
-	// 		if (!result) {break;} else {}
-	// 	}
-	// 	this.forceUpdate();
-	// }
-
 	// render function
 
 	render() {
@@ -100,7 +59,6 @@ class Chessdiagram extends Component {
 				<BoardContainer
 					style={{display: 'inline-block'}}
 					{...this.props}
-					// fen={this.game.fen()}
 					onMovePiece={this._onMovePiece.bind(this)}
 				/>
 				{this.props.gameHistory ?
@@ -109,7 +67,8 @@ class Chessdiagram extends Component {
 						newlineChar={this.props.newlineChar}
 						moveHead={this.props.onMovePgnHead}
 						pgn={this.props.pgn}
-					/> : null}
+					/> : null
+				}
 			</div>
 		);
 	}

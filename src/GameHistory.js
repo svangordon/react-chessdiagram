@@ -136,21 +136,27 @@ class GameHistory extends Component {
   }
 
   _parseMoveText(movetext) {
+
     /* delete comments */
     let ms = movetext.replace(/(\{[^}]+\})+?/g, '');
+
     /* delete recursive annotation variations */
-    const rav_regex = /(\([^\(\)]+\))+?/g;
-    while (rav_regex.test(ms)) {
-      ms = ms.replace(rav_regex, '');
+    const ravRegex = /(\([^\(\)]+\))+?/g;
+    while (ravRegex.test(ms)) {
+      ms = ms.replace(ravRegex, '');
     }
+
     /* delete numeric annotation glyphs */
     ms = ms.replace(/\$\d+/g, '');
+
     /* Delete result */
     ms = ms.replace(/(?:1-0|0-1|1\/2-1\/2|\*)$/, '').trim();
+
+    /* Split into rows */
     const rows = [];
-    const row_regex = /\d+\.\s?\S+(?:\s\S+)?/g;
+    const rowRegex = /\d+\.\s?\S+(?:\s\S+)?/g;
     while (true) {
-      const result = row_regex.exec(ms);
+      const result = rowRegex.exec(ms);
       if (!result) {break;}
       const row = result[0].split(/\s|\.\s?/g);
       row[0] = parseInt(row[0])
@@ -166,7 +172,6 @@ class GameHistory extends Component {
 
   get movetext() {
     const result =  this.movetextRegex.exec(this.props.pgn);
-    // console.log('movetext result', result);
     return result ? result[0] : '';
   }
 

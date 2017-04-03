@@ -68,7 +68,6 @@ class BoardContainer extends Component {
 	}
 
 	componentWillReceiveProps (nextProps) {
-		console.log('receiving props')
 		if ( /* changes which have an effect on coordinates */
 			nextProps.squareSize !== this.props.squareSize ||
 			nextProps.ranks !== this.props.ranks ||
@@ -221,7 +220,7 @@ class BoardContainer extends Component {
 	// self-enquiry ////
 
 	_getClientPos() {
-		let rect = this.refs.client.getBoundingClientRect();
+		let rect = this.Client.getBoundingClientRect();
 		this.setState({left: rect.left, top: rect.top, width: rect.width, height: rect.height});
 	}
 
@@ -290,7 +289,7 @@ class BoardContainer extends Component {
 		}
 		return (
 				<svg
-					ref={"client"}
+					ref={(svg) => {this.Client = svg;}}
 					style={{display: 'inline-block'}}
 					height={this.props.height === "auto" ? (1 + this.props.ranks) * this.props.squareSize : this.props.height}
 					onMouseDown={this._onMouseDown.bind(this)}

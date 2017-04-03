@@ -148,7 +148,6 @@ describe('When moving pawn from e2-e4 on 8x8 board', () => {
 
 		// simulate mouseup on e4
 		wrapper.simulate('mouseup', e4Coords);
-    // console.log(spyMovePiece.getCall(0));
 		expect(spyMovePiece.calledWith('P', 'e2', 'e4')).toBe(true);
 
 		wrapper.unmount();
