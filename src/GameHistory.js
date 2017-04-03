@@ -139,59 +139,7 @@ class GameHistory extends Component {
     }
     this.props.moveHead(target);
     this.setState({halfMove: target});
-    // let instructions = [];
-    // const options = {
-    //   sloppy: this.props.sloppy,
-    //   newline_char: this.props.newlineChar
-    // }
-    // if (direction === 1) {
-    //   instructions = this.cachedMoves.splice(-limit);
-    // } else {
-    //   const startPosition = this.cachedMoves.length > 0 ?
-    //                           this.cachedMoves[this.cachedMoves.length - 1]:
-    //                           {pgn: this.props.pgn};
-    //   startPosition.move = Math.max(-currentHalfMove, limit) // NB: limit will be negative
-    //   console.log('currentHalfMove', currentHalfMove, 'limit',limit, 'startPosition.move',startPosition.move);
-    //   startPosition.options = options;
-    //   instructions.push(startPosition);
-    // }
-    // console.log('instructions ==', instructions, Array.isArray(instructions));
-    // const result = this.props.moveHead(direction, instructions);
-    // if (!result) {
-    //   console.error('error moving pgn head');
-    // }
-    // if (direction === -1) {
-    //   console.log('concatting moves');
-    //   this.cachedMoves = this.cachedMoves.concat(result)
-    // }
-		// // for (let i = 0; i !== limit; i += direction) {
-    // //   // if (direction === 1) {
-    // //   //   var cachedMove = this.cachedMoves.pop();
-    // //   // }
-    // //   // const cachedMove = direction === 1 ? this.cachedMoves.pop() :;
-    // //   if (direction === 1) {
-    // //     if (this.cachedMoves.length > 0) {
-    // //       instructions.push(this.cachedMoves.pop());
-    // //     } else {
-    // //       break;
-    // //     }
-    // //   } else if (this.cachedMoves.length > 0) {
-    // //     var cachedMove = this.cachedMoves[this.cachedMoves.length - 1];
-    // //   } else {
-    // //     var cachedMove = {
-    // //       pgn: this.props.pgn,
-    // //       move: null,
-    // //       newlineChar: this.props.newlineChar,
-    // //       sloppy: this.props.sloppy
-    // //     };
-    // //   }
-		// // 	const result = this.props.moveHead(direction, cachedMove);
-		// // 	if (!result) {break;} else {
-    // //     currentHalfMove += direction;
-    // //     if (direction === -1) {this.cachedMoves.push(result);}
-    // //     this.setState({halfMove: currentHalfMove});
-    // //   }
-		// // }
+
   }
 
   _parseMoveText(movetext) {

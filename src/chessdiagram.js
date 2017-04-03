@@ -56,35 +56,7 @@ class Chessdiagram extends Component {
 
 	_onMovePgnHead(halfMove) {
 		const result = this.props.getNthMove(this.props.pgn, halfMove);
-		console.log(halfMove, this.state.currentPosition, result);
 		this.setState({currentPosition: this.props.getNthMove(this.props.pgn, halfMove)});
-		// console.log(direction, instructions);
-		// let result;
-		// if (direction === -1) {
-		// 	const instruction = instructions[0];
-		// 	result = [];
-		// 	let currentFrame = instruction;
-		// 	for (let i = instruction.move; i < 0; i++) {
-		// 		currentFrame = Object.assign(
-		// 			{},
-		// 			currentFrame.options
-		// 			this.props.reversePgn(currentFrame)
-		// 		);
-		// 		result.push(currentFrame);
-		// 	}
-		// } else {
-		//
-		// }
-	}
-
-	_onAdvancePgn(startPgn, moves) {
-		const movePgnResult = this.props.advancePgn(startPgn, moves);
-		console.log('movePgnResult', movePgnResult);
-	}
-
-	_onReversePgn(startPgn, moves) {
-		const movePgnResult = this.props.reversePgn(startPgn, moves);
-		console.log('movePgnResult', movePgnResult);
 	}
 
 	// _getFenFromPgn()
@@ -102,8 +74,6 @@ class Chessdiagram extends Component {
 				/>
 				{this.props.gameHistory ?
 					<GameHistory
-						advancePgn={this._onAdvancePgn.bind(this)}
-						reversePgn={this._onReversePgn.bind(this)}
 						style={{display: 'inline-block'}}
 						newlineChar={this.props.newlineChar}
 						moveHead={this._onMovePgnHead.bind(this)}
@@ -160,7 +130,7 @@ Chessdiagram.propTypes = {
 	]),
 };
 
-// Half-move
+// Takes a pgn and returns the FEN of the nth move
 const getNthMoveDefault = (pgn, move) => {
 	var Game = require('chess.js');
 	if (Game.Chess) { // HACK: make it work in the test suite
@@ -174,29 +144,7 @@ const getNthMoveDefault = (pgn, move) => {
 	return game.fen();
 }
 
-const advancePgnDefault = (startPgn, move) => {
-	var Game = require('chess.js');
-	if (game.Chess) { // HACK: make it work in the test suite
-		Game = Game.Chess;
-	}
-	var game = new Game();
-	game.load_pgn(startPgn);
-	return game.move(move);
-}
-
-const reversePgnDefault = (startPgn) => {
-	var Game = require('chess.js');
-	if (Game.Chess) { // HACK: make it work in the test suite
-		Game = Game.Chess;
-	}
-	var game = new Game();
-	game.load_pgn(startPgn);
-	const result = game.undo()
-	return {pgn: game.pgn(), move: game.move()};
-}
-
 Chessdiagram.defaultProps = {
-	advancePgnDefault: advancePgnDefault,
 	allowMoves: true,
 	darkSquareColor:  "#005EBB",
 	height: 'auto',
@@ -209,7 +157,6 @@ Chessdiagram.defaultProps = {
 	pieceDefinitions: {},
 	pgnHeight: 400,
 	ranks: 8,
-	reversePgn: reversePgnDefault,
 	squareSize: 45,
 	width: 'auto',
 };
