@@ -198,6 +198,8 @@ class GameHistory extends Component {
       <div style={{display: 'inline-block', position: 'absolute', marginLeft: 5}}>
         <MovetextViewer
           halfMove={this.state.halfMove}
+          pgnHeight={this.props.pgnHeight}
+          pgnWidth={this.props.pgnWidth}
           rows={this.state.rows}
         />
         <PgnControls moveHead={this._onMovePgnHead.bind(this)}/>
@@ -209,6 +211,7 @@ class GameHistory extends Component {
 GameHistory.PropTypes = {
   moveHead: React.PropTypes.func,
   pgn: React.PropTypes.string,
+  pgnHeight: React.PropTypes.number
 }
 
 export default GameHistory;

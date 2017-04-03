@@ -99,6 +99,8 @@ Chessdiagram.propTypes = {
 	onSelectSquare: React.PropTypes.func,
 	options: React.PropTypes.object,
 	pgn: React.PropTypes.string,
+	/** Height of pgn viewer component */
+	pgnHeight: React.PropTypes.number,
 	/** array of pieces at particular squares (alternative to fen) eg ['P@f2','P@g2','P@h2','K@g1'].
 	* This format may be more suitable for unconventional board dimensions, for which standard FEN would not work.
 	* Note: If both FEN and pieces props are present, FEN will take precedence */
@@ -126,6 +128,7 @@ Chessdiagram.defaultProps = {
 	lightSquareColor: "#2492FF",
 	newlineChar: '\r?\n',
 	pieceDefinitions: {},
+	pgnHeight: 400,
 	ranks: 8,
 	squareSize: 45,
 	width: 'auto',
