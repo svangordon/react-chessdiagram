@@ -257,7 +257,7 @@ describe('Testing GameHistory', () => {
 
   it('should render test pgn', () => {
     const wrapper = mount(
-      <Chessdiagram
+      <GameHistory
         ref="cd"
         gameHistory
         pgn={testPgn.join('\n')}
@@ -268,7 +268,7 @@ describe('Testing GameHistory', () => {
 
   it('should render with non-standard newlineChar', () => {
     const wrapper = mount(
-      <Chessdiagram
+      <GameHistory
         ref="cd"
         gameHistory
         newlineChar={"\t"}

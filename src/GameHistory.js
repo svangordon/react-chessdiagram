@@ -211,8 +211,13 @@ class GameHistory extends Component {
 
 GameHistory.PropTypes = {
   moveHead: React.PropTypes.func,
+  newlineChar: React.PropTypes.string.isRequired,
   pgn: React.PropTypes.string,
   pgnHeight: React.PropTypes.number
+}
+
+GameHistory.defaultProps = {
+  newlineChar: '\r?\n'
 }
 
 export default GameHistory;
