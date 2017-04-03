@@ -104,6 +104,7 @@ class GameHistory extends Component {
 
   constructor(props) {
     super(props);
+    console.log(props.pgn);
     const rows = props.pgn ? this._parseMoveText(this.movetextRegex.exec(props.pgn)[0]) : [];
     const halfMove = props.pgn ? rows.length * 2 + (rows[rows.length - 1].length - 1) - 1 : 0;
     this.state = {

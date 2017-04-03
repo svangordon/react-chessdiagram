@@ -99,8 +99,8 @@ class App extends Component {
 
 // event handlers:
 
-	_onPositionChanged(evt) { // user inputted new position
-		this.setState({currentPosition: evt.target.value});
+	_onFenChanged(evt) { // user inputted new position
+		this.setState({fen: evt.target.value});
 	}
 
 	_onFlipChanged(evt) { //flip board
@@ -158,8 +158,17 @@ class App extends Component {
 				<div>
 					<div>
 						<p> Enter a position (using a FEN string) here:</p>
-						<input type="text" value={this.state.currentPosition} size="70" onChange={this._onPositionChanged.bind(this)}
-							autoCapitalize="off" autoCorrect="off" autoComplete="off" spellCheck="false"/>
+						<input
+							autoCapitalize="off"
+							autoCorrect="off"
+							autoComplete="off"
+							className={"fen-input"}
+							onChange={this._onFenChanged.bind(this)}
+							size="70"
+							spellCheck="false"
+							type="text"
+							value={this.state.fen}
+						/>
 					</div>
 					<div>
 						<textarea
