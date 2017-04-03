@@ -34,7 +34,6 @@ class Square extends Component {
 			<rect
 				fill={fillColor}
 				height={this.props.squareSize}
-				onClick={() => {console.log('clicked square')}}
 				stroke="black"
 				strokeWidth="1"
 				width={this.props.squareSize}

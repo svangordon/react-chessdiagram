@@ -73,7 +73,7 @@ describe('testing for elements being rendered correctly on 8x8 board', () => {
 	});
 });
 
-describe.only('When selecting squares at each corner of 8x8 board', () => {
+describe('When selecting squares at each corner of 8x8 board', () => {
 	it('should return correct names of squares (a1,h1,h8,a8)', () => {
 		let spySelectSquare = sinon.spy();
 
@@ -81,67 +81,67 @@ describe.only('When selecting squares at each corner of 8x8 board', () => {
 			<BoardContainer onSelectSquare={spySelectSquare} ranks={8} files={8} />
 		);
 
-    // // const a1 = wrapper.find('Square').nodes[0]//.simulate('click');
-    // const a1 = wrapper.findWhere(n => {
-    //   console.log(n)
-    // });
-    // const a1 = wrapper.find({square: "a1"})
-    // console.log(a1)
-    // console.log(wrapper.debug())
-    const squares = wrapper.find('Square');
-    // console.log(squares.debug())
-    // const h7 = squares.find({square: "h7"})
-    console.log('===', '===')
-    const h7 = squares.filter(n => {console.log(n.props()); return true})
-    // console.log(h7)
-    const h8 = squares.findWhere(n => {
-      // console.log('n =========== ',n.props().square);
-      if (n.props().square === 'h8') {
-        console.log('found ', n.props().square)
-      }
-      return n.props().square === 'h8';
-    })
-    console.log(h8.length)
-    h8.simulate('click')
-    expect(spySelectSquare.calledWith('h8')).toBe(true);
-    //
-		// let squareSize = wrapper.props().squareSize;
-		// let ranks = wrapper.props().ranks;
-		// let files = wrapper.props().files;
-		// let halfSquareSize = squareSize / 2; // offset to place coordinate in _middle_ of square
-    //
-		// let a1Coords = {
-		// 	clientX: squareSize + halfSquareSize, // NOTE: labels expected at column 0; board starts at column 1
-		// 	clientY: (ranks - 1) * squareSize + halfSquareSize
-		// };
-    //
-		// let h1Coords = {
-		// 	clientX: 8 * squareSize + halfSquareSize,
-		// 	clientY: (ranks - 1) * squareSize + halfSquareSize
-		// };
-    //
-		// let h8Coords = {
-		// 	clientX: 8 * squareSize + halfSquareSize,
-		// 	clientY: halfSquareSize
-		// };
-    //
-		// let a8Coords = {
-		// 	clientX: squareSize + halfSquareSize,
-		// 	clientY: halfSquareSize
-		// };
-    //
-		// // simulate a click on each corner square
-		// wrapper.simulate('mousedown', a1Coords);
-		// wrapper.simulate('mousedown', h1Coords);
-		// wrapper.simulate('mousedown', h8Coords);
-		// wrapper.simulate('mousedown', a8Coords);
+    // // // const a1 = wrapper.find('Square').nodes[0]//.simulate('click');
+    // // const a1 = wrapper.findWhere(n => {
+    // //   console.log(n)
+    // // });
+    // // const a1 = wrapper.find({square: "a1"})
+    // // console.log(a1)
+    // // console.log(wrapper.debug())
+    // const squares = wrapper.find('Square');
+    // // console.log(squares.debug())
+    // // const h7 = squares.find({square: "h7"})
+    // console.log('===', '===')
+    // const h7 = squares.filter(n => {console.log(n.props()); return true})
+    // // console.log(h7)
+    // const h8 = squares.findWhere(n => {
+    //   // console.log('n =========== ',n.props().square);
+    //   if (n.props().square === 'h8') {
+    //     console.log('found ', n.props().square)
+    //   }
+    //   return n.props().square === 'h8';
+    // })
+    // console.log(h8.length)
+    // h8.simulate('click')
+    // expect(spySelectSquare.calledWith('h8')).toBe(true);
 
-		// expect(spySelectSquare.calledWith('a1')).toBe(true);
-		// expect(spySelectSquare.calledWith('h1')).toBe(true);
-		// expect(spySelectSquare.calledWith('h8')).toBe(true);
-		// expect(spySelectSquare.calledWith('a8')).toBe(true);
-    //
-		// wrapper.unmount();
+		let squareSize = wrapper.props().squareSize;
+		let ranks = wrapper.props().ranks;
+		let files = wrapper.props().files;
+		let halfSquareSize = squareSize / 2; // offset to place coordinate in _middle_ of square
+
+		let a1Coords = {
+			clientX: squareSize + halfSquareSize, // NOTE: labels expected at column 0; board starts at column 1
+			clientY: (ranks - 1) * squareSize + halfSquareSize
+		};
+
+		let h1Coords = {
+			clientX: 8 * squareSize + halfSquareSize,
+			clientY: (ranks - 1) * squareSize + halfSquareSize
+		};
+
+		let h8Coords = {
+			clientX: 8 * squareSize + halfSquareSize,
+			clientY: halfSquareSize
+		};
+
+		let a8Coords = {
+			clientX: squareSize + halfSquareSize,
+			clientY: halfSquareSize
+		};
+
+		// simulate a click on each corner square
+		wrapper.simulate('mousedown', a1Coords);
+		wrapper.simulate('mousedown', h1Coords);
+		wrapper.simulate('mousedown', h8Coords);
+		wrapper.simulate('mousedown', a8Coords);
+
+		expect(spySelectSquare.calledWith('a1')).toBe(true);
+		expect(spySelectSquare.calledWith('h1')).toBe(true);
+		expect(spySelectSquare.calledWith('h8')).toBe(true);
+		expect(spySelectSquare.calledWith('a8')).toBe(true);
+
+		wrapper.unmount();
 
 	});
 });
@@ -151,7 +151,7 @@ describe('When moving pawn from e2-e4 on 8x8 board', () => {
 		let spyMovePiece = sinon.spy();
 
 		const wrapper = mount(
-			<Chessdiagram onMovePiece={spyMovePiece} ranks={8} files={8} fen={startPosition} />
+			<BoardContainer onMovePiece={spyMovePiece} ranks={8} files={8} fen={startPosition} />
 		);
 
 		let squareSize = wrapper.props().squareSize;
@@ -174,7 +174,7 @@ describe('When moving pawn from e2-e4 on 8x8 board', () => {
 
 		// simulate mouseup on e4
 		wrapper.simulate('mouseup', e4Coords);
-
+    // console.log(spyMovePiece.getCall(0));
 		expect(spyMovePiece.calledWith('P', 'e2', 'e4')).toBe(true);
 
 		wrapper.unmount();
@@ -226,28 +226,29 @@ describe('testing non-standard board widths', () => {
 	})
 });
 
-describe('test allowed moves highlighting', () => {
-	it('should show proper moves from start', () => {
-		Object.keys(startAllowedMoves).forEach(key => {
-			const wrapper = mount(
-				<Chessdiagram ref="cd" allowedMoves={startAllowedMoves} fen={startPosition} />
-			);
-			const squareCoords = {
-				clientX: ('.abcdefgh'.indexOf(key[0]) + .5) * wrapper.props().squareSize,
-				clientY: (wrapper.props().ranks - parseInt(key[1]) + .5) * wrapper.props().squareSize
-			};
-			wrapper.simulate('mousedown', squareCoords);
-			wrapper.simulate('mouseup', squareCoords);
-			expect(wrapper.find('SquareHighlight').length).toBe(3);
-		});
-	});
-});
+// This functionality was never implemented, but I'm leaving the tests lying around
+// describe('test allowed moves highlighting', () => {
+// 	it('should show proper moves from start', () => {
+// 		Object.keys(startAllowedMoves).forEach(key => {
+// 			const wrapper = mount(
+// 				<Chessdiagram ref="cd" allowedMoves={startAllowedMoves} fen={startPosition} />
+// 			);
+// 			const squareCoords = {
+// 				clientX: ('.abcdefgh'.indexOf(key[0]) + .5) * wrapper.props().squareSize,
+// 				clientY: (wrapper.props().ranks - parseInt(key[1]) + .5) * wrapper.props().squareSize
+// 			};
+// 			wrapper.simulate('mousedown', squareCoords);
+// 			wrapper.simulate('mouseup', squareCoords);
+// 			expect(wrapper.find('SquareHighlight').length).toBe(3);
+// 		});
+// 	});
+// });
 
 /***************
 * Test GameHistory container
 ***************/
 
-describe('Testing GameHistory', () => {
+describe.only('Testing GameHistory', () => {
   it('should not render by default', () => {
     const wrapper = mount(
       <Chessdiagram ref="cd" />
@@ -259,6 +260,7 @@ describe('Testing GameHistory', () => {
     const wrapper = mount(
       <Chessdiagram ref="cd" gameHistory />
     );
+    console.log("butts");
     expect(wrapper.find('GameHistory').length).toBe(1);
   });
 });

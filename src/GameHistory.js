@@ -104,12 +104,17 @@ class GameHistory extends Component {
 
   constructor(props) {
     super(props);
-    const headerRegex = new RegExp('^(' + props.newlineChar + '|.)*' +
-                                   '(?:'+ props.newlineChar +'){2}');
-    const movetextRegex = new RegExp('(?:' + props.newlineChar + '){2}' +
-                                     '(' + props.newlineChar + '|.)*$');
-    const rows = this._parseMoveText(this.movetextRegex.exec(props.pgn)[0]);
-    const halfMove = rows.length * 2 + (rows[rows.length - 1].length - 1) - 1;
+    // const headerRegex = new RegExp('^(' + props.newlineChar + '|.)*' +
+    //                                '(?:'+ props.newlineChar +'){2}');
+    // const movetextRegex = new RegExp('(?:' + props.newlineChar + '){2}' +
+    //                                  '(' + props.newlineChar + '|.)*$');
+    if (props.pgn) {
+      var rows = this._parseMoveText(this.movetextRegex.exec(props.pgn)[0]);
+      var halfMove = rows.length * 2 + (rows[rows.length - 1].length - 1) - 1;
+    } else {
+      var rows = [];
+      var halfMove = 0;
+    }
     // console.log('halfMove', halfMove, rows.length * 2, rows[rows.length - 1]);
     this.state = {
       header: this.headerRegex.exec(props.pgn),
