@@ -114,9 +114,6 @@ class GameHistory extends Component {
       halfMove: halfMove
     };
     this.maxMove = halfMove;
-    /* Cached Moves are going to be objects with props `pgn:str` and `move:obj`
-    */
-    this.cachedMoves = [];
   }
 
   componentWillReceiveProps(nextProps) {

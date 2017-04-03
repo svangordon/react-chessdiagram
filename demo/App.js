@@ -18,7 +18,7 @@ class App extends Component {
 		};
 		this.gamePresets = {
 			chess: {
-				fen: "1r3kr1/pbpBBp1p/1b3P2/8/8/2P2q2/P4PPP/3R2K1 b - - 0 24",
+				// fen: "1r3kr1/pbpBBp1p/1b3P2/8/8/2P2q2/P4PPP/3R2K1 b - - 0 24",
 				files: 8,
 				gameHistory: true,
 				ranks: 8,

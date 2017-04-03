@@ -39,12 +39,9 @@ class Chessdiagram extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentPosition: props.fen
+			currentPosition: props.pgn ? props.getNthMove(props.pgn, -1) : props.fen
 		};
 	}
-
-	// Lifecycle events ////
-
 
 	// event handling ////
 
@@ -58,8 +55,6 @@ class Chessdiagram extends Component {
 		const result = this.props.getNthMove(this.props.pgn, halfMove);
 		this.setState({currentPosition: this.props.getNthMove(this.props.pgn, halfMove)});
 	}
-
-	// _getFenFromPgn()
 
 	// render function
 
@@ -138,6 +133,9 @@ const getNthMoveDefault = (pgn, move) => {
 	}
 	var game = new Game();
 	game.load_pgn(pgn);
+	if (move === -1) {
+		return game.fen()
+	}
 	for (let i = game.history().length - move; i >= 0; i--) {
 		game.undo();
 	}

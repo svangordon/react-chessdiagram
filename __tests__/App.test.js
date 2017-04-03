@@ -278,4 +278,17 @@ describe('Testing GameHistory', () => {
     expect(wrapper.find('.pgn-cell').length).toBe(48);
   });
 
+  it('should change currentPosition', () => {
+    const wrapper = mount(<Chessdiagram ref="cd" gameHistory pgn={testPgn.join('\n')}/>);
+    const reversePgn = wrapper.findWhere(n => n.text() === '<');
+    console.log('wrapper state', wrapper.state());
+  });
+
 });
+//
+// describe('Testing PGN controls', () => {
+//   it('should change currentPosition', () => {
+//     const wrapper = mount(<Chessdiagram ref="cd" gameHistory pgn={testPgn.join('\n')}/>);
+//     const reversePgn = wrapper.find('button').findWhere(n => {console.log(n)})
+//   });
+// })
