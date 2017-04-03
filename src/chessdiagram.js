@@ -38,6 +38,9 @@ import Chess from 'chess.js';
 class Chessdiagram extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			currentPosition: props.fen
+		};
 	}
 
 	// Lifecycle events ////
@@ -51,21 +54,56 @@ class Chessdiagram extends Component {
 		}
 	}
 
+	_onMovePgnHead(direction, instructions) {
+		console.log(direction, instructions);
+		let result;
+		if (direction === -1) {
+			const instruction = instructions[0];
+			result = [];
+			let currentFrame = instruction;
+			for (let i = instruction.move; i < 0; i++) {
+				currentFrame = Object.assign(
+					{},
+					currentFrame.options
+					this.props.reversePgn(currentFrame)
+				);
+				result.push(currentFrame);
+			}
+		} else {
+
+		}
+	}
+
+	_onAdvancePgn(startPgn, moves) {
+		const movePgnResult = this.props.advancePgn(startPgn, moves);
+		console.log('movePgnResult', movePgnResult);
+	}
+
+	_onReversePgn(startPgn, moves) {
+		const movePgnResult = this.props.reversePgn(startPgn, moves);
+		console.log('movePgnResult', movePgnResult);
+	}
+
+	// _getFenFromPgn()
+
 	// render function
 
 	render() {
 		return (
 			<div>
 				<BoardContainer
-					style={{display: 'inline-block'}}
 					{...this.props}
+					fen={this.state.currentPosition}
+					style={{display: 'inline-block'}}
 					onMovePiece={this._onMovePiece.bind(this)}
 				/>
 				{this.props.gameHistory ?
 					<GameHistory
+						advancePgn={this._onAdvancePgn.bind(this)}
+						reversePgn={this._onReversePgn.bind(this)}
 						style={{display: 'inline-block'}}
 						newlineChar={this.props.newlineChar}
-						moveHead={this.props.onMovePgnHead}
+						moveHead={this._onMovePgnHead.bind(this)}
 						pgn={this.props.pgn}
 					/> : null
 				}
@@ -82,6 +120,7 @@ Chessdiagram.propTypes = {
 	flip: React.PropTypes.bool,
 	/** whether to render a GameHistory component */
 	gameHistory: React.PropTypes.bool,
+	getNthMove: React.PropTypes.func,
 	/** height of main svg container in pixels. If setting this manually, it should be at least 9 * squareSize to fit board AND labels*/
 	height: React.PropTypes.oneOfType([
 		React.PropTypes.string,
@@ -118,20 +157,59 @@ Chessdiagram.propTypes = {
 	]),
 };
 
+// Half-move
+const getNthMoveDefault = (pgn, move) => {
+	var Game = require('chess.js');
+	if (game.Chess) { // HACK: make it work in the test suite
+		Game = Game.Chess;
+	}
+	var game = new Game();
+	game.load_pgn(pgn);
+	for (let i = game.history().length - move; i > 0; i--) {
+		game.undo();
+	}
+	return game.fen();
+}
+
+const advancePgnDefault = (startPgn, move) => {
+	var Game = require('chess.js');
+	if (game.Chess) { // HACK: make it work in the test suite
+		Game = Game.Chess;
+	}
+	var game = new Game();
+	game.load_pgn(startPgn);
+	return game.move(move);
+}
+
+const reversePgnDefault = (startPgn) => {
+	var Game = require('chess.js');
+	if (Game.Chess) { // HACK: make it work in the test suite
+		Game = Game.Chess;
+	}
+	var game = new Game();
+	game.load_pgn(startPgn);
+	const result = game.undo()
+	return {pgn: game.pgn(), move: game.move()};
+}
+
 Chessdiagram.defaultProps = {
+	advancePgnDefault: advancePgnDefault,
 	allowMoves: true,
 	darkSquareColor:  "#005EBB",
 	height: 'auto',
 	files: 8,
 	flip: false,
 	gameHistory: false,
+	getNthMove: getNthMoveDefault,
 	lightSquareColor: "#2492FF",
 	newlineChar: '\r?\n',
 	pieceDefinitions: {},
 	pgnHeight: 400,
 	ranks: 8,
+	reversePgn: reversePgnDefault,
 	squareSize: 45,
 	width: 'auto',
 };
+
 
 export default Chessdiagram;

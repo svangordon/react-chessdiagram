@@ -108,7 +108,7 @@ class App extends Component {
 			}
 		}
 		console.log('result', result)
-		this.setState({fen: game.fen()});
+		// this.setState({fen: game.fen()});
 		return result;
 		// const options = {};
 		// if (pgnObj.newlineChar) {
