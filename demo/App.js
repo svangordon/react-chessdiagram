@@ -5,66 +5,59 @@ import Chess from 'chess.js';
 
 import './App.css';
 
-const pieces = [
-			'R@a1', 'N@b1', 'B@c1', 'Q@d1', 'K@e1', 'B@f1', 'N@g1', 'R@h1',
-			'P@a2', 'P@b2', 'P@c2', 'P@d2', 'P@e2', 'P@f2', 'P@g2', 'P@h2',
-			'p@a7', 'p@b7', 'p@c7', 'p@d7', 'p@e7', 'p@f7', 'p@g7', 'p@h7',
-			'r@a8', 'n@b8', 'b@c8', 'q@d8', 'k@e8', 'b@f8', 'n@g8', 'r@h8',
-		];
-
 class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			lightSquareColor: "#2492FF", // light blue
 			darkSquareColor: "#005EBB", // dark blue
-			// currentPosition: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", // starting position
-			fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
 			flip: false,
 			lastMessage: '',
 			squareSize: 45,
-			gameType: 'chess',
-			ranks: 8,
-			files: 8,
-			pgn: ['[Event "Casual Game"]',
-       '[Site "Berlin GER"]',
-       '[Date "1852.??.??"]',
-       '[EventDate "?"]',
-       '[Round "?"]',
-       '[Result "1-0"]',
-       '[White "Adolf Anderssen"]',
-       '[Black "Jean Dufresne"]',
-       '[ECO "C52"]',
-       '[WhiteElo "?"]',
-       '[BlackElo "?"]',
-       '[PlyCount "47"]',
-       '',
-       '1.e4 e5 2.Nf3 Nc6 3.Bc4 Bc5 4.b4 Bxb4 5.c3 Ba5 6.d4 exd4 7.O-O',
-       'd3 8.Qb3 Qf6 9.e5 Qg6 10.Re1 Nge7 11.Ba3 b5 12.Qxb5 Rb8 13.Qa4',
-       'Bb6 14.Nbd2 Bb7 15.Ne4 Qf5 16.Bxd3 Qh5 17.Nf6+ gxf6 18.exf6',
-       'Rg8 19.Rad1 Qxf3 20.Rxe7+ Nxe7 21.Qxd7+ Kxd7 22.Bf5+ Ke8',
-       '23.Bd7+ Kf8 24.Bxe7# 1-0'].join('\n')
+			gameType: 'chess'
 		};
 		this.gamePresets = {
 			chess: {
 				currentPosition: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-				ranks: 8,
 				files: 8,
-				pieceDefinitions: {}
+				gameHistory: true,
+				ranks: 8,
+				pieceDefinitions: {},
+				pgn: ['[Event "Casual Game"]',
+	       '[Site "Berlin GER"]',
+	       '[Date "1852.??.??"]',
+	       '[EventDate "?"]',
+	       '[Round "?"]',
+	       '[Result "1-0"]',
+	       '[White "Adolf Anderssen"]',
+	       '[Black "Jean Dufresne"]',
+	       '[ECO "C52"]',
+	       '[WhiteElo "?"]',
+	       '[BlackElo "?"]',
+	       '[PlyCount "47"]',
+	       '',
+	       '1.e4 e5 2.Nf3 Nc6 3.Bc4 Bc5 4.b4 Bxb4 5.c3 Ba5 6.d4 exd4 7.O-O',
+	       'd3 8.Qb3 Qf6 9.e5 Qg6 10.Re1 Nge7 11.Ba3 b5 12.Qxb5 Rb8 13.Qa4',
+	       'Bb6 14.Nbd2 Bb7 15.Ne4 Qf5 16.Bxd3 Qh5 17.Nf6+ gxf6 18.exf6',
+	       'Rg8 19.Rad1 Qxf3 20.Rxe7+ Nxe7 21.Qxd7+ Kxd7 22.Bf5+ Ke8',
+	       '23.Bd7+ Kf8 24.Bxe7# 1-0'].join('\n')
 			},
 			draughts: {
 				currentPosition: "1g1g1g1g1g/g1g1g1g1g1/1g1g1g1g1g/g1g1g1g1g1/10/10/1G1G1G1G1G/G1G1G1G1G1/1G1G1G1G1G/G1G1G1G1G1 w - - 0 1",
-				ranks: 10,
 				files: 10,
+				gameHistory: false,
+				ranks: 10,
 				pieceDefinitions: {
 					'G': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/9/90/Draughts_mlt45.svg"),
 					'g': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/0/0c/Draughts_mdt45.svg")
-				}
+				},
+				pgn: ''
 			},
 			courier: {
 				currentPosition: "rnbcmk1scbnr/1ppppp1pppp1/6q5/p5p4p/P5P4p/6Q5/1PPPPP1PPPP1/RNBCMK1SCBNR",
-				ranks: 8,
 				files: 12,
+				gameHistory: false,
+				ranks: 8,
 				pieceDefinitions: {
 					'C': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/7/7c/Chess_Blt45.svg"),
 					'c': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/5/5a/Chess_Bdt45.svg"),
@@ -72,9 +65,11 @@ class App extends Component {
 					'm': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/2/2c/Chess_fdt45.svg"),
 					'S': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/c/ce/Chess_tlt45.svg"),
 					's': this._createPieceDefinition("https://upload.wikimedia.org/wikipedia/commons/e/e2/Chess_tdt45.svg")
-				}
+				},
+				pgn: ''
 			}
 		};
+		this.state = Object.assign({}, this.state, this.gamePresets[this.state.gameType])
 		this.move = null;
 		this.game = new Chess();
 		this.game.load_pgn(this.state.pgn);
@@ -121,14 +116,21 @@ class App extends Component {
 	}
 
 	_onMovePiece(piece, fromSquare, toSquare) { // user moved a piece
-		// clearTimeout(this.timeou);
+		clearTimeout(this.timeout);
 		// const chess = new Chess(this.state.currentPosition);
-		// console.log(this.move, chess.fen());
-		if (this.move) {
+		// if (this.state.pgn) {
+		// 	const game = new Chess();
+		// 	game.load_pgn(this.state.pgn);
+		// 	game.move({from: fromSquare, to: toSquare});
+		// 	this.setState({pgn: game.pgn()})
+		// }
+		// if (this.move) {
 			// echo move back to user:
 			let message = 'You moved ' + piece + fromSquare + " to " + toSquare + ' !';
-			this.setState({lastMessage: message, currentPosition: this.game.fen()});
-		}
+			this.setState({lastMessage: message}, () => {
+				this.timeout = setTimeout(() => {this.setState({lastMessage: ''})}, 2000)
+			});
+		// }
 	}
 
 	_onFilesChanged(evt) {
@@ -160,7 +162,10 @@ class App extends Component {
 							autoCapitalize="off" autoCorrect="off" autoComplete="off" spellCheck="false"/>
 					</div>
 					<div>
-						<textarea value={this.state.pgn} onChange={this._onPgnChanged.bind(this)}></textarea>
+						<textarea
+							onChange={this._onPgnChanged.bind(this)}
+							value={this.state.pgn}
+						/>
 					</div>
 					<div className="propGroup">
 						<p> Square Size: </p>
@@ -187,7 +192,7 @@ class App extends Component {
 					<Chessdiagram
 						darkSquareColor={this.state.darkSquareColor}
 						fen={this.state.fen}
-						gameHistory
+						gameHistory={this.state.gameHistory}
 						startPosition={this.state.currentPosition}
 						files={this.state.files}
 						flip={this.state.flip}

@@ -116,8 +116,8 @@ class GameHistory extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.pgn !== this.props.pgn) {
-      const rows = this._parseMoveText(this.movetextRegex.exec(nextProps.pgn)[0]);
-      const halfMove = rows.length * 2 + (rows[rows.length - 1].length - 1) - 1;
+      const rows = nextProps.pgn ? this._parseMoveText(this.movetextRegex.exec(nextProps.pgn)[0]) : [];
+      const halfMove = nextProps.pgn ? rows.length * 2 + (rows[rows.length - 1].length - 1) - 1 : 0;
       this.setState({rows, halfMove})
     }
   }
