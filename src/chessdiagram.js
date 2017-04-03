@@ -54,24 +54,27 @@ class Chessdiagram extends Component {
 		}
 	}
 
-	_onMovePgnHead(direction, instructions) {
-		console.log(direction, instructions);
-		let result;
-		if (direction === -1) {
-			const instruction = instructions[0];
-			result = [];
-			let currentFrame = instruction;
-			for (let i = instruction.move; i < 0; i++) {
-				currentFrame = Object.assign(
-					{},
-					currentFrame.options
-					this.props.reversePgn(currentFrame)
-				);
-				result.push(currentFrame);
-			}
-		} else {
-
-		}
+	_onMovePgnHead(halfMove) {
+		const result = this.props.getNthMove(this.props.pgn, halfMove);
+		console.log(halfMove, this.state.currentPosition, result);
+		this.setState({currentPosition: this.props.getNthMove(this.props.pgn, halfMove)});
+		// console.log(direction, instructions);
+		// let result;
+		// if (direction === -1) {
+		// 	const instruction = instructions[0];
+		// 	result = [];
+		// 	let currentFrame = instruction;
+		// 	for (let i = instruction.move; i < 0; i++) {
+		// 		currentFrame = Object.assign(
+		// 			{},
+		// 			currentFrame.options
+		// 			this.props.reversePgn(currentFrame)
+		// 		);
+		// 		result.push(currentFrame);
+		// 	}
+		// } else {
+		//
+		// }
 	}
 
 	_onAdvancePgn(startPgn, moves) {
@@ -160,12 +163,12 @@ Chessdiagram.propTypes = {
 // Half-move
 const getNthMoveDefault = (pgn, move) => {
 	var Game = require('chess.js');
-	if (game.Chess) { // HACK: make it work in the test suite
+	if (Game.Chess) { // HACK: make it work in the test suite
 		Game = Game.Chess;
 	}
 	var game = new Game();
 	game.load_pgn(pgn);
-	for (let i = game.history().length - move; i > 0; i--) {
+	for (let i = game.history().length - move; i >= 0; i--) {
 		game.undo();
 	}
 	return game.fen();

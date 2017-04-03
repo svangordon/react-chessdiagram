@@ -113,6 +113,7 @@ class GameHistory extends Component {
       rows: rows,
       halfMove: halfMove
     };
+    this.maxMove = halfMove;
     /* Cached Moves are going to be objects with props `pgn:str` and `move:obj`
     */
     this.cachedMoves = [];
@@ -130,59 +131,67 @@ class GameHistory extends Component {
     const limit = Number(evt.target.value);
     let currentHalfMove = this.state.halfMove;
 		const direction = limit > 0 ? 1 : -1;
-    let instructions = [];
-    const options = {
-      sloppy: this.props.sloppy,
-      newline_char: this.props.newlineChar
-    }
+    let target;
     if (direction === 1) {
-      instructions = this.cachedMoves.splice(-limit);
+      target = Math.min(currentHalfMove + limit, this.maxMove);
     } else {
-      const startPosition = this.cachedMoves.length > 0 ?
-                              this.cachedMoves[this.cachedMoves.length - 1]:
-                              {pgn: this.props.pgn};
-      startPosition.move = Math.max(-currentHalfMove, limit) // NB: limit will be negative
-      console.log('currentHalfMove', currentHalfMove, 'limit',limit, 'startPosition.move',startPosition.move);
-      startPosition.options = options;
-      instructions.push(startPosition);
+      target = Math.max(currentHalfMove + limit, 0); // Limit will be negative
     }
-    console.log('instructions ==', instructions, Array.isArray(instructions));
-    const result = this.props.moveHead(direction, instructions);
-    if (!result) {
-      console.error('error moving pgn head');
-    }
-    if (direction === -1) {
-      console.log('concatting moves');
-      this.cachedMoves = this.cachedMoves.concat(result)
-    }
-		// for (let i = 0; i !== limit; i += direction) {
-    //   // if (direction === 1) {
-    //   //   var cachedMove = this.cachedMoves.pop();
-    //   // }
-    //   // const cachedMove = direction === 1 ? this.cachedMoves.pop() :;
-    //   if (direction === 1) {
-    //     if (this.cachedMoves.length > 0) {
-    //       instructions.push(this.cachedMoves.pop());
-    //     } else {
-    //       break;
-    //     }
-    //   } else if (this.cachedMoves.length > 0) {
-    //     var cachedMove = this.cachedMoves[this.cachedMoves.length - 1];
-    //   } else {
-    //     var cachedMove = {
-    //       pgn: this.props.pgn,
-    //       move: null,
-    //       newlineChar: this.props.newlineChar,
-    //       sloppy: this.props.sloppy
-    //     };
-    //   }
-		// 	const result = this.props.moveHead(direction, cachedMove);
-		// 	if (!result) {break;} else {
-    //     currentHalfMove += direction;
-    //     if (direction === -1) {this.cachedMoves.push(result);}
-    //     this.setState({halfMove: currentHalfMove});
-    //   }
-		// }
+    this.props.moveHead(target);
+    this.setState({halfMove: target});
+    // let instructions = [];
+    // const options = {
+    //   sloppy: this.props.sloppy,
+    //   newline_char: this.props.newlineChar
+    // }
+    // if (direction === 1) {
+    //   instructions = this.cachedMoves.splice(-limit);
+    // } else {
+    //   const startPosition = this.cachedMoves.length > 0 ?
+    //                           this.cachedMoves[this.cachedMoves.length - 1]:
+    //                           {pgn: this.props.pgn};
+    //   startPosition.move = Math.max(-currentHalfMove, limit) // NB: limit will be negative
+    //   console.log('currentHalfMove', currentHalfMove, 'limit',limit, 'startPosition.move',startPosition.move);
+    //   startPosition.options = options;
+    //   instructions.push(startPosition);
+    // }
+    // console.log('instructions ==', instructions, Array.isArray(instructions));
+    // const result = this.props.moveHead(direction, instructions);
+    // if (!result) {
+    //   console.error('error moving pgn head');
+    // }
+    // if (direction === -1) {
+    //   console.log('concatting moves');
+    //   this.cachedMoves = this.cachedMoves.concat(result)
+    // }
+		// // for (let i = 0; i !== limit; i += direction) {
+    // //   // if (direction === 1) {
+    // //   //   var cachedMove = this.cachedMoves.pop();
+    // //   // }
+    // //   // const cachedMove = direction === 1 ? this.cachedMoves.pop() :;
+    // //   if (direction === 1) {
+    // //     if (this.cachedMoves.length > 0) {
+    // //       instructions.push(this.cachedMoves.pop());
+    // //     } else {
+    // //       break;
+    // //     }
+    // //   } else if (this.cachedMoves.length > 0) {
+    // //     var cachedMove = this.cachedMoves[this.cachedMoves.length - 1];
+    // //   } else {
+    // //     var cachedMove = {
+    // //       pgn: this.props.pgn,
+    // //       move: null,
+    // //       newlineChar: this.props.newlineChar,
+    // //       sloppy: this.props.sloppy
+    // //     };
+    // //   }
+		// // 	const result = this.props.moveHead(direction, cachedMove);
+		// // 	if (!result) {break;} else {
+    // //     currentHalfMove += direction;
+    // //     if (direction === -1) {this.cachedMoves.push(result);}
+    // //     this.setState({halfMove: currentHalfMove});
+    // //   }
+		// // }
   }
 
   _parseMoveText(movetext) {
