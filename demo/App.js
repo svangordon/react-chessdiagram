@@ -77,15 +77,61 @@ class App extends Component {
 		this.state.fen = this.game.fen();
 	}
 
-	_onMovePgnHead(direction) {
+	_onMovePgnHead(direction, instructions) {
+		console.log('App onMovePgnHead', direction, instructions)
+		const game = new Chess();
+		const loadPgnResult = game.load_pgn(instructions[0].pgn);
+		console.log('loadPgn', loadPgnResult);
+		let result;
 		if (direction === 1) {
-			var result = this.game.move(this.cachedMoves.pop());
+			console.log('advancing');
+			while (instructions.length) {
+				const nextMove = instructions.pop();
+				const makeMoveResult = game.move(nextMove.move);
+				if (!makeMoveResult) {
+					console.error('couldn\'t make move', nextMove);
+					break;
+				}
+			}
+			result = true;
 		} else {
-			var result = this.game.undo();
-			if (result) {this.cachedMoves.push(result);}
+			console.log('retreating');
+			result = []
+			for (let i = instructions[0].move; i < 0; i++) {
+				const undoResult = game.undo();
+				console.log('undoResult', undoResult);
+				if (!undoResult) {
+					console.error('error undoing');
+					break;
+				}
+				result.push({move: undoResult, pgn: game.pgn(), options:instructions[0].options});
+			}
 		}
-		this.setState({fen: this.game.fen()});
+		console.log('result', result)
+		this.setState({fen: game.fen()});
 		return result;
+		// const options = {};
+		// if (pgnObj.newlineChar) {
+		// 	options.newline_char = pgnObj.newlineChar;
+		// }
+		// if (pgnObj.sloppy) {
+		// 	options.sloppy = pgnObj.sloppy;
+		// }
+		// const loadResult = game.load_pgn(pgnObj.pgn, options);
+		// if (direction === 1) {
+		// 	var result = game.move(pgnObj.move);
+		// } else {
+		// 	var result = game.undo();
+		// 	// if (result) {this.cachedMoves.push(result);}
+		// }
+		// if (result) {
+		// 	result = {
+		// 		move: result,
+		// 		pgn: game.pgn()
+		// 	};
+		// }
+		// this.setState({fen: game.fen()});
+		// return result;
 	}
 
 	// Convenience function for concisely creating piece definition callbacks
