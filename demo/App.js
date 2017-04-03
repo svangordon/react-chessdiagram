@@ -170,12 +170,15 @@ class App extends Component {
 							value={this.state.fen}
 						/>
 					</div>
-					<div>
+					{this.state.pgn ? <div>
+						Displaying the following PGN:<br />
 						<textarea
+							cols={60}
 							onChange={this._onPgnChanged.bind(this)}
+							rows={20}
 							value={this.state.pgn}
 						/>
-					</div>
+					</div> : null}
 					<div className="propGroup">
 						<p> Square Size: </p>
 						<input type="range" value={this.state.squareSize} min={10} max={100} step={1} onChange = {evt => {
