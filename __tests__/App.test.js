@@ -42,7 +42,7 @@ const startAllowedMoves = {
 // 		];
 //
 // 		const wrapper = mount(
-// 			<Chessdiagram ref="cd" ranks={8} files={8} fen={startPosition} />
+// 			<Board ref="cd" ranks={8} files={8} fen={startPosition} />
 // 		);
 //
 // 		let instance = wrapper.instance();

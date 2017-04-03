@@ -153,6 +153,13 @@ class Board extends Component {
 		}
 	}
 
+	// 0-based index to algebraic notation (0 == 'a1', 1 == 'a2', ... 63 == 'h8' on an 8x8)
+	_indexToSquare(index) {
+		const file = "abcdefghijklmno"[Math.floor(index / this.props.files)];
+		const rank = (index % this.props.files) + 1;
+		return file + rank;
+	}
+
 	shouldComponentUpdate(nextProps) {
 		return ( // note: put most likely changes towards the top ...
 			nextProps.selectedSquare !== this.props.selectedSquare ||
@@ -182,6 +189,7 @@ class Board extends Component {
 			<svg>
 				{squares.map((square,i) =>
 					<Square
+						id={this._indexToSquare(i)}
 						x={square.x} y={square.y} key={i} light={!!square.light} squareSize={this.props.squareSize}
 						lightSquareColor={this.props.lightSquareColor} darkSquareColor={this.props.darkSquareColor}
 					/>
