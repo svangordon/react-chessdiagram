@@ -174,7 +174,7 @@ class App extends Component {
 			// echo move back to user:
 			let message = 'You moved ' + piece + fromSquare + " to " + toSquare + ' !';
 			this.setState({lastMessage: message}, () => {
-				this.timeout = setTimeout(() => {this.setState({lastMessage: ''})}, 200000)
+				this.timeout = setTimeout(() => {this.setState({lastMessage: ''})}, 2000)
 			});
 		// }
 	}
