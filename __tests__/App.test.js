@@ -1,10 +1,10 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import Chessdiagram from '../src/chessdiagram';
+import Piece from '../src/piece';
 import Board from '../src/board';
 import BoardContainer from '../src/BoardContainer.js';
 import GameHistory from '../src/GameHistory.js';
-import Piece from '../src/piece';
 import sinon from 'sinon';
 // import Chess from 'chess.js';
 

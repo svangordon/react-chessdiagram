@@ -13,4 +13,3 @@ coverage
 .env
 npm-debug.log
 .eslintcache
-src/scratch.js
