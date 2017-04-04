@@ -70,68 +70,6 @@ class App extends Component {
 			}
 		};
 		this.state = Object.assign({}, this.state, this.gamePresets[this.state.gameType])
-		this.move = null;
-		this.game = new Chess();
-		this.game.load_pgn(this.state.pgn);
-		this.cachedMoves = [];
-		this.state.fen = this.game.fen();
-	}
-
-	_onMovePgnHead(direction, instructions) {
-		console.log('App onMovePgnHead', direction, instructions)
-		const game = new Chess();
-		const loadPgnResult = game.load_pgn(instructions[0].pgn);
-		console.log('loadPgn', loadPgnResult);
-		let result;
-		if (direction === 1) {
-			console.log('advancing');
-			while (instructions.length) {
-				const nextMove = instructions.pop();
-				const makeMoveResult = game.move(nextMove.move);
-				if (!makeMoveResult) {
-					console.error('couldn\'t make move', nextMove);
-					break;
-				}
-			}
-			result = true;
-		} else {
-			console.log('retreating');
-			result = []
-			for (let i = instructions[0].move; i < 0; i++) {
-				const undoResult = game.undo();
-				console.log('undoResult', undoResult);
-				if (!undoResult) {
-					console.error('error undoing');
-					break;
-				}
-				result.push({move: undoResult, pgn: game.pgn(), options:instructions[0].options});
-			}
-		}
-		console.log('result', result)
-		// this.setState({fen: game.fen()});
-		return result;
-		// const options = {};
-		// if (pgnObj.newlineChar) {
-		// 	options.newline_char = pgnObj.newlineChar;
-		// }
-		// if (pgnObj.sloppy) {
-		// 	options.sloppy = pgnObj.sloppy;
-		// }
-		// const loadResult = game.load_pgn(pgnObj.pgn, options);
-		// if (direction === 1) {
-		// 	var result = game.move(pgnObj.move);
-		// } else {
-		// 	var result = game.undo();
-		// 	// if (result) {this.cachedMoves.push(result);}
-		// }
-		// if (result) {
-		// 	result = {
-		// 		move: result,
-		// 		pgn: game.pgn()
-		// 	};
-		// }
-		// this.setState({fen: game.fen()});
-		// return result;
 	}
 
 	// Convenience function for concisely creating piece definition callbacks
@@ -163,20 +101,12 @@ class App extends Component {
 
 	_onMovePiece(piece, fromSquare, toSquare) { // user moved a piece
 		clearTimeout(this.timeout);
-		// const chess = new Chess(this.state.currentPosition);
-		// if (this.state.pgn) {
-		// 	const game = new Chess();
-		// 	game.load_pgn(this.state.pgn);
-		// 	game.move({from: fromSquare, to: toSquare});
-		// 	this.setState({pgn: game.pgn()})
-		// }
-		// if (this.move) {
-			// echo move back to user:
-			let message = 'You moved ' + piece + fromSquare + " to " + toSquare + ' !';
-			this.setState({lastMessage: message}, () => {
-				this.timeout = setTimeout(() => {this.setState({lastMessage: ''})}, 2000)
-			});
-		// }
+
+		// echo move back to user:
+		let message = 'You moved ' + piece + fromSquare + " to " + toSquare + ' !';
+		this.setState({lastMessage: message}, () => {
+			this.timeout = setTimeout(() => {this.setState({lastMessage: ''})}, 2000)
+		});
 	}
 
 	_onFilesChanged(evt) {
@@ -246,7 +176,6 @@ class App extends Component {
 						files={this.state.files}
 						flip={this.state.flip}
 						lightSquareColor={this.state.lightSquareColor}
-						onMovePgnHead={this._onMovePgnHead.bind(this)}
 						onMovePiece={this._onMovePiece.bind(this)}
 						pgn={this.state.pgn}
 						pieceDefinitions={this.gamePresets[this.state.gameType].pieceDefinitions}
