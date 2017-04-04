@@ -126,7 +126,7 @@ class GameHistory extends Component {
 
   _onMovePgnHead(evt) {
     const limit = Number(evt.target.value);
-    let currentHalfMove = this.state.halfMove;
+    let currentHalfMove = this.props.currentMove;
 		const direction = limit > 0 ? 1 : -1;
     let target;
     if (direction === 1) {
@@ -201,7 +201,7 @@ class GameHistory extends Component {
     return (
       <div style={{display: 'inline-block', position: 'absolute', marginLeft: 5}}>
         <MovetextViewer
-          halfMove={this.state.halfMove}
+          halfMove={this.props.currentMove}
           pgnHeight={this.props.pgnHeight}
           pgnWidth={this.props.pgnWidth}
           rows={this.state.rows}

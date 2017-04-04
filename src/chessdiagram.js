@@ -38,7 +38,17 @@ import Chess from 'chess.js';
 class Chessdiagram extends Component {
 	constructor(props) {
 		super(props);
+		if (typeof props.startMove === 'number' || parseInt(props.startMove)) {
+			// halfMove provided
+			var currentMove = parseInt(props.startMove);
+		} else {
+			var currentMove = (parseInt(props.startMove.slice(1)) - 1) * 2 + props.startMove[0] === 'w' ? 1 : 2
+		}
+
+		// let currentMove = parseInt(props.startMove) ? props.startMove : (parseInt(props.startMove.slice(1)) - 1) * 2 + props.startMove[0] === 'w' ? 1 : 2;
+		console.log('currentMove', currentMove);
 		this.state = {
+			currentMove: currentMove,
 			currentPosition: props.pgn ? props.getNthMove(props.pgn, -1) : props.fen
 		};
 	}
@@ -63,7 +73,10 @@ class Chessdiagram extends Component {
 
 	_onMovePgnHead(halfMove) {
 		const result = this.props.getNthMove(this.props.pgn, halfMove);
-		this.setState({currentPosition: this.props.getNthMove(this.props.pgn, halfMove)});
+		this.setState({
+			currentMove: halfMove,
+			currentPosition: this.props.getNthMove(this.props.pgn, halfMove)
+		});
 	}
 
 	// render function
@@ -80,6 +93,7 @@ class Chessdiagram extends Component {
 				{this.props.gameHistory ?
 					<GameHistory
 						style={{display: 'inline-block'}}
+						currentMove={this.state.currentMove}
 						newlineChar={this.props.newlineChar}
 						moveHead={this._onMovePgnHead.bind(this)}
 						pgn={this.props.pgn}
@@ -126,6 +140,8 @@ Chessdiagram.propTypes = {
 	pieceDefinitions: React.PropTypes.object,
 	ranks: React.PropTypes.number,
 	squareSize: React.PropTypes.number,
+	// Which move to start the game on. Either halfmove count or letter followed by full move eg w12 //
+	startMove: React.PropTypes.number,
 	/** Chess position in FEN format (Forsyth-Edwards Notation). eg "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" */
 	startPosition: React.PropTypes.string,
 	/** width of main svg container in pixels. If setting this manually, it should be at least 9 * squareSize to fit board AND labels*/
@@ -137,14 +153,18 @@ Chessdiagram.propTypes = {
 
 // Takes a pgn and returns the FEN of the nth move
 const getNthMoveDefault = (pgn, move) => {
+	console.log('getting move', move);
 	var Game = require('chess.js');
 	if (Game.Chess) { // HACK: make it work in the test suite
 		Game = Game.Chess;
 	}
 	var game = new Game();
+	if (move === -1) {
+		return game.fen();
+	}
 	game.load_pgn(pgn);
 	if (move === -1) {
-		return game.fen()
+		return game.fen();
 	}
 	for (let i = game.history().length - move; i >= 0; i--) {
 		game.undo();
@@ -165,6 +185,7 @@ Chessdiagram.defaultProps = {
 	pieceDefinitions: {},
 	pgnHeight: 400,
 	ranks: 8,
+	startMove: 0,
 	squareSize: 45,
 	width: 'auto',
 };
