@@ -27,12 +27,8 @@ SOFTWARE.
 // chessdiagram.js : defines Chess Diagram Component
 
 import React, { Component } from 'react';
-// import Board from './board.js';
 import BoardContainer from './BoardContainer.js';
 import GameHistory from './GameHistory.js';
-// import Piece from './piece.js';
-// import standardPieceDefinitions from './pieceDefinitions.js';
-// import Chess from 'chess.js';
 
 /** Chessdiagram : draws a chess diagram consisting of a board and pieces, using svg graphics */
 class Chessdiagram extends Component {
@@ -47,7 +43,6 @@ class Chessdiagram extends Component {
 			currentMove = (parseInt(props.startMove.slice(1)) - 1) * 2 + props.startMove[0] === 'w' ? 1 : 2;
 		}
 
-		// let currentMove = parseInt(props.startMove) ? props.startMove : (parseInt(props.startMove.slice(1)) - 1) * 2 + props.startMove[0] === 'w' ? 1 : 2;
 		this.state = {
 			currentMove: currentMove,
 			currentPosition: props.pgn ? props.getNthMove(props.pgn, currentMove) : props.fen
