@@ -42,14 +42,14 @@ class Chessdiagram extends Component {
 			// halfMove provided
 			var currentMove = parseInt(props.startMove);
 		} else {
+			// e.g., 'w12'
 			var currentMove = (parseInt(props.startMove.slice(1)) - 1) * 2 + props.startMove[0] === 'w' ? 1 : 2
 		}
 
 		// let currentMove = parseInt(props.startMove) ? props.startMove : (parseInt(props.startMove.slice(1)) - 1) * 2 + props.startMove[0] === 'w' ? 1 : 2;
-		console.log('currentMove', currentMove);
 		this.state = {
 			currentMove: currentMove,
-			currentPosition: props.pgn ? props.getNthMove(props.pgn, -1) : props.fen
+			currentPosition: props.pgn ? props.getNthMove(props.pgn, currentMove) : props.fen
 		};
 	}
 
@@ -159,14 +159,14 @@ const getNthMoveDefault = (pgn, move) => {
 		Game = Game.Chess;
 	}
 	var game = new Game();
-	if (move === -1) {
+	if (move === 0) {
 		return game.fen();
 	}
 	game.load_pgn(pgn);
 	if (move === -1) {
 		return game.fen();
 	}
-	console.log('getting move', move, 'i==', game.history().length - move, 'history len',  game.history().length, 'history',  game.history());
+
 	for (let i = game.history().length - move; i > 0; i--) {
 		game.undo();
 	}
