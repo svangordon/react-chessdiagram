@@ -3,37 +3,36 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
 class MovetextViewer extends Component {
-  shouldComponentUpdate(nextProps) {
-    if (this.props.rows.length !== nextProps.rows.length ||
-        this.props.halfMove !== nextProps.halfMove
-      ) {
-      return true;
-    }
-    return false;
-  }
+	shouldComponentUpdate(nextProps) {
+		if (this.props.rows.length !== nextProps.rows.length ||
+        this.props.halfMove !== nextProps.halfMove) {
+			return true;
+		}
+		return false;
+	}
 
-  componentDidMount() {
-    this._scrollToActiveMove();
-  }
+	componentDidMount() {
+		this._scrollToActiveMove();
+	}
 
-  componentDidUpdate() {
-    this._scrollToActiveMove();
-  }
+	componentDidUpdate() {
+		this._scrollToActiveMove();
+	}
 
-  _scrollToActiveMove() {
-    if (this.activeMove)
-      this.pgnContainer.scrollTop = this.activeMove.offsetTop;
-    else
+	_scrollToActiveMove() {
+		if (this.activeMove)
+			this.pgnContainer.scrollTop = this.activeMove.offsetTop;
+		else
       this.pgnContainer.scrollTop = 0;
-  }
+	}
 
-  render () {
+	render () {
     // return a fn that renders a cell w/ appropriate highlighting, 0 for white 1 for black
-    const renderCell = (color) => {
-      return ({value, row}) => {
-        const cellMove = (row[0]-1)*2 + color;
-        const backgroundColor = cellMove === this.props.halfMove ? 'yellow' : '#FFF';
-        return (
+		const renderCell = (color) => {
+			return ({value, row}) => {
+				const cellMove = (row[0]-1)*2 + color;
+				const backgroundColor = cellMove === this.props.halfMove ? 'yellow' : '#FFF';
+				return (
           <span
             className={'pgn-cell'}
             onClick={() => this.props.moveHead(cellMove)}
@@ -42,28 +41,28 @@ class MovetextViewer extends Component {
           >
             {value}
           </span>
-        );
-      };
-    };
-    const columnDefaults = {
-      sortable: false
-    };
-    const columns = [{
-      accessor: '0',
-      id: 'move',
-      width: 40
-    },{
-      accessor: '1',
-      id: 'white',
-      width: 90,
-      render: renderCell(1)
-    }, {
-      accessor: '2',
-      id: 'black',
-      width: 90,
-      render: renderCell(2)
-    }].map(column => Object.assign({}, columnDefaults, column));
-    return (
+				);
+			};
+		};
+		const columnDefaults = {
+			sortable: false
+		};
+		const columns = [{
+			accessor: '0',
+			id: 'move',
+			width: 40
+		},{
+			accessor: '1',
+			id: 'white',
+			width: 90,
+			render: renderCell(1)
+		}, {
+			accessor: '2',
+			id: 'black',
+			width: 90,
+			render: renderCell(2)
+		}].map(column => Object.assign({}, columnDefaults, column));
+		return (
       <div
         ref={(pgnContainer) => {this.pgnContainer = pgnContainer;}}
         style={{height: 200, overflowY: 'scroll'}}
@@ -75,129 +74,129 @@ class MovetextViewer extends Component {
           pageSize={this.props.rows.length}
         />
       </div>
-    );
-  }
+		);
+	}
 }
 
 MovetextViewer.propTypes = {
-  rows: React.PropTypes.array,
-  halfMove: React.PropTypes.number,
-  moveHead: React.PropTypes.func
+	rows: React.PropTypes.array,
+	halfMove: React.PropTypes.number,
+	moveHead: React.PropTypes.func
 };
 
 class PgnControls extends Component {
-  render() {
-    return (
+	render() {
+		return (
       <div>
         <button value={-Infinity} onClick={this.props.moveHead}>{"|<"}</button>
         <button value={-1} onClick={this.props.moveHead}>{"<"}</button>
         <button value={1} onClick={this.props.moveHead}>{">"}</button>
         <button value={Infinity} onClick={this.props.moveHead}>{">|"}</button>
       </div>
-    );
-  }
+		);
+	}
 }
 
 PgnControls.propTypes = {
-  moveHead: React.PropTypes.func.isRequired
+	moveHead: React.PropTypes.func.isRequired
 };
 
 class GameHistory extends Component {
 
-  constructor(props) {
-    super(props);
-    const rows = props.pgn ? this._parseMoveText(this.movetextRegex.exec(props.pgn)[0]) : [];
-    const maxMove = props.pgn ? (rows.length - 1) * 2 + (rows[rows.length - 1].length - 1) : 0;
-    this.state = {
-      header: this.headerRegex.exec(props.pgn),
-      movetext: this.movetextRegex.exec(props.pgn),
-      rows: rows,
-      maxMove: maxMove
-    };
-  }
+	constructor(props) {
+		super(props);
+		const rows = props.pgn ? this._parseMoveText(this.movetextRegex.exec(props.pgn)[0]) : [];
+		const maxMove = props.pgn ? (rows.length - 1) * 2 + (rows[rows.length - 1].length - 1) : 0;
+		this.state = {
+			header: this.headerRegex.exec(props.pgn),
+			movetext: this.movetextRegex.exec(props.pgn),
+			rows: rows,
+			maxMove: maxMove
+		};
+	}
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.pgn !== this.props.pgn) {
-      const rows = nextProps.pgn ? this._parseMoveText(this.movetextRegex.exec(nextProps.pgn)[0]) : [];
-      const maxMove = nextProps.pgn ? (rows.length - 1) * 2 + (rows[rows.length - 1].length - 1) : 0;
-      this.setState({rows, maxMove});
-    }
-  }
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.pgn !== this.props.pgn) {
+			const rows = nextProps.pgn ? this._parseMoveText(this.movetextRegex.exec(nextProps.pgn)[0]) : [];
+			const maxMove = nextProps.pgn ? (rows.length - 1) * 2 + (rows[rows.length - 1].length - 1) : 0;
+			this.setState({rows, maxMove});
+		}
+	}
 
-  _onMovePgnHead(evt) {
-    const limit = Number(evt.target.value);
-    let currentHalfMove = this.props.currentMove;
+	_onMovePgnHead(evt) {
+		const limit = Number(evt.target.value);
+		let currentHalfMove = this.props.currentMove;
 		const direction = limit > 0 ? 1 : -1;
-    let target;
-    if (direction === 1) {
-      target = Math.min(currentHalfMove + limit, this.state.maxMove);
-    } else {
-      target = Math.max(currentHalfMove + limit, 0); // Limit will be negative
-    }
-    this.props.moveHead(target);
+		let target;
+		if (direction === 1) {
+			target = Math.min(currentHalfMove + limit, this.state.maxMove);
+		} else {
+			target = Math.max(currentHalfMove + limit, 0); // Limit will be negative
+		}
+		this.props.moveHead(target);
 
-  }
+	}
 
-  _parseMoveText(movetext) {
+	_parseMoveText(movetext) {
 
     /* delete comments */
-    let ms = movetext.replace(/(\{[^}]+\})+?/g, '');
+		let ms = movetext.replace(/(\{[^}]+\})+?/g, '');
 
     /* delete recursive annotation variations */
-    const ravRegex = /(\([^\(\)]+\))+?/g;
-    while (ravRegex.test(ms)) {
-      ms = ms.replace(ravRegex, '');
-    }
+		const ravRegex = /(\([^\(\)]+\))+?/g;
+		while (ravRegex.test(ms)) {
+			ms = ms.replace(ravRegex, '');
+		}
 
     /* delete numeric annotation glyphs */
-    ms = ms.replace(/\$\d+/g, '');
+		ms = ms.replace(/\$\d+/g, '');
 
     /* Delete result */
-    ms = ms.replace(/(?:1-0|0-1|1\/2-1\/2|\*)$/, '').trim();
+		ms = ms.replace(/(?:1-0|0-1|1\/2-1\/2|\*)$/, '').trim();
 
     /* Split into rows */
-    const rows = [];
-    const rowRegex = /\d+\.\s?\S+(?:\s\S+)?/g;
-    while (true) {
-      const result = rowRegex.exec(ms);
-      if (!result) {break;}
-      const row = result[0].split(/\s|\.\s?/g);
-      row[0] = parseInt(row[0]);
-      rows.push(row);
-    }
-    return rows;
-  }
+		const rows = [];
+		const rowRegex = /\d+\.\s?\S+(?:\s\S+)?/g;
+		while (true) {
+			const result = rowRegex.exec(ms);
+			if (!result) {break;}
+			const row = result[0].split(/\s|\.\s?/g);
+			row[0] = parseInt(row[0]);
+			rows.push(row);
+		}
+		return rows;
+	}
 
-  get header() {
-    const result = this.headerRegex.exec(this.props.pgn);
-    return result ? result[0] : '';
-  }
+	get header() {
+		const result = this.headerRegex.exec(this.props.pgn);
+		return result ? result[0] : '';
+	}
 
-  get movetext() {
-    const result =  this.movetextRegex.exec(this.props.pgn);
-    return result ? result[0] : '';
-  }
+	get movetext() {
+		const result =  this.movetextRegex.exec(this.props.pgn);
+		return result ? result[0] : '';
+	}
 
-  get headerRegex() {
-    return new RegExp('^(' + this.props.newlineChar + '|.)*' +
+	get headerRegex() {
+		return new RegExp('^(' + this.props.newlineChar + '|.)*' +
                       '(?:'+ this.props.newlineChar +'){2}');
-  }
+	}
 
-  get movetextRegex() {
-    return new RegExp('(?:' + this.props.newlineChar + '){2}' +
+	get movetextRegex() {
+		return new RegExp('(?:' + this.props.newlineChar + '){2}' +
                       '(' + this.props.newlineChar + '|.)*$');
-  }
+	}
 
-  get result() {
+	get result() {
     /* Return the game termination marker, which will be one of:
       1-0 | 0-1 | 1/2-1/2 | *
     */
-    const regex = new RegExp(/(?:1-0|0-1|1\/2-1\/2|\*)$/);
-    return this.props.pgn.match(regex)[0];
-  }
+		const regex = new RegExp(/(?:1-0|0-1|1\/2-1\/2|\*)$/);
+		return this.props.pgn.match(regex)[0];
+	}
 
-  render () {
-    return (
+	render () {
+		return (
       <div style={{display: 'inline-block', position: 'absolute', marginLeft: 5}}>
         <MovetextViewer
           halfMove={this.props.currentMove}
@@ -208,23 +207,23 @@ class GameHistory extends Component {
         />
         <PgnControls moveHead={this._onMovePgnHead.bind(this)}/>
       </div>
-    );
-  }
+		);
+	}
 }
 
 GameHistory.propTypes = {
-  currentMove: React.PropTypes.number,
-  moveHead: React.PropTypes.func,
-  newlineChar: React.PropTypes.string.isRequired,
-  pgn: React.PropTypes.string,
-  pgnHeight: React.PropTypes.number,
-  pgnWidth: React.PropTypes.number,
-  sloppy: React.PropTypes.bool
+	currentMove: React.PropTypes.number,
+	moveHead: React.PropTypes.func,
+	newlineChar: React.PropTypes.string.isRequired,
+	pgn: React.PropTypes.string,
+	pgnHeight: React.PropTypes.number,
+	pgnWidth: React.PropTypes.number,
+	sloppy: React.PropTypes.bool
 };
 
 GameHistory.defaultProps = {
-  newlineChar: '\r?\n',
-  sloppy: false
+	newlineChar: '\r?\n',
+	sloppy: false
 };
 
 export default GameHistory;
