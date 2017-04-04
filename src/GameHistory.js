@@ -162,8 +162,8 @@ class GameHistory extends Component {
       const result = rowRegex.exec(ms);
       if (!result) {break;}
       const row = result[0].split(/\s|\.\s?/g);
-      row[0] = parseInt(row[0])
-      rows.push(row)
+      row[0] = parseInt(row[0]);
+      rows.push(row);
     }
     return rows;
   }
@@ -192,8 +192,8 @@ class GameHistory extends Component {
     /* Return the game termination marker, which will be one of:
       1-0 | 0-1 | 1/2-1/2 | *
     */
-    const regex = new RegExp(/(?:1-0|0-1|1\/2-1\/2|\*)$/)
-    return this.props.pgn.match(regex)[0]
+    const regex = new RegExp(/(?:1-0|0-1|1\/2-1\/2|\*)$/);
+    return this.props.pgn.match(regex)[0];
   }
 
   render () {
@@ -212,17 +212,19 @@ class GameHistory extends Component {
   }
 }
 
-GameHistory.PropTypes = {
+GameHistory.propTypes = {
+  currentMove: React.PropTypes.number,
   moveHead: React.PropTypes.func,
   newlineChar: React.PropTypes.string.isRequired,
   pgn: React.PropTypes.string,
   pgnHeight: React.PropTypes.number,
+  pgnWidth: React.PropTypes.number,
   sloppy: React.PropTypes.bool
-}
+};
 
 GameHistory.defaultProps = {
   newlineChar: '\r?\n',
   sloppy: false
-}
+};
 
 export default GameHistory;
