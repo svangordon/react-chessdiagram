@@ -31,8 +31,11 @@ class MovetextViewer extends Component {
     // return a fn that renders a cell w/ appropriate highlighting, 0 for white 1 for black
     const renderCell = (color) => {
       return ({value, rowValues, row, index, viewIndex}) => {
-        const fullMove = Math.floor(this.props.halfMove / 2);
-        const activeMove = fullMove === row[0] && (this.props.halfMove) % 2 === color;
+        const fullMove = Math.ceil(this.props.halfMove / 2);
+        // console.log('currentFullMove', fullMove, 'currentHalfMove', this.props.halfMove, 'cellFullMove', row[0]);
+        // console.log('cellHalfMove ==', (row[0]-1)*2 + color, 'currentHalfMove', this.props.halfMove);
+        // const activeMove = fullMove === row[0] && (this.props.halfMove) % 2 === color;
+        const activeMove = (row[0]-1)*2 + color === this.props.halfMove;
         const backgroundColor = activeMove ? 'yellow' : '#FFF'
         return (
           <span
@@ -56,12 +59,12 @@ class MovetextViewer extends Component {
       accessor: '1',
       id: 'white',
       width: 90,
-      render: renderCell(0)
+      render: renderCell(1)
     }, {
       accessor: '2',
       id: 'black',
       width: 90,
-      render: renderCell(1)
+      render: renderCell(2)
     }].map(column => Object.assign({}, columnDefaults, column));
     return (
       <div
