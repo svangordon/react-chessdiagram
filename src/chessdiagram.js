@@ -43,6 +43,16 @@ class Chessdiagram extends Component {
 		};
 	}
 
+	// Lifecycle events
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.fen && nextProps.fen !== this.props.fen) {
+			this.setState({currentPosition: nextProps.fen});
+		}
+		if (nextProps.pgn && nextProps.pgn !== this.props.pgn) {
+			this.setState({currentPosition: this.props.getNthMove(nextProps.pgn, -1)});
+		}
+	}
+
 	// event handling ////
 
 	_onMovePiece(pieceType, from, to) {
