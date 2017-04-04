@@ -32,15 +32,14 @@ class MovetextViewer extends Component {
     const renderCell = (color) => {
       return ({value, rowValues, row, index, viewIndex}) => {
         const fullMove = Math.ceil(this.props.halfMove / 2);
-        // console.log('currentFullMove', fullMove, 'currentHalfMove', this.props.halfMove, 'cellFullMove', row[0]);
-        // console.log('cellHalfMove ==', (row[0]-1)*2 + color, 'currentHalfMove', this.props.halfMove);
-        // const activeMove = fullMove === row[0] && (this.props.halfMove) % 2 === color;
-        const activeMove = (row[0]-1)*2 + color === this.props.halfMove;
-        const backgroundColor = activeMove ? 'yellow' : '#FFF'
+        const cellMove = (row[0]-1)*2 + color;
+        // const activeMove = (row[0]-1)*2 + color === this.props.halfMove;
+        const backgroundColor = cellMove === this.props.halfMove ? 'yellow' : '#FFF';
         return (
           <span
             className={'pgn-cell'}
-            ref={(cell) => {if (activeMove){this.activeMove = cell;}}}
+            onClick={() => this.props.moveHead(cellMove)}
+            ref={(cell) => {if (cellMove === this.props.halfMove){this.activeMove = cell;}}}
             style={{backgroundColor}}
           >
             {value}
@@ -84,7 +83,8 @@ class MovetextViewer extends Component {
 
 MovetextViewer.PropTypes = {
   rows: React.PropTypes.array,
-  halfMove: React.PropTypes.number
+  halfMove: React.PropTypes.number,
+  moveHead: React.PropTypes.func
 }
 
 class PgnControls extends Component {
@@ -108,8 +108,6 @@ class GameHistory extends Component {
 
   constructor(props) {
     super(props);
-    // ???: why are we even checking if there's props.pgn? Should never be a PGN viewer
-    // w/o pgn...
     const rows = props.pgn ? this._parseMoveText(this.movetextRegex.exec(props.pgn)[0]) : [];
     const maxMove = props.pgn ? (rows.length - 1) * 2 + (rows[rows.length - 1].length - 1) : 0;
     this.state = {
@@ -118,8 +116,6 @@ class GameHistory extends Component {
       rows: rows,
       maxMove: maxMove
     };
-    // console.log('maxMove figuring', rows.length);
-    // this.maxMove = halfMove;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -141,7 +137,6 @@ class GameHistory extends Component {
       target = Math.max(currentHalfMove + limit, 0); // Limit will be negative
     }
     this.props.moveHead(target);
-    // this.setState({halfMove: target});
 
   }
 
@@ -208,6 +203,7 @@ class GameHistory extends Component {
       <div style={{display: 'inline-block', position: 'absolute', marginLeft: 5}}>
         <MovetextViewer
           halfMove={this.props.currentMove}
+          moveHead={this.props.moveHead}
           pgnHeight={this.props.pgnHeight}
           pgnWidth={this.props.pgnWidth}
           rows={this.state.rows}
