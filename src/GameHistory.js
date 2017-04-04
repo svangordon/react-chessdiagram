@@ -111,7 +111,7 @@ class GameHistory extends Component {
       header: this.headerRegex.exec(props.pgn),
       movetext: this.movetextRegex.exec(props.pgn),
       rows: rows,
-      halfMove: halfMove
+      // halfMove: halfMove
     };
     this.maxMove = halfMove;
   }
@@ -135,7 +135,7 @@ class GameHistory extends Component {
       target = Math.max(currentHalfMove + limit, 0); // Limit will be negative
     }
     this.props.moveHead(target);
-    this.setState({halfMove: target});
+    // this.setState({halfMove: target});
 
   }
 
