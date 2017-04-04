@@ -153,7 +153,7 @@ Chessdiagram.propTypes = {
 
 // Takes a pgn and returns the FEN of the nth move
 const getNthMoveDefault = (pgn, move) => {
-	console.log('getting move', move);
+	// console.log('getting move', move);
 	var Game = require('chess.js');
 	if (Game.Chess) { // HACK: make it work in the test suite
 		Game = Game.Chess;
@@ -166,7 +166,8 @@ const getNthMoveDefault = (pgn, move) => {
 	if (move === -1) {
 		return game.fen();
 	}
-	for (let i = game.history().length - move; i >= 0; i--) {
+	console.log('getting move', move, 'i==', game.history().length - move, 'history len',  game.history().length, 'history',  game.history());
+	for (let i = game.history().length - move; i > 0; i--) {
 		game.undo();
 	}
 	return game.fen();

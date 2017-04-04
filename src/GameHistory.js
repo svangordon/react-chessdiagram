@@ -108,14 +108,17 @@ class GameHistory extends Component {
 
   constructor(props) {
     super(props);
+    // ???: why are we even checking if there's props.pgn? Should never be a PGN viewer
+    // w/o pgn...
     const rows = props.pgn ? this._parseMoveText(this.movetextRegex.exec(props.pgn)[0]) : [];
-    const halfMove = props.pgn ? rows.length * 2 + (rows[rows.length - 1].length - 1) - 1 : 0;
+    const halfMove = props.pgn ? (rows.length-1) * 2 + (rows[rows.length - 1].length - 1) : 0;
     this.state = {
       header: this.headerRegex.exec(props.pgn),
       movetext: this.movetextRegex.exec(props.pgn),
       rows: rows,
       // halfMove: halfMove
     };
+    console.log('maxMove figuring', rows.length);
     this.maxMove = halfMove;
   }
 
