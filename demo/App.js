@@ -174,7 +174,7 @@ class App extends Component {
 			// echo move back to user:
 			let message = 'You moved ' + piece + fromSquare + " to " + toSquare + ' !';
 			this.setState({lastMessage: message}, () => {
-				this.timeout = setTimeout(() => {this.setState({lastMessage: ''})}, 2000)
+				this.timeout = setTimeout(() => {this.setState({lastMessage: ''})}, 200000)
 			});
 		// }
 	}
@@ -253,8 +253,9 @@ class App extends Component {
 						ranks={this.state.ranks}
 						squareSize={this.state.squareSize}
 					/>
-				<p className={"lastMessage"}><strong>{this.state.lastMessage}</strong></p>
-				{this.state.pgn ? <div>
+					<p className={"lastMessage"}><strong>{this.state.lastMessage}</strong></p>
+
+				{this.state.pgn ? <div style={{position: 'relative', top: 40}}>
 					Displaying the following PGN:<br />
 					<textarea
 						cols={60}

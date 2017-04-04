@@ -6,6 +6,7 @@ import BoardContainer from '../src/BoardContainer.js';
 import GameHistory from '../src/GameHistory.js';
 import Piece from '../src/piece';
 import sinon from 'sinon';
+// import Chess from 'chess.js';
 
 const startPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 const startAllowedMoves = {
@@ -279,20 +280,42 @@ describe('Testing GameHistory', () => {
   });
 
   it('should change currentPosition', () => {
+    const Chess = require('chess.js').Chess;
+
     const wrapper = mount(<Chessdiagram ref="cd" gameHistory pgn={testPgn.join('\n')}/>);
     const firstMove = wrapper.findWhere(n => n.text() === '|<');
     const reversePgn = wrapper.findWhere(n => n.text() === '<');
     const advancePgn = wrapper.findWhere(n => n.text() === '>');
     const lastMove = wrapper.findWhere(n => n.text() === '>|');
     console.log('wrapper state', wrapper.state());
-    reversePgn.simulate('click');
-    expect(wrapper.state().currentPosition).toBe("1r3kr1/pbpBnp1p/1b3P2/8/8/B1P2q2/P4PPP/3R2K1 w - - 4 24");
-    advancePgn.simulate('click');
-    expect(wrapper.state().currentPosition).toBe("1r3kr1/pbpBBp1p/1b3P2/8/8/2P2q2/P4PPP/3R2K1 b - - 0 24");
+
+    let game = new Chess();
+    const fens = [];
+    game.load_pgn(testPgn.join('\n'));
+    while (true) {
+      fens.unshift(game.fen());
+      const result = game.undo();
+      if (!result) {
+        break;
+      }
+    }
+    for (let i = 0; i < fens.length-1; i++) {
+      expect(wrapper.state().currentPosition).toBe(fens[i]);
+      advancePgn.simulate('click');
+    }
     firstMove.simulate('click');
-    expect(wrapper.state().currentPosition).toBe(startPosition);
+    for (let i = 0; i < fens.length-1; i++) {
+      expect(wrapper.state().currentPosition).toBe(fens[i]);
+      advancePgn.simulate('click');
+    }
+    expect(wrapper.state().currentPosition).toBe(fens[fens.length - 1]);
+
     lastMove.simulate('click');
-    expect(wrapper.state().currentPosition).toBe("1r3kr1/pbpBBp1p/1b3P2/8/8/2P2q2/P4PPP/3R2K1 b - - 0 24");
+    for (let i = fens.length - 1; i > 0; i--) {
+      expect(wrapper.state().currentPosition).toBe(fens[i]);
+      reversePgn.simulate('click')
+    }
+    expect(wrapper.state().currentPosition).toBe(fens[0]);
   });
 
 });

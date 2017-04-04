@@ -33,7 +33,6 @@ class MovetextViewer extends Component {
       return ({value, rowValues, row, index, viewIndex}) => {
         const fullMove = Math.ceil(this.props.halfMove / 2);
         const cellMove = (row[0]-1)*2 + color;
-        // const activeMove = (row[0]-1)*2 + color === this.props.halfMove;
         const backgroundColor = cellMove === this.props.halfMove ? 'yellow' : '#FFF';
         return (
           <span
