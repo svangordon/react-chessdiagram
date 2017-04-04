@@ -28,18 +28,12 @@ import React, { Component } from 'react';
 import Board from './board.js';
 import Piece from './piece.js';
 import standardPieceDefinitions from './pieceDefinitions.js';
-import Chess from 'chess.js';
 
 /** BoardContainer : handles user input and draws a chess diagram consisting of
 * a board and pieces, using svg graphics */
 class BoardContainer extends Component {
 	constructor(props) {
 		super(props);
-		this.defaultOptions = {
-			validateMoves: true,
-			showLegalMoves: true
-		};
-		this.options = Object.assign(this.defaultOptions, props.options);
 		this.state = {
 			selectedSquare: null,
 			selectedPieceType: null,
@@ -280,12 +274,6 @@ class BoardContainer extends Component {
 		const highlights = {};
 		if (this.state.selectedSquare) {
 			highlights[this.state.selectedSquare] = 'yellow';
-		}
-		// let highlights = this.state.selectedSquare ? {this.state.selectedSquare: 'yellow'} : {};
-		if (this.options.showLegalMoves && this.props.allowedMoves[this.state.selectedSquare]) {
-			this.props.allowedMoves[this.state.selectedSquare].forEach(square => {
-				highlights[square] = 'red';
-			});
 		}
 		return (
 				<svg

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
-import 'react-table/react-table.css'
+import 'react-table/react-table.css';
 
 class MovetextViewer extends Component {
   shouldComponentUpdate(nextProps) {
@@ -30,8 +30,7 @@ class MovetextViewer extends Component {
   render () {
     // return a fn that renders a cell w/ appropriate highlighting, 0 for white 1 for black
     const renderCell = (color) => {
-      return ({value, rowValues, row, index, viewIndex}) => {
-        const fullMove = Math.ceil(this.props.halfMove / 2);
+      return ({value, row}) => {
         const cellMove = (row[0]-1)*2 + color;
         const backgroundColor = cellMove === this.props.halfMove ? 'yellow' : '#FFF';
         return (
@@ -45,10 +44,10 @@ class MovetextViewer extends Component {
           </span>
         );
       };
-    }
+    };
     const columnDefaults = {
       sortable: false
-    }
+    };
     const columns = [{
       accessor: '0',
       id: 'move',
@@ -80,11 +79,11 @@ class MovetextViewer extends Component {
   }
 }
 
-MovetextViewer.PropTypes = {
+MovetextViewer.propTypes = {
   rows: React.PropTypes.array,
   halfMove: React.PropTypes.number,
   moveHead: React.PropTypes.func
-}
+};
 
 class PgnControls extends Component {
   render() {
