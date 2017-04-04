@@ -73,7 +73,6 @@ class Chessdiagram extends Component {
 	}
 
 	_onMovePgnHead(halfMove) {
-		const result = this.props.getNthMove(this.props.pgn, halfMove);
 		this.setState({
 			currentMove: halfMove,
 			currentPosition: this.props.getNthMove(this.props.pgn, halfMove)
@@ -108,6 +107,7 @@ class Chessdiagram extends Component {
 Chessdiagram.propTypes = {
 	allowMoves: React.PropTypes.bool,
 	darkSquareColor: React.PropTypes.string,
+	fen: React.PropTypes.string,
 	files: React.PropTypes.number,
 	/** if true, rotates the board so that Black pawns are moving up, and White pawns are moving down the board */
 	flip: React.PropTypes.bool,
@@ -154,8 +154,8 @@ Chessdiagram.propTypes = {
 
 // Takes a pgn and returns the FEN of the nth move
 const getNthMoveDefault = (pgn, move) => {
-	// console.log('getting move', move);
-	var Game = require('chess.js');
+
+	var Game = require('chess.js'); // eslint-disable-line no-undef
 	if (Game.Chess) { // HACK: make it work in the test suite
 		Game = Game.Chess;
 	}
@@ -172,7 +172,7 @@ const getNthMoveDefault = (pgn, move) => {
 		game.undo();
 	}
 	return game.fen();
-}
+};
 
 Chessdiagram.defaultProps = {
 	allowMoves: true,
