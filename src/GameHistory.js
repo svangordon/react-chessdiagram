@@ -27,7 +27,7 @@ class MovetextViewer extends Component {
 	}
 
 	render () {
-    // return a fn that renders a cell w/ appropriate highlighting, 0 for white 1 for black
+    // return a fn that renders a cell w/ appropriate highlighting, 1 for white 2 for black
 		const renderCell = (color) => {
 			return ({value, row}) => {
 				const cellMove = (row[0]-1)*2 + color;

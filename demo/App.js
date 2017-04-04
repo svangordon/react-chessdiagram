@@ -101,7 +101,6 @@ class App extends Component {
 
 	_onMovePiece(piece, fromSquare, toSquare) { // user moved a piece
 		clearTimeout(this.timeout);
-
 		// echo move back to user:
 		let message = 'You moved ' + piece + fromSquare + " to " + toSquare + ' !';
 		this.setState({lastMessage: message}, () => {

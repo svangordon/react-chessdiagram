@@ -6,21 +6,8 @@ import Board from '../src/board';
 import BoardContainer from '../src/BoardContainer.js';
 import GameHistory from '../src/GameHistory.js';
 import sinon from 'sinon';
-// import Chess from 'chess.js';
 
 const startPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-const startAllowedMoves = {
-  "a2": ["a3", "a4"],
-  "b2": ["b3", "b4"],
-  "c2": ["c3", "c4"],
-  "d2": ["d3", "d4"],
-  "e2": ["e3", "e4"],
-  "f2": ["f3", "f4"],
-  "g2": ["g3", "g4"],
-  "h2": ["h3", "h4"],
-  "b1": ["a3", "c3"],
-  "g1": ["f3", "h3"]
-};
 
 describe('testing interpretation of FEN string', () => {
 	it('should put pieces on the correct squares', () => {
@@ -199,24 +186,6 @@ describe('testing non-standard board widths', () => {
 		expect(wrapper.find('Square').length).toBe(144);
 	})
 });
-
-// This functionality was never implemented, but I'm leaving the tests lying around
-// describe('test allowed moves highlighting', () => {
-// 	it('should show proper moves from start', () => {
-// 		Object.keys(startAllowedMoves).forEach(key => {
-// 			const wrapper = mount(
-// 				<Chessdiagram ref="cd" allowedMoves={startAllowedMoves} fen={startPosition} />
-// 			);
-// 			const squareCoords = {
-// 				clientX: ('.abcdefgh'.indexOf(key[0]) + .5) * wrapper.props().squareSize,
-// 				clientY: (wrapper.props().ranks - parseInt(key[1]) + .5) * wrapper.props().squareSize
-// 			};
-// 			wrapper.simulate('mousedown', squareCoords);
-// 			wrapper.simulate('mouseup', squareCoords);
-// 			expect(wrapper.find('SquareHighlight').length).toBe(3);
-// 		});
-// 	});
-// });
 
 /***************
 * Test GameHistory container
