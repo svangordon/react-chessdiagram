@@ -98,9 +98,9 @@ class PgnControls extends Component {
   }
 }
 
-PgnControls.PropTypes = {
+PgnControls.propTypes = {
   moveHead: React.PropTypes.func.isRequired
-}
+};
 
 class GameHistory extends Component {
 
@@ -119,8 +119,8 @@ class GameHistory extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.pgn !== this.props.pgn) {
       const rows = nextProps.pgn ? this._parseMoveText(this.movetextRegex.exec(nextProps.pgn)[0]) : [];
-      const maxMove = nextPprops.pgn ? (rows.length - 1) * 2 + (rows[rows.length - 1].length - 1) : 0;
-      this.setState({rows, maxMove})
+      const maxMove = nextProps.pgn ? (rows.length - 1) * 2 + (rows[rows.length - 1].length - 1) : 0;
+      this.setState({rows, maxMove});
     }
   }
 
