@@ -110,14 +110,13 @@ class GameHistory extends Component {
 		this.state = {
 			header: this.headerRegex.exec(props.pgn),
 			movetext: this.movetextRegex.exec(props.pgn),
-			// rows: rows,
 			maxMove: maxMove
 		};
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.pgn !== this.props.pgn) {
-			const rows = nextProps.pgn ? this._parseMovetext(this.movetextRegex.exec(nextProps.pgn)[0]) : [];
+			const rows = this.rows;
 			const maxMove = nextProps.pgn ? (rows.length - 1) * 2 + (rows[rows.length - 1].length - 1) : 0;
 			this.setState({rows, maxMove});
 		}
@@ -142,8 +141,6 @@ class GameHistory extends Component {
 		if (!ms) {
 			return [];
 		}
-		// ms = headerRegex.exec(ms)[0]
-		console.log('movetext regex', this.movetext);
     /* delete comments */
 		ms = ms.replace(/(\{[^}]+\})+?/g, '');
 
@@ -197,7 +194,7 @@ class GameHistory extends Component {
 
 	get result() {
     /* Return the game termination marker, which will be one of:
-      1-0 | 0-1 | 1/2-1/2 | *
+    *  	1-0 | 0-1 | 1/2-1/2 | *
     */
 		const regex = new RegExp(/(?:1-0|0-1|1\/2-1\/2|\*)$/);
 		return this.props.pgn.match(regex)[0];
