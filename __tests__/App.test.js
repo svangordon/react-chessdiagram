@@ -247,44 +247,115 @@ describe('Testing GameHistory', () => {
     );
     expect(wrapper.find('.pgn-cell').length).toBe(48);
   });
+});
 
-  it('should change currentPosition', () => {
-    const Chess = require('chess.js').Chess;
+describe('Testing pgn controls', () => {
+	const testPgn = [
+	'[Event "Hoogovens"]',
+	'[Site "Wijk aan Zee NED"]',
+	'[Date "1971.01.26"]',
+	'[EventDate "?"]',
+	'[Round "12"]',
+	'[Result "1-0"]',
+	'[White "Tigran Vartanovich Petrosian"]',
+	'[Black "Hans Ree"]',
+	'[ECO "A29"]',
+	'[WhiteElo "?"]',
+	'[BlackElo "?"]',
+	'[PlyCount "15"]',
+	'',
+	'1. c4 e5 2. Nc3 Nf6 3. Nf3 Nc6 4. g3 Bb4 5. Nd5 Nxd5 6. cxd5',
+	'e4 7. dxc6 exf3 8. Qb3 1-0'];
+	 const Chess = require('chess.js').Chess;
 
-    const wrapper = mount(<Chessdiagram ref="cd" gameHistory pgn={testPgn.join('\n')}/>);
-    const firstMove = wrapper.findWhere(n => n.text() === '|<');
-    const reversePgn = wrapper.findWhere(n => n.text() === '<');
-    const advancePgn = wrapper.findWhere(n => n.text() === '>');
-    const lastMove = wrapper.findWhere(n => n.text() === '>|');
-    console.log('wrapper state', wrapper.state());
+ 	let wrapper = mount(<Chessdiagram ref="cd" gameHistory pgn={testPgn.join('\n')}/>);
+ 	let firstMove = wrapper.findWhere(n => n.text() === '|<');
+ 	let reversePgn = wrapper.findWhere(n => n.text() === '<');
+ 	let advancePgn = wrapper.findWhere(n => n.text() === '>');
+ 	let lastMove = wrapper.findWhere(n => n.text() === '>|');
 
-    let game = new Chess();
-    const fens = [];
-    game.load_pgn(testPgn.join('\n'));
-    while (true) {
-      fens.unshift(game.fen());
-      const result = game.undo();
-      if (!result) {
-        break;
-      }
-    }
-    for (let i = 0; i < fens.length-1; i++) {
-      expect(wrapper.state().currentPosition).toBe(fens[i]);
-      advancePgn.simulate('click');
-    }
-    firstMove.simulate('click');
-    for (let i = 0; i < fens.length-1; i++) {
-      expect(wrapper.state().currentPosition).toBe(fens[i]);
-      advancePgn.simulate('click');
-    }
-    expect(wrapper.state().currentPosition).toBe(fens[fens.length - 1]);
+	const refreshWrapper = () => {
+		wrapper = mount(<Chessdiagram ref="cd" gameHistory pgn={testPgn.join('\n')}/>);
+	 	firstMove = wrapper.findWhere(n => n.text() === '|<');
+	 	reversePgn = wrapper.findWhere(n => n.text() === '<');
+	 	advancePgn = wrapper.findWhere(n => n.text() === '>');
+	 	lastMove = wrapper.findWhere(n => n.text() === '>|');
+	};
 
-    lastMove.simulate('click');
-    for (let i = fens.length - 1; i > 0; i--) {
-      expect(wrapper.state().currentPosition).toBe(fens[i]);
-      reversePgn.simulate('click')
-    }
-    expect(wrapper.state().currentPosition).toBe(fens[0]);
-  });
+ 	let game = new Chess();
+ 	const fens = [];
+ 	game.load_pgn(testPgn.join('\n'));
+ 	while (true) {
+ 		fens.unshift(game.fen());
+ 		const result = game.undo();
+ 		if (!result) {
+ 			break;
+ 		}
+ 	}
+	const last = fens.length - 1;
 
+	it('should alter the display of the board', () => {
+		refreshWrapper();
+		expect(wrapper.find('Piece').length).toBe(32);
+		lastMove.simulate('click');
+		const pieceCount = wrapper.state().currentPosition.split(' ')[0].match(/[a-zA-Z]/g).length
+		expect(wrapper.find('Piece').length).toBe(pieceCount);
+	});
+
+	it('should go to last move properly', () => {
+		refreshWrapper();
+		expect(wrapper.state().currentPosition).toBe(fens[0]);
+		lastMove.simulate('click');
+		expect(wrapper.state().currentPosition).toBe(fens[last]);
+		/* check to make sure there's not an off by one */
+		reversePgn.simulate('click');
+		expect(wrapper.state().currentPosition).toBe(fens[last-1]);
+	});
+
+	it('should step forward through moves', () => {
+		refreshWrapper();
+		expect(wrapper.state().currentPosition).toBe(fens[0]);
+		for (let i = 0; i < fens.length - 1; i++) {
+			advancePgn.simulate('click');
+			expect(wrapper.state().currentPosition).toBe(fens[i + 1]);
+		}
+	});
+
+	it('should goto first move properly', () => {
+		refreshWrapper();
+		expect(wrapper.state().currentPosition).toBe(fens[0], 'start move');
+		lastMove.simulate('click');
+		expect(wrapper.state().currentPosition).toBe(fens[last]);
+		firstMove.simulate('click');
+		expect(wrapper.state().currentPosition).toBe(fens[0]);
+		/* Make sure there's not an off-by-one */
+		advancePgn.simulate('click');
+		expect(wrapper.state().currentPosition).toBe(fens[1]);
+	})
+
+	it('should step backwards through moves', () => {
+		refreshWrapper();
+		expect(wrapper.state().currentPosition).toBe(fens[0], 'start move');
+		lastMove.simulate('click');
+		expect(wrapper.state().currentPosition).toBe(fens[last]);
+		for (let i = last; i > 0; i--) {
+			reversePgn.simulate('click');
+			expect(wrapper.state().currentPosition).toBe(fens[i - 1]);
+		}
+	});
+
+	it('should tolerate moving off the edge', () => {
+		refreshWrapper();
+		expect(wrapper.state().currentPosition).toBe(fens[0]);
+		reversePgn.simulate('click');
+		expect(wrapper.state().currentPosition).toBe(fens[0]);
+		advancePgn.simulate('click');
+		expect(wrapper.state().currentPosition).toBe(fens[1]);
+		lastMove.simulate('click');
+		expect(wrapper.state().currentPosition).toBe(fens[last]);
+		advancePgn.simulate('click');
+		expect(wrapper.state().currentPosition).toBe(fens[last]);
+		reversePgn.simulate('click');
+		expect(wrapper.state().currentPosition).toBe(fens[last - 1])
+	})
 });
