@@ -137,7 +137,10 @@ Chessdiagram.propTypes = {
 	ranks: React.PropTypes.number,
 	squareSize: React.PropTypes.number,
 	// Which move to start the game on. Either halfmove count or letter followed by full move eg w12 //
-	startMove: React.PropTypes.number,
+	startMove: React.PropTypes.oneOfType([
+		React.PropTypes.string,
+		React.PropTypes.number
+	]),
 	/** Chess position in FEN format (Forsyth-Edwards Notation). eg "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" */
 	startPosition: React.PropTypes.string,
 	/** width of main svg container in pixels. If setting this manually, it should be at least 9 * squareSize to fit board AND labels*/

@@ -105,12 +105,12 @@ class GameHistory extends Component {
 
 	constructor(props) {
 		super(props);
-		const rows = props.pgn ? this._parseMovetext(this.movetextRegex.exec(props.pgn)[0]) : [];
+		const rows = this.rows//props.pgn ? this._parseMovetext(this.movetextRegex.exec(props.pgn)[0]) : [];
 		const maxMove = props.pgn ? (rows.length - 1) * 2 + (rows[rows.length - 1].length - 1) : 0;
 		this.state = {
 			header: this.headerRegex.exec(props.pgn),
 			movetext: this.movetextRegex.exec(props.pgn),
-			rows: rows,
+			// rows: rows,
 			maxMove: maxMove
 		};
 	}
@@ -137,10 +137,15 @@ class GameHistory extends Component {
 
 	}
 
-	_parseMovetext(movetext) {
-
+	get rows() {
+		let ms = this.movetext;
+		if (!ms) {
+			return [];
+		}
+		// ms = headerRegex.exec(ms)[0]
+		console.log('movetext regex', this.movetext);
     /* delete comments */
-		let ms = movetext.replace(/(\{[^}]+\})+?/g, '');
+		ms = ms.replace(/(\{[^}]+\})+?/g, '');
 
     /* delete recursive annotation variations */
 		const ravRegex = /(\([^\(\)]+\))+?/g;
@@ -152,7 +157,10 @@ class GameHistory extends Component {
 		ms = ms.replace(/\$\d+/g, '');
 
     /* Delete result */
-		ms = ms.replace(/(?:1-0|0-1|1\/2-1\/2|\*)$/, '').trim();
+		ms = ms.replace(/(?:1-0|0-1|1\/2-1\/2|\*)$/, '');
+
+		/* Delete any double spaces */
+		ms = ms.replace(/\s\s/g, ' ').trim();
 
     /* Split into rows */
 		const rows = [];
@@ -203,7 +211,7 @@ class GameHistory extends Component {
           moveHead={this.props.moveHead}
           pgnHeight={this.props.pgnHeight}
           pgnWidth={this.props.pgnWidth}
-          rows={this.state.rows}
+          rows={this.rows}
         />
         <PgnControls moveHead={this._onMovePgnHead.bind(this)}/>
       </div>
