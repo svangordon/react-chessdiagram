@@ -55,7 +55,7 @@ class Chessdiagram extends Component {
 			this.setState({currentPosition: nextProps.fen});
 		}
 		if (nextProps.pgn && nextProps.pgn !== this.props.pgn) {
-			this.setState({currentPosition: this.props.getNthMove(nextProps.pgn, -1)});
+			this.setState({currentPosition: this.props.getNthMove(nextProps.pgn, 0)});
 		}
 	}
 
@@ -147,7 +147,15 @@ Chessdiagram.propTypes = {
 	]),
 };
 
-// Takes a pgn and returns the FEN of the nth move
+/** Takes a pgn and returns the FEN of the nth move.
+* Chessdiagram can take a custom callback here, with the following params:
+* pgn: string that can be parsed as a normal pgn (eg, double linebreak b/w header
+* and move text, moves in the format `<fullmoveNumber>. <whiteMove> <blackMove>`
+* or /\d+\.\s\w+(?:\s\w+)?/ )
+* move: half move (so if you want 1. e4, you'd pass 1. If you want 2 ... Nf6,
+* you'd pass 4). If passed 0, should return the start position. Should be
+* stateless.
+*/
 const getNthMoveDefault = (pgn, move) => {
 
 	var Game = require('chess.js'); // eslint-disable-line no-undef
@@ -159,9 +167,6 @@ const getNthMoveDefault = (pgn, move) => {
 		return game.fen();
 	}
 	game.load_pgn(pgn);
-	if (move === -1) {
-		return game.fen();
-	}
 
 	for (let i = game.history().length - move; i > 0; i--) {
 		game.undo();
