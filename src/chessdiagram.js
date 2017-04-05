@@ -40,7 +40,9 @@ class Chessdiagram extends Component {
 			currentMove = parseInt(props.startMove);
 		} else {
 			// e.g., 'w12'
-			currentMove = (parseInt(props.startMove.slice(1)) - 1) * 2 + props.startMove[0] === 'w' ? 1 : 2;
+			console.log('first term', 'ternary term', props.startMove[0] === 'w' ? 1 : 2, (parseInt(props.startMove.slice(1)) - 1) * 2 + (props.startMove[0] === 'w' ? 1 : 2));
+			currentMove = (parseInt(props.startMove.slice(1)) - 1) * 2 + (props.startMove[0] === 'w' ? 1 : 2);
+			console.log('currentMove', currentMove);
 		}
 
 		this.state = {
