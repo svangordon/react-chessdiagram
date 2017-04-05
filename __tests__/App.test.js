@@ -185,6 +185,7 @@ describe('testing non-standard board widths', () => {
 		// Not totally sure why expect is returning an object w/o all of the standard Jest matchers
 		expect(wrapper.find('Square').length).toBe(144);
 	})
+
 });
 
 /***************
@@ -233,6 +234,31 @@ describe('Testing GameHistory', () => {
     );
     expect(wrapper.find('.pgn-cell').length).toBe(48);
   });
+
+	describe('Test currentMove when provided with startMove', () => {
+		it('should handle string', () => {
+			const wrapper = mount(
+				<Chessdiagram
+					gameHistory
+					pgn={testPgn.join('\n')}
+					startMove={'b11'}
+				/>
+			);
+			expect(wrapper.state().currentMove).toBe(22)
+		});
+
+		it('should handle number', () => {
+			const wrapper = mount(
+				<Chessdiagram
+					gameHistory
+					pgn={testPgn.join('\n')}
+					startMove={12}
+				/>
+			);
+			expect(wrapper.state().currentMove).toBe(12)
+		});
+
+	});
 
   it('should render with non-standard newlineChar', () => {
     const wrapper = mount(
