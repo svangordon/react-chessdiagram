@@ -105,7 +105,7 @@ class GameHistory extends Component {
 
 	constructor(props) {
 		super(props);
-		const rows = props.pgn ? this._parseMoveText(this.movetextRegex.exec(props.pgn)[0]) : [];
+		const rows = props.pgn ? this._parseMovetext(this.movetextRegex.exec(props.pgn)[0]) : [];
 		const maxMove = props.pgn ? (rows.length - 1) * 2 + (rows[rows.length - 1].length - 1) : 0;
 		this.state = {
 			header: this.headerRegex.exec(props.pgn),
@@ -117,7 +117,7 @@ class GameHistory extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.pgn !== this.props.pgn) {
-			const rows = nextProps.pgn ? this._parseMoveText(this.movetextRegex.exec(nextProps.pgn)[0]) : [];
+			const rows = nextProps.pgn ? this._parseMovetext(this.movetextRegex.exec(nextProps.pgn)[0]) : [];
 			const maxMove = nextProps.pgn ? (rows.length - 1) * 2 + (rows[rows.length - 1].length - 1) : 0;
 			this.setState({rows, maxMove});
 		}
@@ -137,7 +137,7 @@ class GameHistory extends Component {
 
 	}
 
-	_parseMoveText(movetext) {
+	_parseMovetext(movetext) {
 
     /* delete comments */
 		let ms = movetext.replace(/(\{[^}]+\})+?/g, '');
@@ -156,7 +156,7 @@ class GameHistory extends Component {
 
     /* Split into rows */
 		const rows = [];
-		const rowRegex = /\d+\.\s?\S+(?:\s\S+)?/g;
+		const rowRegex = /\d+\.\s?\S+(?:\s+\S+)?/g;
 		while (true) {
 			const result = rowRegex.exec(ms);
 			if (!result) {break;}
